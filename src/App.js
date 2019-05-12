@@ -7,17 +7,43 @@ class App extends React.Component {
     constructor( props ) {
         super( props );
                 this.state = {
-                        chatName: ''
+                        register: false
                     }
+                
+        this.callbackRegister = this.callbackRegister.bind( this );
     }
     
     
+    callbackRegister(){
+        if(this.state.register) {
+            this.setState( {
+                register: false
+            } )
+        }
+        else {
+            this.setState( {
+                register: true
+            } )            
+        }       
+    }
+    
+
+    
+    
   render() {
+      if(this.state.register) {
+          return(
+              <div>
+                  <Register />
+              </div>
+          )
+      }
+      
+      
+      
       return(
-        <div>
-        
-            <Register />
-        
+        <div>               
+            <Login callbackRegister={this.callbackRegister}/>
         </div>
       )
 

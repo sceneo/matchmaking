@@ -10,6 +10,8 @@ class Login extends Component {
       email: "",
       password: ""
     };
+    
+    this.register = this.register.bind( this );
   }
 
   validateForm() {
@@ -26,6 +28,10 @@ class Login extends Component {
     event.preventDefault();
   }
 
+  register(){
+      this.props.callbackRegister();
+  }
+  
   render() {
       
     return (
@@ -47,7 +53,7 @@ class Login extends Component {
               onChange={this.handleChange}
               />
             </Form.Group>
-            <h1 onClick={this.changeTitle}>{this.state.title}</h1>
+            <h5 onClick={this.register}> Register </h5>
             <Button variant="primary" type="submit">
               Submit
             </Button>
