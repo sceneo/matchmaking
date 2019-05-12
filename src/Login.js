@@ -47,9 +47,7 @@ class Login extends Component {
               onChange={this.handleChange}
               />
             </Form.Group>
-            <Form.Group controlId="formBasicChecbox">
-              <Form.Check type="checkbox" label="Check me out" />
-            </Form.Group>
+            <h1 onClick={this.changeTitle}>{this.state.title}</h1>
             <Button variant="primary" type="submit">
               Submit
             </Button>
