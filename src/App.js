@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import Login from "./Login.js"
 
 class App extends React.Component {
     constructor( props ) {
@@ -14,9 +15,7 @@ class App extends React.Component {
       return(
         <div>
         
-            <p>
-                This is the main App page
-            </p>
+            <Login />
         
         </div>
       )
