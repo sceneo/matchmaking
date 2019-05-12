@@ -17,11 +17,7 @@ class App extends React.Component {
             <p>
                 This is the main App page
             </p>
-                
-                import * as SendBird from 'sendbird';
-                var sb = new SendBird({'appId': 'APP_ID'});
-
-
+        
         </div>
       )
 
