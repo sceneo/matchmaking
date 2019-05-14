@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Login from "./Login.js"
 import Register from "./Register.js"
+import Chat from "./Chat.js"
 
 class App extends React.Component {
     constructor( props ) {
@@ -39,11 +40,13 @@ class App extends React.Component {
           )
       }
       
+            
       
       
       return(
         <div>               
             <Login callbackRegister={this.callbackRegister}/>
+            <Chat />
         </div>
       )
 

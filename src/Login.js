@@ -38,7 +38,6 @@ class Login extends Component {
       <div className="Login">
 
 
-            
 
           <Form onSubmit={this.handleSubmit}>
             <Form.Group controlId="formBasicEmail">
@@ -53,11 +52,11 @@ class Login extends Component {
               onChange={this.handleChange}
               />
             </Form.Group>
-            <h5 onClick={this.register}> Register </h5>
+            <text onClick={this.register}> Register </text>
             <Button variant="primary" type="submit">
               Submit
             </Button>
-          </Form>;     
+          </Form>     
              
       </div>
     );
