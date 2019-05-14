@@ -11,6 +11,7 @@ class Login extends Component {
       password: "",
       enableButton: false
     };
+    this.url = 'https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/default/MatchMakingAuth';
     this.counter = 0;
     
     this.register = this.register.bind( this );
@@ -45,28 +46,32 @@ class Login extends Component {
       this.props.callbackAuth(status)
   }
   
-  login(){
-
-      var test_email = "t@k.de";
-      var test_password = "ok";
+   
+  login(){     
       this.counter+=1;
-      
-      
       if(this.counter > 2) {
           window.alert("Sorry, your password seems really wrong. Please register.");
           this.auth(false);
           return
       }
       
-      if( this.state.email == test_email && this.state.password == test_password ) {
+      
+      var parameter = '?usecase=auth&email=' + this.state.email + '&password=' + this.state.password
+      fetch( this.url + parameter )
+           
+// TODO
+      var statusCode = 0;
+      console.log("get the status code: todo")
+  .   console.log(this.url + parameter)            
+      if( statusCode == 201 ) {          
           this.auth(true);
       }
+      
       else {
           window.alert("Please enter the CORRECT password.");
       }
   }
-  
-  
+   
   render() {
       
     return (
