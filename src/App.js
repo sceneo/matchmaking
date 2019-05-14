@@ -2,31 +2,34 @@ import React from 'react';
 import './App.css';
 import Login from "./Login.js"
 import Register from "./Register.js"
+import Chat from "./Chat.js"
 
 class App extends React.Component {
     constructor( props ) {
         super( props );
                 this.state = {
-                        register: false
+                        register: false,
+                        auth: false
                     }
                 
         this.callbackRegister = this.callbackRegister.bind( this );
+        this.callbackAuth = this.callbackAuth.bind( this );
     }
     
     
-    callbackRegister(){
-        if(this.state.register) {
-            this.setState( {
-                register: false
-            } )
-        }
-        else {
-            this.setState( {
-                register: true
-            } )            
-        }       
+    callbackRegister(status){
+        this.setState( {
+            register: status,
+            auth: false
+        } )     
     }
-    
+
+    callbackAuth(status){
+        this.setState( {
+            auth: status,
+            register: !status
+        } )     
+    }
 
     
     
@@ -39,11 +42,17 @@ class App extends React.Component {
           )
       }
       
-      
-      
+      if(this.state.auth) {
+          return(
+                  <div>
+                      <Chat />
+                  </div>
+                  )
+      }
+            
       return(
         <div>               
-            <Login callbackRegister={this.callbackRegister}/>
+            <Login callbackAuth={this.callbackAuth} callbackRegister={this.callbackRegister}/>
         </div>
       )
 
