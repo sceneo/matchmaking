@@ -4,6 +4,16 @@ from io import StringIO
 
 
 def create_probabilites(data):
+    """
+        Creates target values for the data. Simple algorithm: Right now, the probability increases if occupation or industry are equal
+
+        Parameters:
+        data (array): User data read from user data csv file
+
+        Returns:
+        array: input and target value data
+    """
+
     input_data = []
     for i in range(len(data)):
         for j in range(len(data)):
