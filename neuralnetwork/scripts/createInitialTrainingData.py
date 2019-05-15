@@ -33,6 +33,8 @@ def create_probabilites(data):
     return output_data
 
 
+
+
 if __name__ == "__main__":
     
     read_file = "../data/testdata/testdatanumeric.csv"
