@@ -19,7 +19,7 @@ with open('../data/testdata/testdata.csv', 'w') as csvFile:
         writer = csv.writer(csvFile)  
         numeric_writer = csv.writer(csv_numeric_file)
         
-        numEntries = 10000
+        numEntries = 100
         index = 0
         while index < numEntries:
             gender_rnd = random.randint(0, len_gender-1)
