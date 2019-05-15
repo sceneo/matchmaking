@@ -18,6 +18,7 @@ def create_probabilites(data):
     output_data[:, :-2] = input_data
 
 
+    # loop through all pairs (X,Y) of users and determine the probability that X is interested in Y
     for i in range(output_data.shape[0]):
         prob = 0
 
