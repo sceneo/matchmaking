@@ -14,19 +14,32 @@ len_hometown = len(pos_hometown)
 len_industry = len(pos_industry)
 
 
-with open('../data/testdata/testdata.csv', 'wb') as csvFile:
-    writer = csv.writer(csvFile)  
-    
-    numEntries = 10000
-    index = 0
-    while index < numEntries:
-        gender = pos_gender[random.randint(0,len_gender-1)]
-        occupation = pos_occupation[random.randint(0,len_occupation-1)]
-        type = pos_type[random.randint(0,len_type-1)]
-        hometown = pos_hometown[random.randint(0,len_hometown-1)]
-        industry = pos_industry[random.randint(0,len_industry-1)]
+with open('../data/testdata/testdata.csv', 'w') as csvFile:
+    with open('../data/testdata/testdatanumeric.csv', 'w') as csv_numeric_file:
+        writer = csv.writer(csvFile)  
+        numeric_writer = csv.writer(csv_numeric_file)
+        
+        numEntries = 10000
+        index = 0
+        while index < numEntries:
+            gender_rnd = random.randint(0, len_gender-1)
+            gender = pos_gender[gender_rnd]
 
-        writer.writerow([gender, occupation, type, hometown, industry])
-        index += 1
+            occupation_rnd = random.randint(0, len_occupation-1)
+            occupation = pos_occupation[occupation_rnd]
+
+            type_rnd = random.randint(0, len_type-1)
+            type = pos_type[type_rnd]
+
+            hometown_rnd = random.randint(0, len_hometown-1)
+            hometown = pos_hometown[hometown_rnd]
+
+            industry_rnd = random.randint(0, len_industry-1)
+            industry = pos_industry[industry_rnd]
+
+            writer.writerow([gender, occupation, type, hometown, industry])
+            numeric_writer.writerow([gender_rnd, occupation_rnd, type_rnd, hometown_rnd, industry_rnd])
+
+            index += 1
 
 print("Test data created.")
