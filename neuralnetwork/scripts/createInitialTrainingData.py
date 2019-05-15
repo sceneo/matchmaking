@@ -37,15 +37,18 @@ def create_probabilites(data):
 
 if __name__ == "__main__":
     
+    # read test user data (numerical version)
     read_file = "../data/testdata/testdatanumeric.csv"
     with open(read_file, 'r') as f:
         reader = csv.reader(f, delimiter=',')
         data = list(reader)
         user_data = np.array(data).astype("float")
 
+    # calculate probabilities for all combinations of users (including probability X is interested in X)
     training_data = create_probabilites(user_data)
     print(training_data)
 
+    # save intial training data
     write_file = "../data/testdata/initialtrainingdata.csv"
     with open(write_file, 'w') as f:
         writer = csv.writer(f, delimiter=',')
