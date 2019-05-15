@@ -8,21 +8,27 @@ def create_probabilites(data):
     for i in range(len(data)):
         for j in range(len(data)):
             input_data.append([np.array(data[i]), np.array(data[j])])
-    input_data = np.array(input_data).reshape(len(input_data), 10)
+    
+    num_user_items = len(input_data[0][0])
+    input_data = np.array(input_data).reshape(len(input_data), 2 * num_user_items)
+    
+    # we add two columns, one column for the number of swipes (=1 in this case, it will become important when we updated training data during actual usage)
+    # and another column for the probability that X is interested in Y
+    output_data = np.ones((input_data.shape[0], input_data.shape[1] + 2))
+    output_data[:, :-2] = input_data
 
-    output_data = np.zeros((input_data.shape[0], input_data.shape[1] + 1))
-    output_data[:, :-1] = input_data
 
     for i in range(output_data.shape[0]):
         prob = 0
-        if output_data[i][1] == output_data[i][6]:
+
+        if output_data[i][1] == output_data[i][1 + num_user_items]:
             # same occupation increases probability
             prob += 0.2
-        if output_data[i][4] == output_data[i][9]:
+        if output_data[i][4] == output_data[i][4 + num_user_items]:
             # same industry increases probability
             prob += 0.5
         
-        output_data[i][10] = prob
+        output_data[i][11] = prob
     
     return output_data
 
