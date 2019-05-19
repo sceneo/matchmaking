@@ -19,6 +19,14 @@ class Login extends Component {
     this.auth = this.auth.bind( this );
     this.login = this.login.bind( this );
   }
+  
+  componentDidMount() {
+      document.body.classList.add("background");
+  }
+
+  componentWillUnmount() {
+      document.body.classList.remove("background");
+  }
 
   validate(){
     return this.state.email.length > 0 && this.state.email.includes("@") && this.state.password.length > 0;
@@ -70,6 +78,7 @@ class Login extends Component {
           }
           
           else {
+              console.log(http.responseText);
               window.alert("Please enter the CORRECT password.");
           }
           
@@ -78,26 +87,28 @@ class Login extends Component {
    
   render() {
     return (
-      <div className="Login">
-
-
-
+      <div className="Login" >
+          
+          <p className="WelcomeText">
+              Welcome to the Messe München Community Chat!
+          </p>
+      
           <Form onSubmit={this.handleSubmit}>
             <Form.Group controlId="email">
-              <Form.Label>Email address </Form.Label>
+              <Form.Label></Form.Label>
               <Form.Control type="email" placeholder="Enter email"             
               onChange={this.handleChange}/>
             </Form.Group>
 
             <Form.Group controlId="password">
-              <Form.Label>Password</Form.Label>
+              <Form.Label></Form.Label>
               <Form.Control type="password" placeholder="Password"
               onChange={this.handleChange}
               />
             </Form.Group>
-            <text onClick={this.register}> Register </text>
-            <Button disabled={!this.state.enableButton} variant="primary" onClick={this.login} type="submit">
-              Submit
+            <p className="RegisterLink" onClick={this.register}> No account yet? Register here! </p> 
+            <Button className="ButtonLogin" disabled={!this.state.enableButton} onClick={this.login} >
+              Login
             </Button>
           </Form>     
              

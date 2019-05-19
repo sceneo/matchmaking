@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Button, Form } from "react-bootstrap";
+import "./Register.css";
 
 class Register extends Component {
     constructor(props) {
@@ -9,9 +10,18 @@ class Register extends Component {
           firstname: "",
           lastname: ""
         };
+        this.url = 'https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/default/MatchMakingAuth';
       }
     
 
+    componentDidMount() {
+        document.body.classList.add("backgroundRegister");
+    }
+
+    componentWillUnmount() {
+        document.body.classList.remove("backgroundRegister");
+    }
+    
     validateForm() {
       return true;
     }
@@ -22,11 +32,40 @@ class Register extends Component {
         });
       }
     
+    register(){
+        
+        
+        
+        
+        var parameter = '?usecase=add&email=' + this.state.email + '&password=' + this.state.password;
+        const http = new XMLHttpRequest();
+        http.open("GET", this.url + parameter);
+        http.send();
+        http.onreadystatechange=(e)=>{
+            console.log(http.responseText)
+            console.log(http.statusText)
+            if(http.responseText.includes("Authorization successfull")) {
+                this.auth(true);
+            }
+            
+            else {
+                console.log(http.responseText);
+                window.alert("Please enter the CORRECT password.");
+            }
+            
+        }
+        
+        
+        
+        
+        
+    }
+    
     render() {
         
         return (
           <div className="Register">
-
+          <p className="LeftHeader"> Registration </p>
 
           <Form onSubmit={this.handleSubmit}>
           
