@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, Form } from "react-bootstrap";
 import "./Login.css";
 
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -22,7 +23,7 @@ class Login extends Component {
   validate(){
     return this.state.email.length > 0 && this.state.email.includes("@") && this.state.password.length > 0;
   }
-
+  
   handleChange = event => {
     this.setState({
       [event.target.id]: event.target.value
@@ -56,24 +57,26 @@ class Login extends Component {
       }
       
       
-      var parameter = '?usecase=auth&email=' + this.state.email + '&password=' + this.state.password
-      fetch( this.url + parameter )
-           
-// TODO
-      var statusCode = 0;
-      console.log("get the status code: todo")
-  .   console.log(this.url + parameter)            
-      if( statusCode == 201 ) {          
-          this.auth(true);
-      }
-      
-      else {
-          window.alert("Please enter the CORRECT password.");
+      var parameter = '?usecase=auth&email=' + this.state.email + '&password=' + this.state.password;
+     
+      const http = new XMLHttpRequest();
+      http.open("GET", this.url + parameter);
+      http.send();
+      http.onreadystatechange=(e)=>{
+          console.log(http.responseText)
+          console.log(http.statusText)
+          if(http.responseText.includes("Authorization successfull")) {
+              this.auth(true);
+          }
+          
+          else {
+              window.alert("Please enter the CORRECT password.");
+          }
+          
       }
   }
    
   render() {
-      
     return (
       <div className="Login">
 
