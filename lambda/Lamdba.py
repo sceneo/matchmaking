@@ -5,6 +5,16 @@ import json
 #usage of a lambda function to provide simple information
 
 
+def response(message, status_code):
+    return {
+        'statusCode': str(status_code),
+        'body': json.dumps(message),
+        'headers': {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+            },
+        }
+
 
 def checkUser(username, password):
     
@@ -33,26 +43,13 @@ def auth(event, context):
         email = event['queryStringParameters']['email']
         password = event['queryStringParameters']['password']
         if(checkUser(email, password)):
-            return {
-                'statusCode': 202,
-                'body': json.dumps('Authentication succesfull')
-                }
+            return response(json.dumps('Authentication successful'),202)
         else:
-            return {
-                'statusCode': 401,
-                'body': json.dumps('Not authorized')
-                }             
-    
+            return response(json.dumps('Not authorized'),401)
     
     if(usecase == 'add'):
         # All data must be provided in call and should be added to a database or file
         email = event['queryStringParameters']['email']
-        return {
-            'statusCode': 201,
-            'body': json.dumps('User created')
-            }
+        return response(json.dumps('User created'),201)
     
-    return {
-        'statusCode': 200,
-        'body': json.dumps('Lambda available, no usecase selected')
-    }
+    return response(json.dumps('Lambda available, no usecase selected'),200)
