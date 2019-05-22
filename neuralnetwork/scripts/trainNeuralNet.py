@@ -6,7 +6,7 @@ import csv
 from datetime import date
 
 
-def load_data(filename):
+def load_data_for_training(filename):
     """
         Loads data from given file and splits data into input and target values
 
@@ -72,7 +72,7 @@ def train_network(data_filename, model_filename, epochs, batch_size):
     """
 
     print("Loading file from path:", data_filename)
-    X_data, Y_data = load_data(data_filename)
+    X_data, Y_data = load_data_for_training(data_filename)
 
     print("Splitting data in training and test set")
     X_train, Y_train, X_test, Y_test = split_data(X_data, Y_data)

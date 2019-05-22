@@ -27,7 +27,7 @@ def load_user_data_for_matching(filename):
         return data
 
 
-def match(user_id):
+def match(model_filename, user_data_filename, user_id):
     """
         Calculates the matching factors for user given by a user_id with all other registered users (excluding the user himself).
 
@@ -38,9 +38,6 @@ def match(user_id):
         list: list of all other user ids ordered descendingly by calculated matching factor. 
                 That is the user belonging to the first user id in the list is the one that fits best to the user given by user_id
     """
-
-    model_filename = "../data/model/2019-05-22_model.h5"
-    user_data_filename = "../data/testdata/testdatanumeric.csv"
 
     # load NN
     model = load_model(model_filename)
@@ -66,5 +63,9 @@ def match(user_id):
 
 
 if __name__ == "__main__":
-    predictions = match(2)
+
+    model_filename = "../data/model/2019-05-22_model.h5"
+    user_data_filename = "../data/testdata/testdatanumeric.csv"
+
+    predictions = match(model_filename, user_data_filename, user_id=2)
     print(predictions)
