@@ -24,3 +24,7 @@ yarn-error.log*
 /.gradle/
 
 package-lock.json
+
+# key
+/lambda/key.py
+/lambda/__pycache__
