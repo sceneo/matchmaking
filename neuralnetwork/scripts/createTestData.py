@@ -4,7 +4,8 @@ import csv
 pos_gender = ["male", "female", "else"]
 pos_occupation = ["Student", "Purchaser", "Marketing Manger", "Sales Manager"]
 pos_type = ["Exhibitor", "Visitor"]
-pos_hometown = ["Munich", "Nurnberg", "Bremen", "Berlin", "Hamburg", "Cologne", "Duesseldorf", "Vienna", "Paris", "London"]
+pos_hometown = ["Munich", "Nurnberg", "Bremen", "Berlin",
+                "Hamburg", "Cologne", "Duesseldorf", "Vienna", "Paris", "London"]
 pos_industry = ["Construction", "IT", "Consulting", "Craft" "Beauty"]
 
 len_gender = len(pos_gender)
@@ -16,9 +17,9 @@ len_industry = len(pos_industry)
 
 with open('../data/testdata/testdata.csv', 'w') as csvFile:
     with open('../data/testdata/testdatanumeric.csv', 'w') as csv_numeric_file:
-        writer = csv.writer(csvFile)  
+        writer = csv.writer(csvFile)
         numeric_writer = csv.writer(csv_numeric_file)
-        
+
         numEntries = 100
         index = 0
         while index < numEntries:
@@ -38,7 +39,8 @@ with open('../data/testdata/testdata.csv', 'w') as csvFile:
             industry = pos_industry[industry_rnd]
 
             writer.writerow([gender, occupation, type, hometown, industry])
-            numeric_writer.writerow([gender_rnd, occupation_rnd, type_rnd, hometown_rnd, industry_rnd])
+            numeric_writer.writerow(
+                [gender_rnd, occupation_rnd, type_rnd, hometown_rnd, industry_rnd])
 
             index += 1
 

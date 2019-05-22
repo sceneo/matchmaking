@@ -55,12 +55,12 @@ def match(user_id):
             continue
 
         input_data = np.array([user_data[user_id], user_data[i]])
-        input_data = input_data.reshape(1,10)
+        input_data = input_data.reshape(1, 10)
         pred = model.predict(x=input_data)
         predictions.append(tuple([i, pred]))
 
     # sort list by matching factor
-    predictions = sorted(predictions, key=lambda x:-x[1])
+    predictions = sorted(predictions, key=lambda x: -x[1])
     predictions = [i[0] for i in predictions]
     return predictions
 

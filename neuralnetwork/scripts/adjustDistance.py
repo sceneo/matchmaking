@@ -9,13 +9,13 @@ def adjust_distance(factor, current_distance):
         return current_distance + factor*(1-current_distance)*current_distance
 
 
-print ("some testing...")
+print("some testing...")
 print("")
 
-for i in range(0,10):
+for i in range(0, 10):
     print((1/(10-i)), adjust_distance(1, 0+(1/(10-i))))
 
 print("")
 
-for i in range(0,10):
+for i in range(0, 10):
     print(1/(10-i), adjust_distance(-1, 1/(10-i)))
