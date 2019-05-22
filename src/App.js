@@ -7,57 +7,57 @@ import Chat from "./Chat.js"
 class App extends React.Component {
     constructor( props ) {
         super( props );
-                this.state = {
-                        register: false,
-                        auth: false
-                    }
-                
+        this.state = {
+            register: false,
+            auth: false
+        }
+
         this.callbackRegister = this.callbackRegister.bind( this );
         this.callbackAuth = this.callbackAuth.bind( this );
     }
-    
-    
-    callbackRegister(status){
+
+
+    callbackRegister( status ) {
         this.setState( {
             register: status,
             auth: false
-        } )     
+        } )
     }
 
-    callbackAuth(status){
+    callbackAuth( status ) {
         this.setState( {
             auth: status,
             register: !status
-        } )     
+        } )
     }
 
-    
-    
-  render() {
-      if(this.state.register) {
-          return(
-              <div>
-                  <Register />
-              </div>
-          )
-      }
-      
-      if(this.state.auth) {
-          return(
-                  <div>
-                      <Chat />
-                  </div>
-                  )
-      }
-      
-            
-      return(
-        <div>               
-            <Login callbackAuth={this.callbackAuth} callbackRegister={this.callbackRegister}/>
-        </div>
-      )
 
-  }
+
+    render() {
+        if ( this.state.register ) {
+            return (
+                <div>
+                    <Register />
+                </div>
+            )
+        }
+
+        if ( this.state.auth ) {
+            return (
+                <div>
+                    <Chat />
+                </div>
+            )
+        }
+
+
+        return (
+            <div>
+                <Login callbackAuth={this.callbackAuth} callbackRegister={this.callbackRegister} />
+            </div>
+        )
+
+    }
 }
 
 
