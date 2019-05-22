@@ -5,6 +5,7 @@ from keras.models import load_model
 import numpy as np
 import csv
 from datetime import date
+import json
 
 
 def load_user_data_for_matching(filename):
@@ -34,8 +35,8 @@ def match(user_id):
         user_id (int): user to be matched
 
         Returns:
-        list: list of all other user ids ordered descendingly by calculated matching factor. That is the user belonging to the first user id in the list
-                is the one that fits best to the user given by user_id
+        list: list of all other user ids ordered descendingly by calculated matching factor. 
+                That is the user belonging to the first user id in the list is the one that fits best to the user given by user_id
     """
 
     model_filename = "../data/model/2019-05-22_model.h5"
@@ -55,12 +56,15 @@ def match(user_id):
 
         input_data = np.array([user_data[user_id], user_data[i]])
         input_data = input_data.reshape(1,10)
-        print(input_data, input_data.shape)
         pred = model.predict(x=input_data)
         predictions.append(tuple([i, pred]))
 
+    # sort list by matching factor
+    predictions = sorted(predictions, key=lambda x:-x[1])
+    predictions = [i[0] for i in predictions]
     return predictions
 
 
 if __name__ == "__main__":
-    print(match(3))
+    predictions = match(2)
+    print(predictions)
