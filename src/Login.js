@@ -71,8 +71,6 @@ class Login extends Component {
       http.open("GET", this.url + parameter);
       http.send();
       http.onreadystatechange=(e)=>{
-          console.log(http.responseText)
-          console.log(http.statusText)
           if(http.responseText.includes("Authentication successful")) {
               this.auth(true);
           }
