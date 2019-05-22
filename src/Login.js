@@ -64,7 +64,6 @@ class Login extends Component {
           return
       }
       
-      
       var parameter = '?usecase=auth&email=' + this.state.email + '&password=' + this.state.password;
      
       const http = new XMLHttpRequest();
@@ -73,7 +72,7 @@ class Login extends Component {
       http.onreadystatechange=(e)=>{
           console.log(http.responseText)
           console.log(http.statusText)
-          if(http.responseText.includes("Authorization successfull")) {
+          if(http.responseText.includes("Authentication successfull")) {
               this.auth(true);
           }
           
