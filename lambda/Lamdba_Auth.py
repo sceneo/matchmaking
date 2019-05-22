@@ -3,9 +3,15 @@ import csv
 import random
 import string
 import os
+import boto3
+from key import *
+from symbol import except_clause
 
 #note: this is not state of the art authentication. This just illustrates the 
 #usage of a lambda function to provide simple information
+
+# canonical id
+# b398e72365bf041e6901bb0aa9c78fcbd0aaa2e90d90f8f7c8080a44cf428ccb
 
 #In the webcase:
 url = "https://s3-eu-west-1.amazonaws.com/matchmaking.data/users.csv"
@@ -21,6 +27,19 @@ def response(message, status_code):
             },
         }
     
+def getUsersFromS3():
+    s3 = boto3.resource(u's3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+    bucket = s3.Bucket(u'matchmaking.data')
+    obj = bucket.Object(key=u'users.csv')
+    response = obj.get()
+
+    users = csv.DictReader(response[u'Body'].read().split())
+        # ate over those lines
+#    for row in users:
+#        print(row)
+
+    return users
+    
 def createPassword(pwLength=10):
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(pwLength))
@@ -28,15 +47,15 @@ def createPassword(pwLength=10):
 
 
 def checkUser(username, password):
-    with open(url) as csvfile:
-        readCSV = csv.reader(csvfile, delimiter=',')
-        for row in readCSV:
-            if row[0] == username:
-                if row[1] == password:
+    users = getUsersFromS3()
+    for user in users:
+        if username == user['email']:
+                if password == user['password']:
                     print('authentication successful')
                     return True
     print('could not authenticate user')
     return False
+
 
 def deleteUser(username):
     names = []
@@ -100,6 +119,8 @@ def createNewPassword(username):
 def sendEmailToUser(name, password):
     #TODO
     return False
+  
+
 
 ## This is the basic handling function which is called first
 def auth(event, context):
@@ -108,25 +129,22 @@ def auth(event, context):
     # directly followed by a '?' and the parameters, separated by '&'
     
     # the usecase defines the following parameters:
-    #?usecase=auth&email=ABCD@test.com&password=ABCDt
+    #?usecase=auth&email=ABCD@test.com&password=ABCDt    
     usecase = event['queryStringParameters']['usecase']
-    
     if(usecase == 'auth'):
+
         email = event['queryStringParameters']['email']
-        password = event['queryStringParameters']['password']
+        password = event['queryStringParameters']['password']   
         if(checkUser(email, password)):
             return response(json.dumps('Authentication successful'),202)
         else:
             return response(json.dumps('Not authorized'),401)
-    
+
     if(usecase == 'forgot'):
     # check if user exists
         # if not found:
-        return response(json.dumps('User not found'),404)
-    
-    # set new password
-    
-    # send email to user    
+         # set new password
+         # send email to user    
         return response(json.dumps('Email with new password has been sent'),200)
     
     
@@ -137,17 +155,15 @@ def auth(event, context):
     
     return response(json.dumps('Lambda available, no usecase selected'),200)
 
+    
 
 if __name__ == '__main__':
-     url = 'users.csv'
-#     print('initially create user t@k and test@testmail')
-#     addUser('t@k.de','ok')
-#     addUser('test@testmail.com','billythekid');
-#     print("---check user---")
-#     print('trying correct credentials')
-#     checkUser('t@k.de', 'ok')
-#     print('trying wrong password')
-#     checkUser('t@k.de', 'no')
+    getUsersFromS3()
+    print("---check user---")
+    print('trying correct credentials')
+    checkUser('clown@here.de', 'no')
+    print('trying wrong password')
+    checkUser('t@k.de', 'no')
 #     print('trying wrong email')
 #     checkUser('tasfdsafd@.de', 'ok')
 #     print('trying another user')
