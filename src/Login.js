@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Button, Form } from "react-bootstrap";
 import "./Login.css";
 
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -18,11 +19,19 @@ class Login extends Component {
     this.auth = this.auth.bind( this );
     this.login = this.login.bind( this );
   }
+  
+  componentDidMount() {
+      document.body.classList.add("background");
+  }
+
+  componentWillUnmount() {
+      document.body.classList.remove("background");
+  }
 
   validate(){
     return this.state.email.length > 0 && this.state.email.includes("@") && this.state.password.length > 0;
   }
-
+  
   handleChange = event => {
     this.setState({
       [event.target.id]: event.target.value
@@ -56,45 +65,50 @@ class Login extends Component {
       }
       
       
-      var parameter = '?usecase=auth&email=' + this.state.email + '&password=' + this.state.password
-      fetch( this.url + parameter )
-           
-// TODO
-      var statusCode = 0;
-      console.log("get the status code: todo")
-  .   console.log(this.url + parameter)            
-      if( statusCode == 201 ) {          
-          this.auth(true);
-      }
-      
-      else {
-          window.alert("Please enter the CORRECT password.");
+      var parameter = '?usecase=auth&email=' + this.state.email + '&password=' + this.state.password;
+     
+      const http = new XMLHttpRequest();
+      http.open("GET", this.url + parameter);
+      http.send();
+      http.onreadystatechange=(e)=>{
+          console.log(http.responseText)
+          console.log(http.statusText)
+          if(http.responseText.includes("Authorization successfull")) {
+              this.auth(true);
+          }
+          
+          else {
+              console.log(http.responseText);
+              window.alert("Please enter the CORRECT password.");
+          }
+          
       }
   }
    
   render() {
-      
     return (
-      <div className="Login">
-
-
-
+      <div className="Login" >
+          
+          <p className="WelcomeText">
+              Welcome to the Messe München Community Chat!
+          </p>
+      
           <Form onSubmit={this.handleSubmit}>
             <Form.Group controlId="email">
-              <Form.Label>Email address </Form.Label>
+              <Form.Label></Form.Label>
               <Form.Control type="email" placeholder="Enter email"             
               onChange={this.handleChange}/>
             </Form.Group>
 
             <Form.Group controlId="password">
-              <Form.Label>Password</Form.Label>
+              <Form.Label></Form.Label>
               <Form.Control type="password" placeholder="Password"
               onChange={this.handleChange}
               />
             </Form.Group>
-            <text onClick={this.register}> Register </text>
-            <Button disabled={!this.state.enableButton} variant="primary" onClick={this.login} type="submit">
-              Submit
+            <p className="RegisterLink" onClick={this.register}> No account yet? Register here! </p> 
+            <Button className="ButtonLogin" disabled={!this.state.enableButton} onClick={this.login} >
+              Login
             </Button>
           </Form>     
              
