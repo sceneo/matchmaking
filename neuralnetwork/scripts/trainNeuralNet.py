@@ -59,7 +59,7 @@ def split_data(x, y, test_ratio=0.2):
     return x[index], y[index], x[np.logical_not(index)], y[np.logical_not(index)]
 
 
-def train_network(data_filename, model_filename, epochs, batch_size):
+def train_network(data_filename, model_filename, epochs, batch_size, loss='mse'):
     """
         Defines and trains the neural network using training data given by the specified file
 
@@ -88,7 +88,7 @@ def train_network(data_filename, model_filename, epochs, batch_size):
     model.add(Dense(units=16, activation='relu'))
     model.add(Dense(units=1, activation='relu'))
 
-    model.compile(optimizer='adam', loss='binary_crossentropy',
+    model.compile(optimizer='adam', loss=loss,
                   metrics=['accuracy'])
 
     # train NN and store model

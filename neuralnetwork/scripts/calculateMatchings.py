@@ -58,13 +58,14 @@ def match(model_filename, user_data_filename, user_id):
 
     # sort list by matching factor
     predictions = sorted(predictions, key=lambda x: -x[1])
+    print(predictions)
     predictions = [i[0] for i in predictions]
     return predictions
 
 
 if __name__ == "__main__":
 
-    model_filename = "../data/model/2019-05-22_model.h5"
+    model_filename = "../data/model/2019-05-23_model.h5"
     user_data_filename = "../data/testdata/testdatanumeric.csv"
 
     predictions = match(model_filename, user_data_filename, user_id=2)
