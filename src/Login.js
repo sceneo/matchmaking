@@ -4,6 +4,7 @@ import "./Login.css";
 
 
 class Login extends Component {
+
     constructor( props ) {
         super( props );
 
@@ -18,6 +19,7 @@ class Login extends Component {
         this.register = this.register.bind( this );
         this.auth = this.auth.bind( this );
         this.login = this.login.bind( this );
+        this.forgot = this.forgot.bind( this );
     }
 
     componentDidMount() {
@@ -51,6 +53,10 @@ class Login extends Component {
         this.props.callbackRegister( true );
     }
 
+    forgot() {
+        this.props.callbackForgot();
+    }
+
     auth( status ) {
         console.log( "message to callback: " + status )
         this.props.callbackAuth( status )
@@ -71,8 +77,6 @@ class Login extends Component {
         http.open( "GET", this.url + parameter );
         http.send();
         http.onreadystatechange = ( e ) => {
-            console.log( http.responseText )
-            console.log( http.statusText )
             if ( http.responseText.includes( "Authentication successful" ) ) {
                 this.auth( true );
             }
@@ -106,6 +110,7 @@ class Login extends Component {
                             onChange={this.handleChange}
                         />
                     </Form.Group>
+                    <p className="Forgotten" onClick={this.forgot}> Password forgotten? </p>
                     <p className="RegisterLink" onClick={this.register}> No account yet? Register here! </p>
                     <Button className="ButtonLogin" disabled={!this.state.enableButton} onClick={this.login} >
                         Login
