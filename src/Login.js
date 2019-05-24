@@ -18,6 +18,7 @@ class Login extends Component {
     this.register = this.register.bind( this );
     this.auth = this.auth.bind( this );
     this.login = this.login.bind( this );
+    this.forgot = this.forgot.bind( this );
   }
   
   componentDidMount() {
@@ -49,6 +50,10 @@ class Login extends Component {
 
   register(){
       this.props.callbackRegister(true);
+  }
+  
+  forgot(){
+      this.props.callbackForgot();
   }
   
   auth(status){
@@ -104,6 +109,7 @@ class Login extends Component {
               onChange={this.handleChange}
               />
             </Form.Group>
+            <p className="Forgotten" onClick={this.forgot}> Password forgotten? </p> 
             <p className="RegisterLink" onClick={this.register}> No account yet? Register here! </p> 
             <Button className="ButtonLogin" disabled={!this.state.enableButton} onClick={this.login} >
               Login

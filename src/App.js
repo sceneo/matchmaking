@@ -3,16 +3,19 @@ import './App.css';
 import Login from "./Login.js"
 import Register from "./Register.js"
 import Chat from "./Chat.js"
+import PasswordForgotton from "./PasswordForgotton.js"
 
 class App extends React.Component {
     constructor( props ) {
         super( props );
                 this.state = {
                         register: false,
+                        forgot: false,
                         auth: false
                     }
                 
         this.callbackRegister = this.callbackRegister.bind( this );
+        this.callbackForgot = this.callbackForgot.bind( this );
         this.callbackAuth = this.callbackAuth.bind( this );
     }
     
@@ -30,6 +33,14 @@ class App extends React.Component {
             register: !status
         } )     
     }
+    
+    callbackForgot(){
+        this.setState( {
+            register: false,
+            forgot: true,
+            auth: false
+        } )  
+    }
 
     
     
@@ -38,6 +49,14 @@ class App extends React.Component {
           return(
               <div>
                   <Register />
+              </div>
+          )
+      }
+      
+      if(this.state.forgot) {
+          return(
+              <div>
+                  <PasswordForgotton />
               </div>
           )
       }
@@ -52,7 +71,7 @@ class App extends React.Component {
             
       return(
         <div>               
-            <Login callbackAuth={this.callbackAuth} callbackRegister={this.callbackRegister}/>
+            <Login callbackAuth={this.callbackAuth} callbackForgot={this.callbackForgot} callbackRegister={this.callbackRegister}/>
         </div>
       )
 
