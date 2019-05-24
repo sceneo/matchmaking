@@ -24,35 +24,50 @@
 	text-align: left;
 	vertical-align: center;
 	margin:0 0.9em 1.3em;
+  
+    
+    position: relative;
+    top: 15px;
+    left: 10px;
    }
+  
+  .Entry {
+      position: relative;
+      top: 15px;
+      left: 10px;
+  }
 
-  .RegisterLink {
-  	color: White;
-	letter-spacing: 0px;
-	line-height: 0.5;
-	text-align: left;
-	vertical-align: center;
-  	font-size: 12px;
-	text-decoration: underline;
-   }
+  
+  .Link{
+      color: White;
+      letter-spacing: 0px;
+      line-height: 0.5;
+      text-align: left;
+      vertical-align: center;
+      font-size: 12px;
+      text-decoration: underline;
+      cursor: pointer;
+  
+      position: relative;
+      top: 10px;
+      left: 10px;
+  
+     }
 
   .ButtonLogin {
+      background-color: blue;
+      border: none;
+      color: white;
+      padding: 8px 30px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      cursor: pointer;
 
-	 display:inline-block;
-	 padding:0.35em 1.2em;
-	 border:0.1em solid #FFFFFF;
-	 margin:0 0.3em 0.3em 0;
-	 border-radius:0.3em;
-	 box-sizing: border-box;
-	 text-decoration: underline;
-	 font-family:'Roboto',sans-serif;
-	 font-weight:300;
-	 color: Red;
-	 text-align: right;
-	 transition: all 0.2s;
-	width:100px;
-	height:100px;
-	vertical-align: top;
+      position: relative;
+      left: 200px;
+      bottom: 10px;
    }
 }
 

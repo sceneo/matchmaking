@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
+import Button from 'react-bootstrap/Button'
 import "./Login.css";
 
 
@@ -97,21 +98,21 @@ class Login extends Component {
           </p>
       
           <Form onSubmit={this.handleSubmit}>
-            <Form.Group controlId="email">
+            <Form.Group className="Entry" controlId="email">
               <Form.Label></Form.Label>
               <Form.Control type="email" placeholder="Enter email"             
               onChange={this.handleChange}/>
             </Form.Group>
 
-            <Form.Group controlId="password">
+            <Form.Group className="Entry" controlId="password">
               <Form.Label></Form.Label>
               <Form.Control type="password" placeholder="Password"
               onChange={this.handleChange}
               />
             </Form.Group>
-            <p className="Forgotten" onClick={this.forgot}> Password forgotten? </p> 
-            <p className="RegisterLink" onClick={this.register}> No account yet? Register here! </p> 
-            <Button className="ButtonLogin" disabled={!this.state.enableButton} onClick={this.login} >
+            <p className="Link" onClick={this.forgot}> Password forgotten? </p> 
+            <p className="Link" onClick={this.register}> No account yet? Register here! </p> 
+            <Button variant="primary" className="ButtonLogin"  onClick={this.login} >
               Login
             </Button>
           </Form>     
