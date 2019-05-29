@@ -26,43 +26,31 @@ class Chat extends Component {
       this.url = 'https://us1.pusherplatform.io/services/chatkit_token_provider/v1/8a1e4d4b-5933-473f-bd5d-d4893859ffcd/token'
       this.api = 'https://us1.pusherplatform.io/services/chatkit/v4/' + this.chatInstance;
       this.tokenProvider = 'https://us1.pusherplatform.io/services/chatkit_token_provider/v1/8a1e4d4b-5933-473f-bd5d-d4893859ffcd/token';
-      this.access_token = '';
-      this.refresh_token = '';
+      this.token= [];
   } 
   
-  
-  xmlToJson(xml) {
-      
-      // Create the return object
-      var obj = {};
-
-      if (xml.nodeType == 1) { // element
-          // do attributes
-          if (xml.attributes.length > 0) {
-          obj["@attributes"] = {};
-              for (var j = 0; j < xml.attributes.length; j++) {
-                  var attribute = xml.attributes.item(j);
-                  obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
-              }
-          }
-      } else if (xml.nodeType == 3) { // text
-          obj = xml.nodeValue;
-      }
-      return obj;
-  };
-  
-  
   getToken(){
-      
-
       var obj = new Object();
       obj.grant_type = this.secretKey;
       obj.user_id = 'test1';
       
       
+      var json;
       
+      var xhr = new XMLHttpRequest();
+      var url = this.tokenProvider;
+      xhr.open("POST", url, true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+              json = JSON.parse(xhr.responseText);
+              this.token = Object.create(json.access_token);
+          }
+      };
+      var data = JSON.stringify(obj);
+      xhr.send(data);
       
-      
+      console.log(this.token.acces_token);
       
 //      const http = new XMLHttpRequest();
 //      http.open("POST", this.tokenProvider, true);
