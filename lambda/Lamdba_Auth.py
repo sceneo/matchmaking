@@ -22,8 +22,6 @@ def response(message, status_code):
             },
         }
     
-    
-
 def csvLineToString(line):
     si = BytesIO.StringIO()
     cw = csv.writer(si)

@@ -31,7 +31,7 @@ class Chat extends Component {
   render() {
       return (
           <div className="Chat">
-            <p> Chat </p>
+            <Contacts />
             <ChatMessageList />
             <SendMessageForm />
           </div>

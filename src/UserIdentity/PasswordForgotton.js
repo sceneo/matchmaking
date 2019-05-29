@@ -21,20 +21,35 @@ class PasswordForgotton extends Component {
       
     return (
       <div className="PasswordForgotten">
-          <p className="PasswordResetNotification">
-              We will send you an email with a new password.
-          </p>
-
-          <Form onSubmit={this.handleSubmit}>
-            <Form.Group controlId="email">
-              <Form.Label></Form.Label>
-              <Form.Control type="email" placeholder="Enter email"             
-              onChange={this.handleChange}/>
-            </Form.Group>
-            <Button className="RequestEmail"  onClick={this.requestEmail} >
-              Request Email
-            </Button>
-          </Form>     
+          
+      <p className='PasswordForgottenHeadline'>
+          Forgot your password?
+      </p>
+      
+      <p className='PasswordForgottonText'>
+          Please enter your email address linked to the Messe München Community Chat account. 
+          If you are in our system, you will be redirected to the reset page.
+      </p>
+      
+      <p className="PasswordForgottenEmail">
+         Email
+      </p>
+      <Form onSubmit={this.handleSubmit}>
+         <Form.Group controlId="email">
+          <Form.Label></Form.Label>
+           <Form.Control type="email" placeholder="Enter email"             
+           onChange={this.handleChange}/>
+          </Form.Group>
+          <Button className="PasswordForgottenSubmit" variant="outline-primary" onClick={this.requestEmail} >
+             Submit
+        </Button>
+     </Form> 
+      <p className="Link" onClick={this.forgot}> 
+             Back to Login 
+      </p> 
+      <p className="Link" onClick={this.register}> 
+             No account yet? Register here! 
+      </p>    
              
       </div>
     );
