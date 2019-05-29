@@ -44,10 +44,10 @@ class PasswordForgotton extends Component {
              Submit
         </Button>
      </Form> 
-      <p className="Link" onClick={this.forgot}> 
+      <p className="PasswordForgottenLink" onClick={this.forgot}> 
              Back to Login 
       </p> 
-      <p className="Link" onClick={this.register}> 
+      <p className="PasswordFogottenLink" onClick={this.register}> 
              No account yet? Register here! 
       </p>    
              
