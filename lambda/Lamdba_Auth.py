@@ -5,7 +5,6 @@ import string
 import os
 import io
 import boto3
-from key import *
 from symbol import except_clause
 from getpass import getuser
 

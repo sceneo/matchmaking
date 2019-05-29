@@ -14,7 +14,6 @@ class Login extends Component {
       enableButton: false
     };
     this.url = 'https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/default/MatchMakingAuth';
-    this.counter = 0;
     
     this.register = this.register.bind( this );
     this.auth = this.auth.bind( this );
@@ -46,7 +45,7 @@ class Login extends Component {
   }
 
   handleSubmit = event => {
-    event.preventDefault();
+  //  event.preventDefault();
   }
 
   register(){
@@ -64,12 +63,12 @@ class Login extends Component {
   
    
   login(){     
-      this.counter+=1;
-      if(this.counter > 2) {
-          window.alert("Sorry, your password seems really wrong. Please register.");
-          this.auth(false);
-          return
-      }
+      
+      
+      
+      // shortcut so i can see the chat
+      this.auth(true);
+      
       
       var parameter = '?usecase=auth&email=' + this.state.email + '&password=' + this.state.password;
      
@@ -77,13 +76,17 @@ class Login extends Component {
       http.open("GET", this.url + parameter);
       http.send();
       http.onreadystatechange=(e)=>{
+          if(http.response == "") {
+              console.log("no response")
+          }
+
+          
           if(http.responseText.includes("Authentication successful")) {
               this.auth(true);
           }
-          
           else {
               console.log(http.responseText);
-              window.alert("Please enter the CORRECT password.");
+              
           }
           
       }
