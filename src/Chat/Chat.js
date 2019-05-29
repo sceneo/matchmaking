@@ -15,9 +15,7 @@ class Chat extends Component {
 // v1:us1:8a1e4d4b-5933-473f-bd5d-d4893859ffcd
 // 6fbd13f5-4d17-4a14-b8bb-95d56416bfc2:BehYgWeMTwQ3kzNUUwgfca3lVTfK9/uG4syEM62U3Jc=
 // https://us1.pusherplatform.io/services/chatkit_token_provider/v1/8a1e4d4b-5933-473f-bd5d-d4893859ffcd/token
-  
       
-    
   constructor() {
       super()
       
@@ -26,96 +24,53 @@ class Chat extends Component {
       this.url = 'https://us1.pusherplatform.io/services/chatkit_token_provider/v1/8a1e4d4b-5933-473f-bd5d-d4893859ffcd/token'
       this.api = 'https://us1.pusherplatform.io/services/chatkit/v4/' + this.chatInstance;
       this.tokenProvider = 'https://us1.pusherplatform.io/services/chatkit_token_provider/v1/8a1e4d4b-5933-473f-bd5d-d4893859ffcd/token';
-      this.token= [];
+      this.access_token = '';
+      this.refresh_token = '';
+      this.user_id = '';
+      
+      
+      
   } 
-  
-  getToken(){
+    
+  async getToken(){
       var obj = new Object();
       obj.grant_type = this.secretKey;
       obj.user_id = 'test1';
       
       
-      var json;
       
-      var xhr = new XMLHttpRequest();
-      var url = this.tokenProvider;
-      xhr.open("POST", url, true);
-      xhr.setRequestHeader("Content-Type", "application/json");
-      xhr.onreadystatechange = function () {
-          if (xhr.readyState === 4 && xhr.status === 200) {
-              json = JSON.parse(xhr.responseText);
-              this.token = Object.create(json.access_token);
-          }
-      };
-      var data = JSON.stringify(obj);
-      xhr.send(data);
-      
-      console.log(this.token.acces_token);
-      
-//      const http = new XMLHttpRequest();
-//      http.open("POST", this.tokenProvider, true);
-//      http.setRequestHeader('Content-Type','application/json, charset=utf8');
-//      
-
-//      
-//      var obj = new Object();
-//      obj.grant_type = this.secretKey;
-//      obj.user_id = 'test1';
-//           
-//    
-//      http.onreadystatechange=(e)=>{
-//      
-//          console.log(http.responseText)
-//     
-//     //     this.access_token = jsonResponse['access_token'];
-//          
-//          
-////          parseJSON: function(req, url) {  
-////          if (req.status == 200) {  
-////              var jsonResponse = req.responseJSON;  
-////              var bitlyUrl = jsonResponse.results[url].shortUrl;  
-////          }
-//          
-//          
-//          
-////          console.log(http.response)
-//          
-//          
-//      }
-//      
-//      console.log("Token created: " + this.access_token)
+      let response = await new Promise(resolve => {
+          var json;
+          var xhr = new XMLHttpRequest();
+          var url = this.tokenProvider;
+          xhr.open("POST", url, true);
+          xhr.setRequestHeader("Content-Type", "application/json");
+          xhr.onload = function(e) {
+              resolve(xhr.response);
+            };
+          xhr.onreadystatechange = function persist() {
+              if (xhr.readyState === 4 && xhr.status === 200) {
+                  json = JSON.parse(xhr.responseText);
+          //        console.log(json)
+              }
+          };
+          var data = JSON.stringify(obj);
+          xhr.send(data);  
+      })
+      var obj = JSON.parse(response)
+      this.access_token = obj.access_token;
+      this.refresh_token = obj.refresh_token;
+      this.user_id = obj.user_id;
   }
   
-  componentDidMount() {
+  async componentDidMount() {
       
-      this.getToken();
-      
-
-/*    Sendbird call (unfortunately, only a free account...)
-      const http = new XMLHttpRequest();
-      http.open("GET", 'https://api-B9F598DF-FB27-41F3-8D36-40CE53B9EF25.sendbird.com/v3/open_channels/Lobby/messages');
-      http.setRequestHeader('Content-Type','application/json, charset=utf8');
-      http.setRequestHeader('Api-Token','af0ef8246fe01627330b5f74b20d001bcc91adc6')    
-      http.send();
-      http.onreadystatechange=(e)=>{
-          console.log(http.response)
-      }
-*/
-      
-
-      
-      
-      
-      
-           
+      await this.getToken()
       
   }
-  
-
-  
   
   render() {
-      
+
       return (
           <div className="Chat">
             <Contacts />
