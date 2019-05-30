@@ -115,7 +115,7 @@ class Login extends Component {
             </Form.Group>
             <p className="Link" onClick={this.forgot}> Password forgotten? </p> 
             <p className="Link" onClick={this.register}> No account yet? Register here! </p> 
-            <Button variant="primary" className="ButtonLogin"  onClick={this.login} >
+            <Button variant="secondary" className="ButtonLogin"  onClick={this.login} >
               Login
             </Button>
           </Form>     

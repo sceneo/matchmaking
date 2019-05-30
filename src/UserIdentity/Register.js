@@ -65,11 +65,14 @@ class Register extends Component {
         
         return (
           <div className="Register">
-          <p className="LeftHeader"> Registration </p>
+          <p className="Headline1"> Registration </p>
+          <p className="Headline3"> Fields indicated with * need to be filled out. </p>
 
           <Form onSubmit={this.handleSubmit}>
+          <p className="Headline2"> Personal details </p>
           
-            <Form.Group controlId="LastName">
+          
+            <Form.Group labelId="Field" controlId="Title">
               <Form.Label>Title</Form.Label>              
                   <Form.Control as="select" onChange={this.handleChange}>
                       <option></option>
@@ -77,16 +80,18 @@ class Register extends Component {
                       <option>Prof. Dr.</option>
                       <option>Dr.</option>
                   </Form.Control>
+                  <Form.Text className="text-label"/>
+                  
             </Form.Group>          
           
             <Form.Group controlId="FirstName">
-              <Form.Label>First Name</Form.Label>
+              <Form.Label>First Name*</Form.Label>
               <Form.Control type="text" placeholder="First Name"             
               onChange={this.handleChange}/>
             </Form.Group>
             
             <Form.Group controlId="LastName">
-              <Form.Label>Last Name</Form.Label>
+              <Form.Label>Last Name*</Form.Label>
               <Form.Control type="text" placeholder="Last Name"             
               onChange={this.handleChange}/>
             </Form.Group>
@@ -99,57 +104,104 @@ class Register extends Component {
                     <option>Female</option>
                     <option>Else</option>
                 </Form.Control>
-            </Form.Group>   
-                
-            <Form.Group controlId="Username">
-              <Form.Label>Username</Form.Label>
+            </Form.Group> 
+            
+            <p className="Headline2"> Working background </p>
+            
+            <Form.Group controlId="Company">
+            <Form.Label>Company</Form.Label>
+            <Form.Control type="text" placeholder="Company"             
+            onChange={this.handleChange}/>
+            </Form.Group> 
+            
+            <Form.Group controlId="Industry">
+            <Form.Label>Industry*</Form.Label>              
+                <Form.Control as="select" onChange={this.handleChange}>
+                    <option></option>
+                    <option>Automotive</option>
+                    <option>Chemistry</option>
+                    <option>Construction</option>
+                    <option>Consumer goods</option>
+                    <option>Electronics</option>
+                    <option>Energy</option>
+                    <option>Forestry</option>
+                    <option>Furnitures</option>
+                    <option>ICT</option>
+                    <option>Health Care</option>
+                    <option>Metal Production</option>
+                    <option>Publishing and Media</option>
+                    <option>Retail and Wholesale</option>
+                    <option>Textile and Clothing</option>
+                    <option>Traffic and Transport</option>
+                    <option>Other</option>
+                </Form.Control>
+          </Form.Group>
+          
+          <Form.Group controlId="Functionality">
+          <Form.Label>Functionality*</Form.Label>              
+              <Form.Control as="select" onChange={this.handleChange}>
+                  <option></option>
+                  <option>Sales</option>
+                  <option>Marketing</option>
+                  <option>Procurement</option>
+                  <option>Event Management</option>
+                  <option>Research and Development</option>
+                  <option>PR and Communication</option>
+                  <option>Quality Management</option>
+                  <option>IT</option>
+                  <option>Finance and Controlling</option>
+                  <option>Human Resources</option>
+                  <option>Executive Management</option>
+                  <option>Freelance Professional</option>
+                  <option>Other</option>
+              </Form.Control>
+        </Form.Group> 
+      
+        <Form.Group controlId="City">
+        <Form.Label>City*</Form.Label>
+        <Form.Control type="text" placeholder="City"             
+        onChange={this.handleChange}/>
+        </Form.Group>
+        
+        <Form.Group controlId="Country">
+        <Form.Label>Country*</Form.Label>
+        <Form.Control type="text" placeholder="Country"             
+        onChange={this.handleChange}/>
+        </Form.Group>
+        
+        <p className="Headline2"> Your role on the fair </p>
+        <p className="Headline3"> You might need to adjust this information prior to attending the next fair. </p>
+        
+        <Form.Group controlId="Type">
+        <Form.Label>Type*</Form.Label>              
+            <Form.Control as="select" onChange={this.handleChange}>
+                <option>Visitor</option>
+                <option>Exhibitor</option>
+            </Form.Control>
+        </Form.Group>
+        
+        <p className="Headline2"> Account details </p>
+            
+        	<Form.Group controlId="Email">
+        	<Form.Label class="Label" column sm={2}>Email*</Form.Label>
+        	<Form.Control type="email" placeholder="Enter email"             
+        		onChange={this.handleChange} />
+        	</Form.Group> 
+        
+        	<Form.Group controlId="Username">
+              <Form.Label>Username*</Form.Label>
               <Form.Control type="text" placeholder="Username"             
               onChange={this.handleChange}/>
             </Form.Group>    
-          
-            <Form.Group controlId="Email">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" placeholder="Enter email"             
-              onChange={this.handleChange}/>
-            </Form.Group>
-
-            <Form.Group controlId="Type">
-            <Form.Label>Type</Form.Label>              
-                <Form.Control as="select" onChange={this.handleChange}>
-                    <option>Visitor</option>
-                    <option>Exhibitor</option>
-                </Form.Control>
-            </Form.Group>   
+            
             
             <Form.Group controlId="Password">
-              <Form.Label>Password</Form.Label>
+              <Form.Label>Password*</Form.Label>
               <Form.Control type="password" placeholder="Password"
-              onChange={this.handleChange}
-              />
+              onChange={this.handleChange}/>
             </Form.Group>
             
-            <Form.Group controlId="Hometown">
-            <Form.Label>Hometown</Form.Label>              
-                <Form.Control as="select" onChange={this.handleChange}>
-                    <option>Munich</option>
-                    <option></option>
-                    <option></option>
-                    <option>...</option>
-                </Form.Control>
-            </Form.Group>   
-            
-            <Form.Group controlId="Industry">
-              <Form.Label>Industry</Form.Label>              
-                <Form.Control as="select" onChange={this.handleChange}>
-                    <option>Construction</option>
-                    <option>IT</option>
-                    <option>Consulting</option>
-                    <option>Craft</option>
-                    <option>Beauty</option>
-                </Form.Control>
-            </Form.Group>   
-                
-
+             
             <Button variant="primary" type="submit">
               Submit
             </Button>
@@ -157,6 +209,8 @@ class Register extends Component {
             
             
       </div>
+      
+      
     );
   }
 }

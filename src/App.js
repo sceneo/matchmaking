@@ -18,7 +18,7 @@ class App extends React.Component {
         this.callbackForgot = this.callbackForgot.bind( this );
         this.callbackAuth = this.callbackAuth.bind( this );
     }
-    
+       
     
     callbackRegister(status){
         this.setState( {
@@ -45,6 +45,8 @@ class App extends React.Component {
     
     
   render() {
+      
+      
       if(this.state.register) {
           return(
               <div>
@@ -73,6 +75,9 @@ class App extends React.Component {
         <div>               
             <Login callbackAuth={this.callbackAuth} callbackForgot={this.callbackForgot} callbackRegister={this.callbackRegister}/>
         </div>
+        
+        
+
       )
 
   }

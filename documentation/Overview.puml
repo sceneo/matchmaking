@@ -1,0 +1,42 @@
+@startuml
+
+cloud "AWS" {
+	
+	component "API Gateway" as api
+	
+	package "S3" {
+		database "User\nDatabaseusers.csv" as db
+	}
+	
+	package "Lambda" {
+		component "Authentication\n* authenticate\n* delete\n* add\n* change\n* forgotten" as auth
+		component "Analytics" as analytics
+		component "MatchMe" as matchme
+		component "Translator" as trans
+	}
+	auth -- db
+	matchme -- auth
+	trans -- db
+	analytics -- trans
+}
+
+package "Frontend" {
+	component "Web Frontend" as web
+
+}
+
+package "Sendbird" {
+	component "API" as apisendbird
+	component "Backend" as backend
+	
+	backend -u- apisendbird
+}
+
+
+
+web -d- api
+web -d- apisendbird
+api -d- matchme
+api -d- auth
+
+@enduml
