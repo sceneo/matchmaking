@@ -25,6 +25,7 @@ yarn-error.log*
 
 package-lock.json
 
-# key
-/lambda/key.py
-/lambda/__pycache__
+
+lambda/__pycache__/
+lambda/key.py
+

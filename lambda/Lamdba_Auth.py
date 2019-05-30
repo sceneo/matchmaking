@@ -3,18 +3,13 @@ import csv
 import random
 import string
 import os
+import io
 import boto3
-from key import *
 from symbol import except_clause
+from getpass import getuser
 
 #note: this is not state of the art authentication. This just illustrates the 
 #usage of a lambda function to provide simple information
-
-# canonical id
-# b398e72365bf041e6901bb0aa9c78fcbd0aaa2e90d90f8f7c8080a44cf428ccb
-
-#In the webcase:
-url = "https://s3-eu-west-1.amazonaws.com/matchmaking.data/users.csv"
 
 
 def response(message, status_code):
@@ -27,58 +22,83 @@ def response(message, status_code):
             },
         }
     
+def csvLineToString(line):
+    si = BytesIO.StringIO()
+    cw = csv.writer(si)
+    cw.writerow(line)
+    return si.getvalue().strip('\r\n')
+
+def csvToString(data):
+    si = BytesIO.StringIO()
+    cw = csv.writer(si)
+    for line in data:
+        cw.writerow(line)
+    return si.getvalue()
+
+        
 def getUsersFromS3():
-    s3 = boto3.resource(u's3', aws_access_key_id=AWS_ACCESS_KEY_ID, aws_secret_access_key=AWS_SECRET_ACCESS_KEY)
+    s3 = boto3.resource(u's3')
     bucket = s3.Bucket(u'matchmaking.data')
     obj = bucket.Object(key=u'users.csv')
     response = obj.get()
-
     users = csv.DictReader(response[u'Body'].read().split())
-        # ate over those lines
-#    for row in users:
-#        print(row)
-
     return users
+
+def updateUserListOnS3(users):
+    bucket_name = "matchmaking.data"
+    file_name = "users_test.csv"
+    s3 = boto3.resource("s3")
+    
+    header="email,password\n"
+    
+    body = header
+    
+    users = getUsersFromS3()
+    for row in users:
+        line = row['email'] + "," + row['password'] + '\n'
+        body = body + line
+    
+    s3.Bucket(bucket_name).put_object(Key=file_name, Body=body)
     
 def createPassword(pwLength=10):
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(pwLength))
 
+def createToken(tokenLength=64):
+    letters = string.ascii_lowercase
+    return ''.join(random.choice(letters) for i in range(tokenLength))
 
 
-def checkUser(username, password):
-    return True
-    
-    
+def checkUser(username, password): 
     users = getUsersFromS3()
     for user in users:
         if username == user['email']:
                 if password == user['password']:
-                    print('authentication successful')
+                    print('authentication for user ' + username + ' successful')
                     return True
-    print('could not authenticate user')
+                else:
+                    print('authentication for user ' + username + ' failed: wrong password')
+                    return False
+    print('could not find user ' + username)
     return False
 
+def exists(username):
+    users = getUsersFromS3()
+    for user in users:
+        if username == user['email']:
+            print('user ' + username + ' exists')
+            return True
+    print('user ' + username + ' does not exist')
+    return False
 
-def deleteUser(username):
-    names = []
-    passwords = []
-    with open(url) as csvfile:        
-        readCSV = csv.reader(csvfile, delimiter=',')
-        for row in readCSV:
-            name = row[0]
-            password = row[1]
-            if(name != username):
-                names.append(name)
-                passwords.append(password)
-        csvfile.close();
-               
-                    
-    with open(url, "w") as file:
-        writer = csv.writer(file)
-        for i in xrange(len(names)):
-            writer.writerow([names[i], passwords[i]])
-        file.close()
+def changeUserPassword(username,newPassword):
+    users = getUsersFromS3()
+    for user in users:
+        if username == user['email']:
+            user['password'] = newPassword
+    updateUserListOnS3(users)
+
+
 
 def addUser(user,password):
     # check if user already exists
@@ -97,33 +117,10 @@ def addUser(user,password):
     
     return True
 
-def createNewPassword(username):
-    names = []
-    passwords = []
-    with open(url) as csvfile:        
-        readCSV = csv.reader(csvfile, delimiter=',')
-        for row in readCSV:
-            name = row[0]
-            password = row[1]
-            if(name == username):
-                password = createPassword(10)
-                sendEmailToUser(name,password)
-            names.append(name)
-            passwords.append(password)
-        csvfile.close();
-               
-                    
-    with open(url, "w") as file:
-        writer = csv.writer(file)
-        for i in xrange(len(names)):
-            writer.writerow([names[i], passwords[i]])
-        file.close()
 
 def sendEmailToUser(name, password):
     #TODO
     return False
-  
-
 
 ## This is the basic handling function which is called first
 def auth(event, context):
@@ -134,21 +131,26 @@ def auth(event, context):
     # the usecase defines the following parameters:
     #?usecase=auth&email=ABCD@test.com&password=ABCDt    
     usecase = event['queryStringParameters']['usecase']
+    email = event['queryStringParameters']['email']
+    password = event['queryStringParameters']['password']   
+    
+    
     if(usecase == 'auth'):
 
-        email = event['queryStringParameters']['email']
-        password = event['queryStringParameters']['password']   
         if(checkUser(email, password)):
             return response(json.dumps('Authentication successful'),202)
         else:
             return response(json.dumps('Not authorized'),401)
 
     if(usecase == 'forgot'):
-    # check if user exists
-        # if not found:
-         # set new password
-         # send email to user    
-        return response(json.dumps('Email with new password has been sent'),200)
+        email = event['queryStringParameters']['email']
+        if(exists(username)):
+            
+            
+            return response(json.dumps('Email with new password has been sent'),200)
+        else:
+            return response(json.dumps('User does not exist'),402)
+        
     
     
     if(usecase == 'add'):
@@ -158,15 +160,14 @@ def auth(event, context):
     
     return response(json.dumps('Lambda available, no usecase selected'),200)
 
-    
-
 if __name__ == '__main__':
     getUsersFromS3()
-    print("---check user---")
-    print('trying correct credentials')
     checkUser('clown@here.de', 'no')
-    print('trying wrong password')
+    checkUser('clown@here.de', 'blabla')
     checkUser('t@k.de', 'no')
+    exists('t@k.de')
+    exists('clown@here.de')
+    changeUserPassword('clown@here.de', 'DasIstEinTest')
 #     print('trying wrong email')
 #     checkUser('tasfdsafd@.de', 'ok')
 #     print('trying another user')
