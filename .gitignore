@@ -26,6 +26,7 @@ yarn-error.log*
 package-lock.json
 
 
+neuralnetwork/scripts/__pycache__/
 lambda/__pycache__/
 lambda/key.py
 

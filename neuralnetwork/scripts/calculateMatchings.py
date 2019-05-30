@@ -6,25 +6,8 @@ import numpy as np
 import csv
 from datetime import date
 import json
+import utils as utils
 
-
-def load_user_data_for_matching(filename):
-    """
-        Loads user data from given file
-
-        Parameters:
-        filename (string): file to load
-
-        Returns:
-        array: user data for all users
-    """
-
-    with open(filename, 'r') as f:
-        reader = csv.reader(f, delimiter=',')
-        data = list(reader)
-        data = np.array(data).astype("float")
-
-        return data
 
 
 def match(model_filename, user_data_filename, user_id):
@@ -43,7 +26,7 @@ def match(model_filename, user_data_filename, user_id):
     model = load_model(model_filename)
 
     # load user data
-    user_data = load_user_data_for_matching(user_data_filename)
+    user_data = utils.load_data(user_data_filename)
 
     # create predictions for user_id
     predictions = []

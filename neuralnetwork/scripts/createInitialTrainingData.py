@@ -1,6 +1,7 @@
 import numpy as np
 import csv
 from io import StringIO
+import utils as utils
 
 
 def create_probabilites(data):
@@ -48,10 +49,7 @@ if __name__ == "__main__":
 
     # read test user data (numerical version)
     read_file = "../data/testdata/testdatanumeric.csv"
-    with open(read_file, 'r') as f:
-        reader = csv.reader(f, delimiter=',')
-        data = list(reader)
-        user_data = np.array(data).astype("float")
+    user_data = utils.load_data(read_file)
 
     # calculate probabilities for all combinations of users (including probability X is interested in X)
     training_data = create_probabilites(user_data)

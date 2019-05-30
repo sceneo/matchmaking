@@ -4,6 +4,7 @@ from keras.layers import Dense
 import numpy as np
 import csv
 from datetime import date
+import utils as utils
 
 
 def load_data_for_training(filename):
@@ -18,18 +19,15 @@ def load_data_for_training(filename):
         array: data target values
     """
 
-    with open(filename, 'r') as f:
-        reader = csv.reader(f, delimiter=',')
-        data = list(reader)
-        data = np.array(data).astype("float")
+    data = utils.load_data(filename)
 
-        # input data are all columns without the last two columns
-        x_data = data[:, :-2]
+    # input data are all columns without the last two columns
+    x_data = data[:, :-2]
 
-        # last column is target, second last column is not needed for training, only for adjusting training data later on
-        y_data = data[:, -1:]
+    # last column is target, second last column is not needed for training, only for adjusting training data later on
+    y_data = data[:, -1:]
 
-        return x_data, y_data
+    return x_data, y_data
 
 
 def split_data(x, y, test_ratio=0.2):
