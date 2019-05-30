@@ -5,7 +5,6 @@ import string
 import os
 import io
 import boto3
-from key import *
 from symbol import except_clause
 from getpass import getuser
 
@@ -23,8 +22,6 @@ def response(message, status_code):
             },
         }
     
-    
-
 def csvLineToString(line):
     si = BytesIO.StringIO()
     cw = csv.writer(si)

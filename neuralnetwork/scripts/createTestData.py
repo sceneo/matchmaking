@@ -4,9 +4,10 @@ import csv
 pos_gender = ["male", "female", "else"]
 pos_occupation = ["Student", "Purchaser", "Marketing Manger", "Sales Manager"]
 pos_type = ["Exhibitor", "Visitor"]
-pos_hometown = ["Munich", "Nurnberg", "Bremen", "Berlin",
-                "Hamburg", "Cologne", "Duesseldorf", "Vienna", "Paris", "London"]
-pos_industry = ["Construction", "IT", "Consulting", "Craft" "Beauty"]
+
+pos_hometown = ["Munich", "Nurnberg", "Bremen", "Berlin", "Hamburg", "Cologne", "Duesseldorf", "Vienna", "Paris", "London"]
+pos_industry = ["Construction", "IT", "Consulting", "Craft","Beauty"]
+
 
 len_gender = len(pos_gender)
 len_occupation = len(pos_occupation)

@@ -1,0 +1,73 @@
+  @media all and (min-width: 100px) {
+  .Login {
+    padding: 60px 0;
+  }
+
+  .Login form {
+	margin: 0 auto;
+	max-width: 320px;
+	background-color: grey;
+  }
+
+  .background {
+	background-color: white;
+	background-image: url("../img/background_login.png"), url("../img/logo.png");
+	background-repeat: no-repeat, no-repeat;
+	background-position: center center, top right;
+	background-size: 100% 60%, 10% 10%;
+  }
+
+  .WelcomeText {
+  	color: black;
+	letter-spacing: 0px;
+	line-height: 0.8;
+	text-align: left;
+	vertical-align: center;
+	margin:0 0.9em 1.3em;
+  
+    
+    position: relative;
+    top: 15px;
+    left: 10px;
+   }
+  
+  .Entry {
+      position: relative;
+      top: 15px;
+      left: 10px;
+  }
+
+  
+  .Link{
+      color: White;
+      letter-spacing: 0px;
+      line-height: 0.5;
+      text-align: left;
+      vertical-align: center;
+      font-size: 12px;
+      text-decoration: underline;
+      cursor: pointer;
+  
+      position: relative;
+      top: 10px;
+      left: 10px;
+  
+     }
+
+  .ButtonLogin {
+      background-color: #6a91ce;
+      border: none;
+      color: white;
+      padding: 8px 30px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      cursor: pointer;
+
+      position: relative;
+      left: 200px;
+      bottom: 10px;
+   }
+}
+
