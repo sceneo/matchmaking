@@ -1,0 +1,22 @@
+.name {
+    color: lightblue;
+    font-style: bold;
+    font-size: 12px;
+}
+
+
+.industry {
+    font-size: 10px;
+}
+
+
+.functionality {
+    font-size: 10px;
+}
+
+
+.no-recommendations {
+    color: red;
+    font-style: bold;
+    font-size: 12px;
+}

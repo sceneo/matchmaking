@@ -56,9 +56,9 @@ class Login extends Component {
       this.props.callbackForgot();
   }
   
-  auth(status){
+  auth(status, user){
       console.log("message to callback: " + status)
-      this.props.callbackAuth(status)
+      this.props.callbackAuth(status, user);
   }
   
    
@@ -82,7 +82,8 @@ class Login extends Component {
 
           
           if(http.responseText.includes("Authentication successful")) {
-              this.auth(true);
+              this.auth(true, 0);
+              // user id has to be provided => who am i?
           }
           else {
               console.log(http.responseText);
