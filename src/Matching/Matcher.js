@@ -93,17 +93,21 @@ class MatchMe extends React.Component {
                         <tr align='center'>
                             <td width='50%'>
                                 <Button onClick={this.onClickSwipeLeft} animated='vertical'>
-                                    <Button.Content hidden><font color="green">Yes!</font></Button.Content>
+                                    <Button.Content hidden>
+                                        <font color="green"><h1>Yes!</h1></font>
+                                    </Button.Content>
                                     <Button.Content visible>
-                                        <Icon name='thumbs up outline' />
+                                        <Icon name='thumbs up outline' color='green' size='huge' />
                                     </Button.Content>
                                 </Button>
                             </td>
                             <td width='50%'>
                                 <Button onClick={this.onClickSwipeRight} animated='vertical'>
-                                    <Button.Content hidden><font color="red">No!</font></Button.Content>
+                                    <Button.Content hidden>
+                                        <font color="red"><h1>No!</h1></font>
+                                    </Button.Content>
                                     <Button.Content visible>
-                                        <Icon name='thumbs down outline' />
+                                        <Icon name='thumbs down outline' color='red' size='huge' />
                                     </Button.Content>
                                 </Button>
                             </td>
