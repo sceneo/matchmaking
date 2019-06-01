@@ -8,6 +8,7 @@
 */
 
 import React from 'react';
+import { Button, Icon } from 'semantic-ui-react'
 
 import './Matcher.css';
 
@@ -18,10 +19,26 @@ class MatchMe extends React.Component {
 
         super(props);
 
+        this.onClickSwipeLeft = this.onClickSwipeLeft.bind(this);
+        this.onClickSwipeRight = this.onClickSwipeRight.bind(this);
+
     }
 
-    handleMatchMeShowClick = () => this.setState({ visible: true })
-    handleMatchMeHide = () => this.setState({ visible: false })
+    onClickSwipeLeft() {
+        console.log("swipe left clicked");
+
+        if (this.props.swipeLeftCallback !== undefined) {
+            this.props.swipeLeftCallback();
+        }
+    }
+
+    onClickSwipeRight() {
+        console.log("swipe right clicked");
+
+        if (this.props.swipeRightCallback !== undefined) {
+            this.props.swipeRightCallback();
+        }
+    }
 
 
     render() {
@@ -44,36 +61,51 @@ class MatchMe extends React.Component {
 
         return (
 
-            <div>
-                <table align='center'>
+            <div className='matching-div'>
+                <table align='center' className='matching-table'>
                     <tbody>
                         <tr>
-                            <td colspan='2' align='center' heigh='100'>
+                            <td colSpan='2'>
                                 <div className="name-label">
                                     {recData['name']}
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan='2' align='center' heigh='100'>
+                            <td colSpan='2'>
                                 <div className="industry-label">
                                     {recData['industry']}
                                 </div>
                             </td>
                         </tr>
                         <tr>
-                            <td colspan='2' align='center' heigh='100'>
+                            <td colSpan='2'>
                                 <div className="functionality-label">
                                     {recData['functionality']}
                                 </div>
                             </td>
                         </tr>
+                        <tr>
+                            <td>
+
+                            </td>
+                        </tr>
                         <tr align='center'>
                             <td width='50%'>
-                                Swipe left
+                                <Button onClick={this.onClickSwipeLeft} animated='vertical'>
+                                    <Button.Content hidden><font color="green">Yes!</font></Button.Content>
+                                    <Button.Content visible>
+                                        <Icon name='thumbs up outline' />
+                                    </Button.Content>
+                                </Button>
                             </td>
                             <td width='50%'>
-                                Swipe right
+                                <Button onClick={this.onClickSwipeRight} animated='vertical'>
+                                    <Button.Content hidden><font color="red">No!</font></Button.Content>
+                                    <Button.Content visible>
+                                        <Icon name='thumbs down outline' />
+                                    </Button.Content>
+                                </Button>
                             </td>
                         </tr>
                     </tbody>

@@ -7,6 +7,8 @@ import ChatMessageList from './ChatMessageList.js'
 import SendMessageForm from './SendMessageForm.js'
 import Contacts from './Contacts.js'
 
+import './Chat.css';
+
 
 class Chat extends Component {
 

@@ -67,8 +67,8 @@ class Login extends Component {
       
       
       // shortcut so i can see the chat
-      this.auth(true);
-      
+      this.auth(true, 10);
+      // user id has to be provided => who am i? here, dummy user id = 10 is used
       
       var parameter = '?usecase=auth&email=' + this.state.email + '&password=' + this.state.password;
      
@@ -82,8 +82,8 @@ class Login extends Component {
 
           
           if(http.responseText.includes("Authentication successful")) {
-              this.auth(true, 0);
-              // user id has to be provided => who am i?
+              this.auth(true, 10);
+              // user id has to be provided => who am i? here, dummy user id = 10 is used
           }
           else {
               console.log(http.responseText);

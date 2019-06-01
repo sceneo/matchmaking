@@ -8,7 +8,7 @@ import Chat from "./Chat/Chat.js"
 import Matcher from './Matching/Matcher.js';
 import MatchHandler from './Matching/MatchHandler.js';
 
-import { Button, Segment, Menu, Sidebar } from 'semantic-ui-react'
+import { Button, Segment, Sidebar, Icon } from 'semantic-ui-react'
 
 
 
@@ -19,7 +19,7 @@ class App extends React.Component {
             register: false,
             forgot: false,
             auth: false,
-            userId: null,
+            userId: 0,
             matchMeVisible: false,
             recommendationData: {},
         }
@@ -53,6 +53,7 @@ class App extends React.Component {
             recData = this.matchHandler.getRecommendation();
         }
 
+
         this.setState({
             auth: status,
             register: !status,
@@ -72,7 +73,6 @@ class App extends React.Component {
 
     handleMatchMeShowClick() {
         this.setState({ matchMeVisible: true });
-        console.log("actually there should be a popup now...");
     }
 
     handleMatchMeHide() {
@@ -103,37 +103,53 @@ class App extends React.Component {
         if (this.state.auth) {
 
             return (
-                <div>
-                    <Button.Group>
-                        <Button disabled={this.state.matchMeVisible} onClick={this.handleMatchMeShowClick}>
-                            Match Me!
-                        </Button>
-                    </Button.Group>
-
-                    <Sidebar.Pushable as={Segment}>
-                        <Sidebar
-                            style={{ width: 500 }}
-                            as={Segment}
-                            animation='overlay'
-                            icon='labeled'
-                            inverted
-                            onHide={this.handleMatchMeHide}
-                            vertical
-                            visible={this.state.matchMeVisible}
-                        >
-                            <div>
-                                <Matcher recommendation={this.state.recData} />
-                            </div>
-                        </Sidebar>
-
-                        <Sidebar.Pusher dimmed={this.state.matchMeVisible}>
-                            <Segment basic>
-                                <div style={{ height: 400 }}>
-                                    <Chat />
+                <div className='main-page-div'>
+                    <table className='menu-bar-table'>
+                        <tbody>
+                            <tr>
+                                <td width='80%'>
+                                    <div className='menu-item'>
+                                        <Button.Group>
+                                            <Button primary disabled={this.state.matchMeVisible} onClick={this.handleMatchMeShowClick}>
+                                                Match Me!
+                                                </Button>
+                                        </Button.Group>
+                                    </div>
+                                </td>
+                                <td align='right'>
+                                    <div className='user-info'>
+                                        <Icon name='user circle' size='large' />Hello {this.state.userId.toString()}
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div className='content'>
+                        <Sidebar.Pushable as={Segment}>
+                            <Sidebar
+                                style={{ width: 400 }}
+                                as={Segment}
+                                animation='overlay'
+                                icon='labeled'
+                                inverted
+                                onHide={this.handleMatchMeHide}
+                                vertical
+                                visible={this.state.matchMeVisible}
+                            >
+                                <div>
+                                    <Matcher recommendation={this.state.recommendationData} />
                                 </div>
-                            </Segment>
-                        </Sidebar.Pusher>
-                    </Sidebar.Pushable>
+                            </Sidebar>
+
+                            <Sidebar.Pusher dimmed={this.state.matchMeVisible}>
+                                <Segment basic>
+                                    <div className='container-div'>
+                                        <Chat />
+                                    </div>
+                                </Segment>
+                            </Sidebar.Pusher>
+                        </Sidebar.Pushable>
+                    </div >
                 </div>
             );
         }
