@@ -45,6 +45,10 @@ class MatchHandler {
 
     swipe(swipeAction) {
 
+        if (this.currentProposalIndex < this.recsList.length) {
+            this.currentProposalIndex += 1;
+        }
+
         if (swipeAction === 'left') {
             // update user and training data: user not interested in recommendation
         } else {
@@ -52,9 +56,6 @@ class MatchHandler {
             // in particular: add current recommendation to contact list of logged in user  
         }
 
-        if (this.currentProposalIndex < this.recsList.length) {
-            this.currentProposalIndex += 1;
-        }
     }
 
 
