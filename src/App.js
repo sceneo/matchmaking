@@ -8,6 +8,9 @@ import Chat from "./Chat/Chat.js"
 import Matcher from './Matching/Matcher.js';
 import MatchHandler from './Matching/MatchHandler.js';
 
+import { Button, Segment, Menu, Sidebar } from 'semantic-ui-react'
+
+
 
 class App extends React.Component {
     constructor(props) {
@@ -17,6 +20,7 @@ class App extends React.Component {
             forgot: false,
             auth: false,
             userId: null,
+            matchMeVisible: false,
             recommendationData: {},
         }
 
@@ -24,9 +28,11 @@ class App extends React.Component {
         this.callbackForgot = this.callbackForgot.bind(this);
         this.callbackAuth = this.callbackAuth.bind(this);
 
-        this.beginMatching = this.beginMatching.bind(this);
-
         this.matchHandler = new MatchHandler();
+
+        this.handleMatchMeShowClick = this.handleMatchMeShowClick.bind(this);
+        this.handleMatchMeHide = this.handleMatchMeHide.bind(this);
+
     }
 
 
@@ -64,8 +70,13 @@ class App extends React.Component {
     }
 
 
-    beginMatching() {
-        console.log("Now the matching begins...");
+    handleMatchMeShowClick() {
+        this.setState({ matchMeVisible: true });
+        console.log("actually there should be a popup now...");
+    }
+
+    handleMatchMeHide() {
+        this.setState({ matchMeVisible: false })
     }
 
 
@@ -90,14 +101,39 @@ class App extends React.Component {
         }
 
         if (this.state.auth) {
+
             return (
                 <div>
-                    <div>
-                        <Chat />
-                    </div>
-                    <div>
-                        <button onClick={this.beginMatching}>Match Me!</button>
-                    </div>
+                    <Button.Group>
+                        <Button disabled={this.state.matchMeVisible} onClick={this.handleMatchMeShowClick}>
+                            Match Me!
+                        </Button>
+                    </Button.Group>
+
+                    <Sidebar.Pushable as={Segment}>
+                        <Sidebar
+                            style={{ width: 500 }}
+                            as={Segment}
+                            animation='overlay'
+                            icon='labeled'
+                            inverted
+                            onHide={this.handleMatchMeHide}
+                            vertical
+                            visible={this.state.matchMeVisible}
+                        >
+                            <div>
+                                <Matcher recommendation={this.state.recData} />
+                            </div>
+                        </Sidebar>
+
+                        <Sidebar.Pusher dimmed={this.state.matchMeVisible}>
+                            <Segment basic>
+                                <div style={{ height: 400 }}>
+                                    <Chat />
+                                </div>
+                            </Segment>
+                        </Sidebar.Pusher>
+                    </Sidebar.Pushable>
                 </div>
             );
         }

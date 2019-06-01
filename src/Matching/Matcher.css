@@ -1,22 +1,27 @@
-.name {
+.matcher {
+    background-color: red;
+}
+
+
+.name-label {
     color: lightblue;
     font-style: bold;
-    font-size: 12px;
+    font-size: 24px;
 }
 
 
-.industry {
-    font-size: 10px;
+.industry-label {
+    font-size: 20px;
 }
 
 
-.functionality {
-    font-size: 10px;
+.functionality-label {
+    font-size: 20px;
 }
 
 
 .no-recommendations {
     color: red;
     font-style: bold;
-    font-size: 12px;
+    font-size: 20px;
 }
