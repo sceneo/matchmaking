@@ -15,7 +15,13 @@ class PasswordForgotton extends Component {
   
       requestEmail(){
   }
-  
+      componentDidMount() {
+          document.body.classList.add("backgroundRegister");
+      }
+
+      componentWillUnmount() {
+          document.body.classList.remove("backgroundRegister");
+      }
   
   render() {
       
@@ -26,10 +32,12 @@ class PasswordForgotton extends Component {
           Forgot your password?
       </p>
       
-      <p className='PasswordForgottonText'>
-          Please enter your email address linked to the Messe München Community Chat account. 
-          If you are in our system, you will be redirected to the reset page.
+      <p className='PasswordForgottenText'>
+      	Please enter your email address linked to the Messe München Community Chat account.
       </p>
+      <p className ='PasswordForgottenText'>
+      	If you are in our system, you will be redirected to the reset page. 
+      </p>	
       
       <p className="PasswordForgottenEmail">
          Email
@@ -47,7 +55,7 @@ class PasswordForgotton extends Component {
       <p className="PasswordForgottenLink" onClick={this.forgot}> 
              Back to Login 
       </p> 
-      <p className="PasswordFogottenLink" onClick={this.register}> 
+      <p className="PasswordForgottenLink" onClick={this.register}> 
              No account yet? Register here! 
       </p>    
              
