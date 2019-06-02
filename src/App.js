@@ -17,6 +17,7 @@ class App extends React.Component {
         this.callbackRegister = this.callbackRegister.bind( this );
         this.callbackForgot = this.callbackForgot.bind( this );
         this.callbackAuth = this.callbackAuth.bind( this );
+        this.authorization = [];
     }
        
     
@@ -27,11 +28,12 @@ class App extends React.Component {
         } )     
     }
 
-    callbackAuth(status){
+    callbackAuth(status, authorization){
         this.setState( {
             auth: status,
             register: !status
         } )     
+        this.authorization = authorization;
     }
     
     callbackForgot(){
@@ -66,7 +68,7 @@ class App extends React.Component {
       if(this.state.auth) {
           return(
                   <div>
-                      <Chat />
+                      <Chat authorization= {this.authorization} />
                   </div>
                   )
       }
