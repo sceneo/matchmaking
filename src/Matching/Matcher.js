@@ -10,8 +10,11 @@
 import React from 'react';
 import { Button, Icon } from 'semantic-ui-react'
 
+import './../CSSAnimation.js';
+
 import './Matcher.css';
 import 'animate.css';
+import animateElement from './../CSSAnimation.js';
 
 
 class MatchMe extends React.Component {
@@ -26,16 +29,25 @@ class MatchMe extends React.Component {
 
     }
 
-    onClickSwipeLeft() {
+    async onClickSwipeLeft() {
         console.log("swipe left clicked");
+
+        await animateElement('.matching-div', 'fadeOutRight', 800, function () {
+            animateElement('.matching-div', 'fadeInDown');
+        });
 
         if (this.props.swipeLeftCallback !== undefined) {
             this.props.swipeLeftCallback();
         }
+
     }
 
-    onClickSwipeRight() {
+    async onClickSwipeRight() {
         console.log("swipe right clicked");
+
+        await animateElement('.matching-div', 'fadeOutLeft', 800, function () {
+            animateElement('.matching-div', 'fadeInDown');
+        });
 
         if (this.props.swipeRightCallback !== undefined) {
             this.props.swipeRightCallback();
