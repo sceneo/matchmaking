@@ -24,6 +24,8 @@ class App extends React.Component {
             recommendationData: {},
         }
 
+        this.authorization = [];
+
         this.callbackRegister = this.callbackRegister.bind(this);
         this.callbackForgot = this.callbackForgot.bind(this);
         this.callbackAuth = this.callbackAuth.bind(this);
@@ -48,7 +50,7 @@ class App extends React.Component {
         })
     }
 
-    async callbackAuth(status, user) {
+    async callbackAuth(status, authorization, user) {
 
         let recData = {};
         if (status === true) {
@@ -65,6 +67,8 @@ class App extends React.Component {
             userId: user,
             recommendationData: recData,
         })
+
+        this.authorization = authorization;
     }
 
     callbackForgot() {
@@ -171,7 +175,7 @@ class App extends React.Component {
                             <Sidebar.Pusher dimmed={this.state.matchMeVisible}>
                                 <Segment basic>
                                     <div className='container-div'>
-                                        <Chat />
+                                        <Chat authorization={this.authorization} />
                                     </div>
                                 </Segment>
                             </Sidebar.Pusher>
