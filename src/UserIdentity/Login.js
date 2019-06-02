@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Form } from "react-bootstrap";
 import Button from 'react-bootstrap/Button'
 import "./Login.css";
+import ChatkitAuthentification from "./ChatkitAuthentification.js";
 
 
 class Login extends Component {
@@ -19,6 +20,8 @@ class Login extends Component {
     this.auth = this.auth.bind( this );
     this.login = this.login.bind( this );
     this.forgot = this.forgot.bind( this );
+    this.chatkitauth = new ChatkitAuthentification();
+    this.chatkitauth.getToken();
   }
   
   componentDidMount() {
@@ -57,15 +60,11 @@ class Login extends Component {
   }
   
   auth(status){
-      console.log("message to callback: " + status)
-      this.props.callbackAuth(status)
+      this.props.callbackAuth(status, this.chatkitauth.getAuthorization())
   }
   
    
   login(){     
-      
-      
-      
       // shortcut so i can see the chat
       this.auth(true);
       
