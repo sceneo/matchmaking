@@ -1,6 +1,6 @@
 import 'animate.css';
 
-function animateElement(element, animation, animationDuration, callback) {
+function animateElement(element, animation, delay, callback) {
 
     if (element) {
         const node = document.querySelector(element)
@@ -22,7 +22,7 @@ function animateElement(element, animation, animationDuration, callback) {
     return new Promise(resolve => {
         setTimeout(function() {
             resolve();
-        }, animationDuration);
+        }, delay);
     });
 }
 

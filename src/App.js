@@ -89,8 +89,14 @@ class App extends React.Component {
     }
 
     swipeLeftCallback() {
-        
+
         this.matchHandler.swipe('left');
+        this.updateRecommendation();
+    }
+
+    swipeRightCallback() {
+
+        this.matchHandler.swipe('right');
         this.updateRecommendation();
     }
 
@@ -101,16 +107,8 @@ class App extends React.Component {
         });
     }
 
-    swipeRightCallback() {
-        
-        this.matchHandler.swipe('right');
-        this.updateRecommendation();
-    }
-
-
 
     render() {
-
 
         if (this.state.register) {
             return (
@@ -189,10 +187,7 @@ class App extends React.Component {
             <div>
                 <Login callbackAuth={this.callbackAuth} callbackForgot={this.callbackForgot} callbackRegister={this.callbackRegister} />
             </div>
-
-
-
-        )
+        );
 
     }
 }
