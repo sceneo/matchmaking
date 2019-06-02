@@ -11,6 +11,7 @@ import React from 'react';
 import { Button, Icon } from 'semantic-ui-react'
 
 import './Matcher.css';
+import 'animate.css';
 
 
 class MatchMe extends React.Component {
@@ -21,6 +22,7 @@ class MatchMe extends React.Component {
 
         this.onClickSwipeLeft = this.onClickSwipeLeft.bind(this);
         this.onClickSwipeRight = this.onClickSwipeRight.bind(this);
+        this.onClickClose = this.onClickClose.bind(this);
 
     }
 
@@ -40,23 +42,62 @@ class MatchMe extends React.Component {
         }
     }
 
+    onClickClose() {
+        console.log("close recommendation window");
+
+        if (this.props.closeCallback !== undefined) {
+            this.props.closeCallback();
+        }
+    }
+
 
     render() {
 
         let recData = {};
 
-        if (this.props.recommendation === {} || this.props.recommendation === undefined) {
-            recData = {
-                'name': 'No recommendations left',
-                'industry': '***',
-                'functionality': '***'
-            }
-        } else {
-            recData = {
-                'name': this.props.recommendation['name'],
-                'industry': this.props.recommendation['industry'],
-                'functionality': this.props.recommendation['functionality']
-            }
+        if (this.props.recommendation === {} || this.props.recommendation === undefined || this.props.recommendation === null) {
+            return (
+                <div className='matching-div'>
+                    <table align='center' className='matching-table'>
+                        <tbody>
+                            <tr>
+                                <td colSpan='2'>
+                                    <div className="name-label">
+                                        No recommendations left!
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colSpan='2'>
+                                    <div className="industry-label">
+                                        ***
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colSpan='2'>
+                                    <div className="functionality-label">
+                                        Please try again later.
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <Button onClick={this.onClickClose} color='red'>
+                                        Close
+                                    </Button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            );
+        }
+
+        recData = {
+            'name': this.props.recommendation['name'],
+            'industry': this.props.recommendation['industry'],
+            'functionality': this.props.recommendation['functionality']
         }
 
         return (
@@ -94,20 +135,20 @@ class MatchMe extends React.Component {
                             <td width='50%'>
                                 <Button onClick={this.onClickSwipeLeft} animated='vertical'>
                                     <Button.Content hidden>
-                                        <font color="green"><h1>Yes!</h1></font>
+                                        <font color="green">Yes!</font>
                                     </Button.Content>
                                     <Button.Content visible>
-                                        <Icon name='thumbs up outline' color='green' size='huge' />
+                                        <Icon name='thumbs up outline' color='green' size='large' />
                                     </Button.Content>
                                 </Button>
                             </td>
                             <td width='50%'>
                                 <Button onClick={this.onClickSwipeRight} animated='vertical'>
                                     <Button.Content hidden>
-                                        <font color="red"><h1>No!</h1></font>
+                                        <font color="red">No!</font>
                                     </Button.Content>
                                     <Button.Content visible>
-                                        <Icon name='thumbs down outline' color='red' size='huge' />
+                                        <Icon name='thumbs down outline' color='red' size='large' />
                                     </Button.Content>
                                 </Button>
                             </td>

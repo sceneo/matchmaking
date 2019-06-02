@@ -8,7 +8,7 @@ import Chat from "./Chat/Chat.js"
 import Matcher from './Matching/Matcher.js';
 import MatchHandler from './Matching/MatchHandler.js';
 
-import { Button, Segment, Sidebar, Icon } from 'semantic-ui-react'
+import { Button, Segment, Sidebar, Icon } from 'semantic-ui-react';
 
 
 
@@ -32,6 +32,11 @@ class App extends React.Component {
 
         this.handleMatchMeShowClick = this.handleMatchMeShowClick.bind(this);
         this.handleMatchMeHide = this.handleMatchMeHide.bind(this);
+
+        this.swipeLeftCallback = this.swipeLeftCallback.bind(this);
+        this.swipeRightCallback = this.swipeRightCallback.bind(this);
+
+        this.updateRecommendation = this.updateRecommendation.bind(this);
 
     }
 
@@ -77,6 +82,25 @@ class App extends React.Component {
 
     handleMatchMeHide() {
         this.setState({ matchMeVisible: false })
+    }
+
+    swipeLeftCallback() {
+        
+        this.matchHandler.swipe('left');
+        this.updateRecommendation();
+    }
+
+    updateRecommendation() {
+        let recData = this.matchHandler.getRecommendation();
+        this.setState({
+            recommendationData: recData
+        });
+    }
+
+    swipeRightCallback() {
+        
+        this.matchHandler.swipe('right');
+        this.updateRecommendation();
     }
 
 
@@ -137,7 +161,10 @@ class App extends React.Component {
                                 visible={this.state.matchMeVisible}
                             >
                                 <div>
-                                    <Matcher recommendation={this.state.recommendationData} />
+                                    <Matcher recommendation={this.state.recommendationData}
+                                        closeCallback={this.handleMatchMeHide}
+                                        swipeLeftCallback={this.swipeLeftCallback}
+                                        swipeRightCallback={this.swipeRightCallback} />
                                 </div>
                             </Sidebar>
 

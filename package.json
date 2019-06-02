@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "animate.css": "^3.7.1",
     "aws-sdk": "^2.464.0",
     "native-base": "^2.12.1",
     "react": "^16.8.6",
