@@ -1,0 +1,33 @@
+.name-label {
+    color: lightblue;
+    font-style: bold;
+    font-size: 24px;
+}
+
+.industry-label {
+    font-size: 20px;
+}
+
+.functionality-label {
+    font-size: 20px;
+}
+
+.no-recommendations {
+    color: red;
+    font-style: bold;
+    font-size: 20px;
+}
+
+.matching-div {
+    padding-top: 25%;
+}
+
+.matching-table {
+    text-align: center;
+    
+    width: 90%;
+}
+
+.matching-table td {
+    height: 50px;
+}

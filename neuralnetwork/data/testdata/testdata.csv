@@ -1,0 +1,101 @@
+else,Student,Exhibitor,Cologne,IT
+female,Purchaser,Exhibitor,London,Construction
+male,Student,Exhibitor,Munich,Consulting
+male,Student,Exhibitor,London,IT
+female,Marketing Manger,Visitor,Duesseldorf,Construction
+male,Marketing Manger,Visitor,Duesseldorf,CraftBeauty
+male,Marketing Manger,Visitor,Hamburg,Consulting
+else,Sales Manager,Exhibitor,London,Construction
+else,Sales Manager,Exhibitor,Bremen,IT
+else,Sales Manager,Visitor,Berlin,Consulting
+male,Student,Visitor,London,CraftBeauty
+male,Purchaser,Visitor,London,IT
+male,Marketing Manger,Exhibitor,Duesseldorf,Construction
+else,Sales Manager,Visitor,Paris,IT
+male,Student,Visitor,London,IT
+male,Marketing Manger,Exhibitor,Bremen,Consulting
+else,Sales Manager,Exhibitor,Duesseldorf,Consulting
+female,Student,Visitor,Berlin,IT
+male,Marketing Manger,Visitor,Nurnberg,CraftBeauty
+else,Student,Visitor,Vienna,Consulting
+male,Sales Manager,Exhibitor,London,IT
+male,Student,Exhibitor,London,CraftBeauty
+male,Purchaser,Visitor,Duesseldorf,Consulting
+male,Student,Exhibitor,Nurnberg,Construction
+male,Marketing Manger,Exhibitor,Bremen,CraftBeauty
+male,Sales Manager,Visitor,Vienna,CraftBeauty
+male,Student,Visitor,Duesseldorf,IT
+else,Marketing Manger,Visitor,Paris,IT
+male,Sales Manager,Exhibitor,Paris,IT
+male,Marketing Manger,Visitor,London,Construction
+female,Sales Manager,Exhibitor,Bremen,Construction
+else,Purchaser,Visitor,London,Construction
+female,Student,Visitor,Berlin,CraftBeauty
+female,Student,Exhibitor,Paris,Consulting
+else,Student,Visitor,Vienna,Consulting
+else,Sales Manager,Visitor,Paris,Construction
+else,Marketing Manger,Exhibitor,Munich,IT
+else,Marketing Manger,Exhibitor,Paris,Consulting
+male,Purchaser,Visitor,Hamburg,Consulting
+else,Purchaser,Visitor,Cologne,IT
+female,Purchaser,Visitor,Duesseldorf,IT
+male,Marketing Manger,Exhibitor,Bremen,Consulting
+else,Sales Manager,Visitor,Hamburg,CraftBeauty
+else,Purchaser,Visitor,Cologne,CraftBeauty
+female,Sales Manager,Exhibitor,Duesseldorf,Construction
+female,Marketing Manger,Exhibitor,London,IT
+else,Student,Visitor,Vienna,IT
+female,Purchaser,Visitor,London,IT
+female,Sales Manager,Visitor,Hamburg,Consulting
+else,Student,Exhibitor,Bremen,CraftBeauty
+male,Sales Manager,Visitor,Vienna,CraftBeauty
+else,Student,Visitor,Berlin,Construction
+male,Marketing Manger,Exhibitor,Munich,IT
+female,Sales Manager,Visitor,Paris,Consulting
+female,Marketing Manger,Visitor,Duesseldorf,IT
+else,Marketing Manger,Exhibitor,Paris,Construction
+male,Purchaser,Exhibitor,Paris,CraftBeauty
+male,Purchaser,Visitor,Duesseldorf,Construction
+else,Purchaser,Exhibitor,London,IT
+male,Marketing Manger,Exhibitor,London,Construction
+female,Marketing Manger,Exhibitor,Duesseldorf,Consulting
+female,Sales Manager,Exhibitor,Berlin,IT
+female,Marketing Manger,Visitor,Munich,Consulting
+male,Marketing Manger,Visitor,Bremen,IT
+male,Purchaser,Visitor,Paris,Consulting
+female,Purchaser,Exhibitor,Vienna,CraftBeauty
+else,Student,Visitor,Munich,CraftBeauty
+male,Purchaser,Exhibitor,Berlin,CraftBeauty
+female,Purchaser,Visitor,Cologne,Construction
+else,Purchaser,Exhibitor,London,Construction
+female,Marketing Manger,Exhibitor,Berlin,Consulting
+else,Student,Visitor,Vienna,IT
+else,Marketing Manger,Visitor,Duesseldorf,CraftBeauty
+male,Purchaser,Visitor,London,IT
+female,Student,Exhibitor,Hamburg,CraftBeauty
+female,Purchaser,Visitor,Berlin,Consulting
+else,Student,Visitor,Munich,Construction
+else,Marketing Manger,Visitor,Munich,CraftBeauty
+female,Student,Visitor,Paris,Construction
+male,Student,Visitor,Duesseldorf,Consulting
+else,Purchaser,Visitor,Duesseldorf,Consulting
+female,Sales Manager,Exhibitor,Hamburg,Consulting
+else,Marketing Manger,Visitor,Bremen,Construction
+male,Student,Exhibitor,Nurnberg,IT
+else,Student,Exhibitor,Vienna,Consulting
+male,Marketing Manger,Visitor,Cologne,CraftBeauty
+else,Marketing Manger,Exhibitor,Cologne,IT
+else,Sales Manager,Exhibitor,Duesseldorf,Consulting
+female,Marketing Manger,Visitor,Munich,Consulting
+female,Student,Exhibitor,Paris,IT
+female,Marketing Manger,Exhibitor,Berlin,IT
+male,Marketing Manger,Visitor,Berlin,Construction
+else,Student,Visitor,Paris,IT
+female,Sales Manager,Visitor,Nurnberg,CraftBeauty
+male,Sales Manager,Visitor,Vienna,Construction
+female,Sales Manager,Visitor,Munich,Construction
+male,Marketing Manger,Visitor,Duesseldorf,IT
+female,Purchaser,Visitor,Cologne,Construction
+female,Sales Manager,Visitor,Munich,CraftBeauty
+male,Sales Manager,Visitor,Bremen,Construction
+

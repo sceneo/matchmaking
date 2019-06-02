@@ -4,12 +4,15 @@
   "private": true,
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "animate.css": "^3.7.1",
     "aws-sdk": "^2.464.0",
     "native-base": "^2.12.1",
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.8",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.0",
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^0.87.1",
     "url": "^0.11.0"
   },
   "scripts": {

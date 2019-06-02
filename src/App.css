@@ -23,3 +23,67 @@
   color: #61dafb;
 }
 
+.main-page-div {
+  padding-left: 10px;
+  padding-top: 10px;
+  width: 99%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: auto;
+  padding-right: auto;
+}
+
+.menu-bar {
+  background: #5b5c5c;
+  font-style: bold;
+  height: 50px;
+  width: 100%;
+  border-radius: 5px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.menu-item {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.user-info {
+  color: white;
+  font-style: bold;
+  font-size: 18px;
+}
+
+
+.menu-bar-table {
+  width: 99%;
+  height: 50px;
+  margin-right: 10px;
+  margin-left: 5px;
+  background: #313131;
+  border-radius: 5px;
+}
+
+.menu-bar-table td {
+  display: table-cell;
+  vertical-align: middle;
+  padding-right: 10px;
+}
+
+
+.container-div {
+  height: 500px;
+  width: 90%;
+  margin-right: 10px;
+  margin-left: 5px;
+}
+
+
+.content {
+  width: 99%;
+  padding-top: 10px;
+  border-radius: 5px;
+  margin-left: auto;
+  margin-right: auto;
+}
+

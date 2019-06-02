@@ -1,0 +1,47 @@
+@startuml
+
+title
+    Matching workflow
+end title
+
+actor "User" as USER
+participant "Matcher.js" as MATCHER
+participant "App.js" as APP
+participant "MatchHandler.js" as HANDLER
+
+participant "Backend" as BACKEND
+
+    APP -> HANDLER: intiate(userId) 
+    HANDLER -> HANDLER: retrieveRecommendationList()
+    HANDLER --> APP: done
+    APP -> HANDLER: getRecommendation()
+    HANDLER --> APP: first recommendation (json)
+    APP -> APP: store recommendation in state
+    USER -> APP: "MatchMe!"
+    APP -> MATCHER: display(props=first recommendation)
+
+    loop User swipes through recommendations
+        USER -> MATCHER: swipe(swipeAction)
+        MATCHER -> APP: callbackSwipe(swipeAction)
+
+        APP -> HANDLER: swipe(swipeAction)
+
+        activate HANDLER
+            HANDLER -> BACKEND: updateUserData(userId,\n  recommendationUserId,\n  swipeAction)
+        
+        activate BACKEND
+            APP -> HANDLER: getRecommendation()
+            HANDLER --> APP: next recommendation (json)
+        deactivate HANDLER
+           
+            APP -> APP: update state
+            APP --> MATCHER: invokes render() with\n new recommendation
+        
+            BACKEND -> BACKEND: update user data
+            BACKEND -> BACKEND: update training data
+            BACKEND -[hidden]> BACKEND
+        deactivate BACKEND
+    end
+
+
+@enduml

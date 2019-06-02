@@ -70,3 +70,6 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 ### Bootstrap-react
 https://react-bootstrap.github.io/components/forms/
+
+### Semantic UI React
+https://react.semantic-ui.com/
