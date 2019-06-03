@@ -73,3 +73,6 @@ https://react-bootstrap.github.io/components/forms/
 
 ### Semantic UI React
 https://react.semantic-ui.com/
+
+### animate.css
+https://github.com/daneden/animate.css
