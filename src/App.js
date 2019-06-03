@@ -144,7 +144,7 @@ class App extends React.Component {
                                 </td>
                                 <td align='right'>
                                     <div className='user-info'>
-                                        <Icon name='user circle' size='large' />Hello {this.state.userId.toString()}
+                                        <Icon name='user circle' size='large' />Hello Friend
                                     </div>
                                 </td>
                             </tr>

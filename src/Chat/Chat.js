@@ -1,43 +1,63 @@
 import React, { Component } from "react";
-
-import Nav from 'react-bootstrap/Nav'
-
-
 import ChatMessageList from './ChatMessageList.js'
 import SendMessageForm from './SendMessageForm.js'
 import Contacts from './Contacts.js'
+import APICallsToChatkit from './APICallsToChatkit.js'
+
+import ClipLoader from 'react-spinners/ClipLoader';
 
 import './Chat.css';
 
 
 class Chat extends Component {
-
-    
-// Chat Kit Credentials
-// v1:us1:8a1e4d4b-5933-473f-bd5d-d4893859ffcd
-// 6fbd13f5-4d17-4a14-b8bb-95d56416bfc2:BehYgWeMTwQ3kzNUUwgfca3lVTfK9/uG4syEM62U3Jc=
-// https://us1.pusherplatform.io/services/chatkit_token_provider/v1/8a1e4d4b-5933-473f-bd5d-d4893859ffcd/token
-      
   constructor(props) {
       super(props)
-      this.authorization = this.props.authorization;
+      this.api = new APICallsToChatkit();
+      this.state = {
+              loading: true
+      }
    
   }
   
   componentDidMount() {
-      
+    this.api.initialize();
+    
+    console.log(this.api.getAuthorization().access_token)
+    
       
   }
   
   render() {
       
-
-
+      
+              
+      this.api.getUsers();
+      
+      
+      
+      let data;
+      if (this.state.loading) {
+          data =
+                 <div className='sweet-loading'>
+                      <ClipLoader
+                      sizeUnit={"px"}
+                      size={150}
+                      color={'#123abc'} />
+            </div> 
+      } 
+      else {
+        data =
+               <div className="Chat">
+                   <Contacts api={this.api}/>
+                   <ChatMessageList />
+                   <SendMessageForm />
+               </div>
+      }
+                
+                
       return (
-          <div className="Chat">
-            <Contacts />
-            <ChatMessageList />
-            <SendMessageForm authorization={this.authorization}/>
+          <div>
+              {data}
           </div>
       );
   }

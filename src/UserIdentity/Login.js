@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Form } from "react-bootstrap";
 import Button from 'react-bootstrap/Button'
 import "./Login.css";
-import ChatkitAuthentification from "./ChatkitAuthentification.js";
 
 
 class Login extends Component {
@@ -20,8 +19,6 @@ class Login extends Component {
     this.auth = this.auth.bind( this );
     this.login = this.login.bind( this );
     this.forgot = this.forgot.bind( this );
-    this.chatkitauth = new ChatkitAuthentification();
-    this.chatkitauth.getToken();
   }
   
   componentDidMount() {
@@ -61,7 +58,7 @@ class Login extends Component {
   
   auth(status, user){
       console.log("message to callback: " + status)
-      this.props.callbackAuth(status, this.chatkitauth.getAuthorization(), user);
+      this.props.callbackAuth(status, user);
   }
   
    
@@ -69,7 +66,7 @@ class Login extends Component {
       // shortcut so i can see the chat
       this.auth(true, 10);
       // user id has to be provided => who am i? here, dummy user id = 10 is used
-      
+      //TODO
       var parameter = '?usecase=auth&email=' + this.state.email + '&password=' + this.state.password;
      
       const http = new XMLHttpRequest();
@@ -84,6 +81,8 @@ class Login extends Component {
           if(http.responseText.includes("Authentication successful")) {
               this.auth(true, 10);
               // user id has to be provided => who am i? here, dummy user id = 10 is used
+              this.chatkitauth.getToken('user nickname in the chat');
+              //TODO
           }
           else {
               console.log(http.responseText);
