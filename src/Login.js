@@ -58,7 +58,6 @@ class Login extends Component {
     }
 
     auth( status ) {
-        console.log( "message to callback: " + status )
         this.props.callbackAuth( status )
     }
 

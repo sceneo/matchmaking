@@ -4,18 +4,29 @@ class ChatMessageList extends React.Component {
     constructor(props){
         super(props);
         this.api = this.props.api;
+        this.messages = this.api.getLobbyMessages();
+        this.state = this.props.chatState;
+    }
     
+    componentWillReceiveProps(nextProps){
+        this.messages = this.api.getLobbyMessages();
+        this.forceUpdate();
+        this.setState(nextProps.chatState);
     }
 
     async componentDidMount(){
-        await this.api.requestLobbyMessages();
-        console.log(this.api.getLobbyMessages())
+
+
     }
     
-    render() {
-        
-        const items = this.api.getLobbyMessages().map(function(item){
-            return <li> From: {item.user_id} </li>;
+    async refresh(){
+        await this.api.requestMessagesFromRoom();
+        this.render();
+    }
+    
+    render() {       
+        const items = this.messages.map(function(item){
+            return <li> From: {item.user_id}, Message: {item.parts[0].content} </li>;
           });
         
         return (

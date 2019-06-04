@@ -22,7 +22,7 @@ class Contacts extends React.Component {
                 <h1>Users:</h1>
                 <ul>
                   {items}
-                </ul>
+                </ul>   
                 </div>
 
         )

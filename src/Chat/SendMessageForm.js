@@ -8,8 +8,7 @@ class SendMessageForm extends React.Component {
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
-        this.api = this.props.api;
- 
+        this.api = this.props.api; 
     }
     
     handleChange(e) {
@@ -18,13 +17,15 @@ class SendMessageForm extends React.Component {
         })
     }
     
-    handleSubmit(e) {
+    async handleSubmit(e) {
         e.preventDefault()
         this.submit();
-        this.api.submitMessage(this.state.message)
+        await this.api.submitMessage(this.state.message)
+        await this.api.requestMessagesFromRoom();
         this.setState({
             message: ''
         })
+        this.props.callbackRefresh();
     }
     
     async submit() {

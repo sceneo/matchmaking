@@ -13,26 +13,32 @@ class Chat extends Component {
   constructor(props) {
       super(props)
       this.state = {
-              loading: true
+              loading: true,
+              refresh: false
       }  
       
       this.api = new APICallsToChatkit(this.state.loading);
+      
+      this.callbackRefresh = this.callbackRefresh.bind(this);
   }
   
   async componentDidMount() {
     await this.api.initialize();
     this.setState({
         loading: false
-    })
-
-//    await this.api.submitMessage('TestMessage from FE' , '19865469');
-//    await this.api.requestLobbyMessages();
-    
+    })    
   }
   
-  render() {
-      
-      
+  async callbackRefresh(){
+      await this.api.requestMessagesFromRoom();
+      this.setState({
+          refresh: true
+      })
+  }
+  
+  
+  render() { 
+            
       let data;
       if (this.state.loading) {
           data =
@@ -46,9 +52,9 @@ class Chat extends Component {
       else {
         data =
                <div className="Chat">
-                   <Contacts api={this.api} />
-                   <ChatMessageList api={this.api} />
-                   <SendMessageForm api={this.api} />
+                   <Contacts className="Contacts" api={this.api} />
+                   <ChatMessageList name="ChatMessageList" api={this.api} chatState={this.state}/>
+                   <SendMessageForm className="SendMessageForm" api={this.api} callbackRefresh={this.callbackRefresh}/>
                </div>
       }
                 
