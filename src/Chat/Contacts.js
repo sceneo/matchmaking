@@ -11,12 +11,19 @@ class Contacts extends React.Component {
     }
 
     
-    
-    
-    
     render() {
+        
+        const items = this.api.getUsers().map(function(item){
+            return <li> {item.name} </li>;
+          });
+        
         return (
-                            <p> A list of contacts </p>
+                <div>
+                <h1>Users:</h1>
+                <ul>
+                  {items}
+                </ul>
+                </div>
 
         )
     }

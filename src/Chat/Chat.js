@@ -12,27 +12,25 @@ import './Chat.css';
 class Chat extends Component {
   constructor(props) {
       super(props)
-      this.api = new APICallsToChatkit();
       this.state = {
               loading: true
-      }
-   
+      }  
+      
+      this.api = new APICallsToChatkit(this.state.loading);
   }
   
-  componentDidMount() {
-    this.api.initialize();
+  async componentDidMount() {
+    await this.api.initialize();
+    this.setState({
+        loading: false
+    })
+
+//    await this.api.submitMessage('TestMessage from FE' , '19865469');
+//    await this.api.requestLobbyMessages();
     
-    console.log(this.api.getAuthorization().access_token)
-    
-      
   }
   
   render() {
-      
-      
-              
-      this.api.getUsers();
-      
       
       
       let data;
@@ -48,9 +46,9 @@ class Chat extends Component {
       else {
         data =
                <div className="Chat">
-                   <Contacts api={this.api}/>
-                   <ChatMessageList />
-                   <SendMessageForm />
+                   <Contacts api={this.api} />
+                   <ChatMessageList api={this.api} />
+                   <SendMessageForm api={this.api} />
                </div>
       }
                 

@@ -8,7 +8,7 @@ class SendMessageForm extends React.Component {
         }
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
-        this.lobby = 19865469;
+        this.api = this.props.api;
  
     }
     
@@ -21,7 +21,7 @@ class SendMessageForm extends React.Component {
     handleSubmit(e) {
         e.preventDefault()
         this.submit();
-     //   this.props.sendMessage(this.state.message)
+        this.api.submitMessage(this.state.message)
         this.setState({
             message: ''
         })
