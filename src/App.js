@@ -29,6 +29,7 @@ class App extends React.Component {
         this.callbackRegister = this.callbackRegister.bind(this);
         this.callbackForgot = this.callbackForgot.bind(this);
         this.callbackAuth = this.callbackAuth.bind(this);
+        this.callbackBackToLogin = this.callbackBackToLogin.bind(this);
 
         this.matchHandler = new MatchHandler();
 
@@ -51,7 +52,6 @@ class App extends React.Component {
     }
 
     async callbackAuth(status, authorization, user) {
-
         let recData = {};
         if (status === true) {
             // retrieve recommendation list
@@ -59,7 +59,6 @@ class App extends React.Component {
             await this.matchHandler.retrieveRecommendationList();
             recData = this.matchHandler.getRecommendation();
         }
-
 
         this.setState({
             auth: status,
@@ -69,6 +68,15 @@ class App extends React.Component {
         })
 
         this.authorization = authorization;
+    }
+    
+    callbackBackToLogin(){
+        this.setState({
+            register: false,
+            forgot: false,
+            auth: false,
+            matchMeVisible: false
+        })
     }
 
     callbackForgot() {
@@ -113,7 +121,7 @@ class App extends React.Component {
         if (this.state.register) {
             return (
                 <div>
-                    <Register />
+                    <Register callbackBackToLogin={this.callbackBackToLogin}/>
                 </div>
             )
         }
@@ -121,7 +129,7 @@ class App extends React.Component {
         if (this.state.forgot) {
             return (
                 <div>
-                    <PasswordForgotton />
+                    <PasswordForgotton callbackRegister={this.callbackRegister} callbackBackToLogin={this.callbackBackToLogin} />
                 </div>
             )
         }

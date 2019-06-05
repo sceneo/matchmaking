@@ -11,7 +11,8 @@ class Register extends Component {
           lastname: ""
         };
         this.url = 'https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/default/MatchMakingAuth';
-      }
+        this.backToLogin = this.backToLogin.bind(this);
+    }
     
 
     componentDidMount() {
@@ -32,11 +33,11 @@ class Register extends Component {
         });
       }
     
-    register(){
-        
-        
-        
-        
+    backToLogin(){
+        this.props.callbackBackToLogin();
+    }
+    
+    register(){   
         var parameter = '?usecase=add&email=' + this.state.email + '&password=' + this.state.password;
         const http = new XMLHttpRequest();
         http.open("GET", this.url + parameter);
@@ -201,12 +202,12 @@ class Register extends Component {
               onChange={this.handleChange}/>
             </Form.Group>
             
-             
+            
+            <p className="PasswordForgottenLink" onClick={this.backToLogin}> Back to Login </p>              
             <Button variant="primary" type="submit">
               Submit
             </Button>
           </Form>
-            
             
       </div>
       
