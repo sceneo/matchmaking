@@ -10,8 +10,6 @@ import MatchHandler from './Matching/MatchHandler.js';
 
 import { Button, Segment, Sidebar, Icon } from 'semantic-ui-react';
 
-
-
 class App extends React.Component {
     constructor(props) {
         super(props);
