@@ -50,7 +50,6 @@ class Register extends Component {
     }
     
     render() {
-        console.log(this.state);
         return (
           <div className="Register">
               <p className="Headline1"> Registration </p>

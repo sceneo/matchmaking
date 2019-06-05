@@ -130,17 +130,20 @@ def auth(event, context):
     
     # the usecase defines the following parameters:
     #?usecase=auth&email=ABCD@test.com&password=ABCDt    
-    usecase = event['queryStringParameters']['usecase']
-    email = event['queryStringParameters']['email']
-    password = event['queryStringParameters']['password']   
-    
+    usecase = event['queryStringParameters']['usecase']  
     
     if(usecase == 'auth'):
-
+        email = event['queryStringParameters']['email']
+        password = event['queryStringParameters']['password']   
         if(checkUser(email, password)):
             return response(json.dumps('Authentication successful'),202)
         else:
             return response(json.dumps('Not authorized'),401)
+
+    if(usecase == 'check'):
+        email = event['queryStringParameters']['email']   
+        if(exists(email)):
+            return response(json.dumps('Existing user found!'))
 
     if(usecase == 'forgot'):
         email = event['queryStringParameters']['email']
