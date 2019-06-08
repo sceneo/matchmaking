@@ -1,4 +1,11 @@
 import React, { Component } from "react";
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Divider from '@material-ui/core/Divider';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
 
 class ChatMessageList extends React.Component {
     constructor(props){
@@ -24,21 +31,37 @@ class ChatMessageList extends React.Component {
         this.render();
     }
     
+        
     render() {       
-        const items = this.messages.map(function(item){
-            return <li> From: {item.user_id}, Message: {item.parts[0].content} </li>;
-          });
         
         return (
-                <div>
-                <h1>Chat</h1>
-                <ul>
-                  {items}
-                </ul>
-                </div>
+          <List dense className='MessageList'>
+            {this.messages.map(value => {
+                console.log(this.messages);
+                
+              var avatar = '../img/avatar/0' + Math.floor(Math.random() * Math.floor(9)) + '.jpg'
 
-        )
-    }
+                
+              return (
+                           
+                      <ListItem alignItems="flex-start">
+                      <ListItemAvatar>
+                          <Avatar src={require('../img/avatar/0' + Math.floor(Math.random() * Math.floor(10)) + '.jpg')}/>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={value.parts[0].content}
+                        secondary={
+                          <React.Fragment>
+                            {value.user_id}
+                          </React.Fragment>
+                        }
+                      />
+                    </ListItem>              
+              );
+            })}
+          </List>
+        );
+      } 
 }
 
 export default ChatMessageList;
