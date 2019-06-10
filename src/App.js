@@ -5,6 +5,7 @@ import Register from "./UserIdentity/Register.js"
 import PasswordForgotton from "./UserIdentity/PasswordForgotton.js"
 import Chat from "./Chat/Chat.js"
 
+
 import Matcher from './Matching/Matcher.js';
 import MatchHandler from './Matching/MatchHandler.js';
 
@@ -64,6 +65,7 @@ class App extends React.Component {
             userId: user,
             recommendationData: recData,
         })
+
 
         this.authorization = authorization;
     }
