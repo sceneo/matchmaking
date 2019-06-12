@@ -11,7 +11,7 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
-      usecase: "",
+      usecase: "auth",
       enableButton: false
     };
     this.url = 'https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/Prod/MatchMakingAuth';
@@ -70,9 +70,6 @@ class Login extends Component {
           usecase: "auth"
       })
       
-      
-      const payload = this.state
-      
       await fetch(this.url,{
           headers: {
           "Access-Control-Allow-Origin": "*",
@@ -85,7 +82,10 @@ class Login extends Component {
         })
         .then(response => response.json())
         .then(data => {
-           console.log(data)     
+            if(data.includes("Authentication successful")) {
+                this.auth(true, 10); 
+            }
+            console.log(data)     
         })
         .catch(function (error) {
           console.log('Request failed', error);
