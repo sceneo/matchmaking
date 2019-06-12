@@ -4,7 +4,7 @@ cloud "AWS" {
 	
 	component "API Gateway" as api
 	
-	package "S3" {
+	package "DynamoDB" {
 		database "User\nDatabaseusers.csv" as db
 	}
 	

@@ -11,17 +11,21 @@ from getpass import getuser
 #note: this is not state of the art authentication. This just illustrates the 
 #usage of a lambda function to provide simple information
 
+#list of online users, separated by ';'
+onlineUsers = ''
 
 def response(message, status_code):
     return {
         'statusCode': str(status_code),
         'body': json.dumps(message),
         'headers': {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-            },
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "*",
+            "Access-Control-Allow-Methods": "*",
+            "Content-Type": "application/json"
+            }
         }
-    
+
 def csvLineToString(line):
     si = BytesIO.StringIO()
     cw = csv.writer(si)
@@ -41,22 +45,41 @@ def getUsersFromS3():
     bucket = s3.Bucket(u'matchmaking.data')
     obj = bucket.Object(key=u'users.csv')
     response = obj.get()
-    users = csv.DictReader(response[u'Body'].read().split())
+    users = csv.DictReader(response[u'Body'].read().decode('utf-8').split())
     return users
 
-def updateUserListOnS3(users):
+def isOnline(email):
+    global onlineUsers
+    if(email in onlineUsers):
+        print('User already exists')
+    else:
+        onlineUsers += ';' + email
+        
+def isOffline(email):
+    global onlineUsers
+    onlineUsers = onlineUsers.replace(';' + email, '')
+    
+def getOnlineList():
+    global onlineUsers
+    return onlineUsers
+
+def updateUserListOnS3(newUser):
     bucket_name = "matchmaking.data"
-    file_name = "users_test.csv"
+    file_name = "users.csv"
     s3 = boto3.resource("s3")
     
-    header="email,password\n"
+    #recreate old file 
+    header="title,firstname,lastname,gender,company,industry,functionality,city,country,type,email,username,password,whitelist,blacklist,avatar\n"
     
     body = header
-    
     users = getUsersFromS3()
     for row in users:
-        line = row['email'] + "," + row['password'] + '\n'
+        line = row['title'] + "," + row['firstname'] + "," + row['lastname'] + "," + row['gender'] + "," + row['company'] + "," + row['industry'] + "," + row['functionality'] + "," + row['city'] + "," + row['country'] + "," + row['type'] + "," + row['email'] + "," + row['username'] + "," + row['password'] + row['whitelist'] + ',' + row['blacklist'] + row['avatar'] + '\n'
         body = body + line
+    
+    line = newUser['title'] + "," + newUser['firstName'] + "," + newUser['lastName'] + "," + newUser['gender'] + "," + newUser['company'] + "," + newUser['industry'] + "," + newUser['functionality'] + "," + newUser['city'] + "," + newUser['country'] + "," + newUser['type'] + "," + newUser['email'] + "," + newUser['username'] + "," + newUser['password'] + '' + ',' + '' + ',' + str(random.randint(0,15)) + '\n'
+    body = body + line
+    # add a new user
     
     s3.Bucket(bucket_name).put_object(Key=file_name, Body=body)
     
@@ -72,8 +95,8 @@ def createToken(tokenLength=64):
 def checkUser(username, password): 
     users = getUsersFromS3()
     for user in users:
-        if username == user['email']:
-                if password == user['password']:
+        if(username == user['email']):
+                if(password == user['password']):
                     print('authentication for user ' + username + ' successful')
                     return True
                 else:
@@ -91,108 +114,64 @@ def exists(username):
     print('user ' + username + ' does not exist')
     return False
 
-def changeUserPassword(username,newPassword):
+def getUser(email):
     users = getUsersFromS3()
     for user in users:
-        if username == user['email']:
-            user['password'] = newPassword
-    updateUserListOnS3(users)
-
-
-
-def addUser(user,password):
-    # check if user already exists
-    with open(url) as csvfile:
-        readCSV = csv.reader(csvfile, delimiter=',')
-        for row in readCSV:
-            if row[0] == user:
-                print('user already exists')
-                return False
-        csvfile.close()
-    # add row to CSV file
-    with open(url, "a") as file:
-        writer = csv.writer(file)
-        writer.writerow([user,password])
-        file.close()
+        if email == user['email']:
+            return user
     
-    return True
-
-
-def sendEmailToUser(name, password):
-    #TODO
-    return False
+    
+    
 
 ## This is the basic handling function which is called first
 def auth(event, context):
-    # URL is called via simple GET
+    # URL is called via simple POST
     # https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/default/MatchMakingAuth
-    # directly followed by a '?' and the parameters, separated by '&'
-    
-    # the usecase defines the following parameters:
-    #?usecase=auth&email=ABCD@test.com&password=ABCDt    
-    usecase = event['queryStringParameters']['usecase']  
-    
-    if(usecase == 'auth'):
-        email = event['queryStringParameters']['email']
-        password = event['queryStringParameters']['password']   
-        if(checkUser(email, password)):
-            return response(json.dumps('Authentication successful'),202)
-        else:
-            return response(json.dumps('Not authorized'),401)
 
-    if(usecase == 'check'):
-        email = event['queryStringParameters']['email']   
-        if(exists(email)):
-            return response(json.dumps('Existing user found!'))
-
-    if(usecase == 'forgot'):
-        email = event['queryStringParameters']['email']
-        if(exists(username)):
-            
-            
-            return response(json.dumps('Email with new password has been sent'),200)
-        else:
-            return response(json.dumps('User does not exist'),402)
+    body = json.loads(event['body'])
+    if(body['usecase'] == 'auth'):
+        email = body['email']
+        password = body['password']
         
-    
-    
-    if(usecase == 'add'):
-        # All data must be provided in call and should be added to a database or file
-        email = event['queryStringParameters']['email']
-        return response(json.dumps('User created'),201)
-    
-    return response(json.dumps('Lambda available, no usecase selected'),200)
+        if(checkUser(email, password)):
+            isOnline(email)
+            return response('Authentication successful',202)
+        else:
+            return response('Not authorized',401)
+         
+    if(body['usecase'] == 'listOnline'):
+        return response(getOnlineList(),200) 
+
+    if(body['usecase'] == 'logout'):
+        email = body['email']       
+        isOffline(email)
+        return response('Logout successfull',200)
+
+    if(body['usecase'] == 'isOnline'):
+        email = body['email']
+        if(email in getOnlineList()):
+            return response('Online',200) 
+        else:
+            return response('Offline',200)
+
+    if(body['usecase'] == 'details'):
+        email = body['email']  
+        return response(getUser(email),200)          
+
+    if(body['usecase'] == 'register'):
+        if(exists(body['email'])):
+            return response('already existing',201)
+        updateUserListOnS3(body)
+        return response('created',200)
+
+          
+    return response('Lambda available, no usecase selected',200)
 
 if __name__ == '__main__':
     getUsersFromS3()
-    checkUser('clown@here.de', 'no')
-    checkUser('clown@here.de', 'blabla')
-    checkUser('t@k.de', 'no')
-    exists('t@k.de')
-    exists('clown@here.de')
-    changeUserPassword('clown@here.de', 'DasIstEinTest')
-#     print('trying wrong email')
-#     checkUser('tasfdsafd@.de', 'ok')
-#     print('trying another user')
-#     checkUser("test@testmail.com","billythekid")
-#     print("---add user---")
-#     print("adding exising user")
-#     addUser("t@k.de",'ok')
-#     print("adding new user clown")
-#     addUser("clown@here.de",'noooo')
-#     print('check the clown')
-#     checkUser('clown@here.de','noooo')
-#     print('deleting the clown again')
-#     deleteUser('clown@here.de')
-#     checkUser('clown@here.de','noooo')
-#     print('checking main user again')
-#     checkUser('t@k.de', 'ok')
-#     print('------------')
-#     print('create new user kyle')
-#     addUser("kyle",'bla')
-#     checkUser('kyle','bla')
-#     createNewPassword('kyle')
-#     deleteUser('kyle')
-
-
+    checkUser('kunztobias@gmx.de', 'test')
+    checkUser('felix@kammerlander.de','testtest')
+    checkUser('kunztobias@gmx.de','falschesPasswort')
+    checkUser('falscherName@gmx.de','ein passwort')
+    
 

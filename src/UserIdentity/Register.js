@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { Button, Form } from "react-bootstrap";
+import APICallsToChatkit from '../Chat/APICallsToChatkit.js'
 import "./Register.css";
-
 class Register extends Component {
     constructor(props) {
         super(props);
 
         this.url = 'https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/default/MatchMakingAuth';
         this.backToLogin = this.backToLogin.bind(this);
-        
+        this.api = new APICallsToChatkit();
         this.state = ({
             title: '',
             firstName: '',
@@ -39,10 +39,35 @@ class Register extends Component {
         });
     }
     
-    handleSubmit(){
+    async callToAws() {
+        await fetch(this.url + '?usecase=register' ,{
+        method: 'post',
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        },
+        body: this.state
+      })
+      .then(response => response.json())
+      .then(data => {
+         console.log(data)
+      })
+      .catch(function (error) {
+        console.log('Request failed', error);
+      });
+    }
+    
+    
+    
+    async handleSubmit(){
         // check in backend if available
         // add to backend
-        // add to chatkit
+        // -> add to dynamoDB
+        // -> add to chatkit
+       
+        await this.callToAws();
+        
+        //TODO: this must be fixed: a signed su token must be crated to create users...
+   //     await this.api.addUser('tobi', 'tobias', 'kunz', 'bla@gmx,de', '666');
     }
     
     backToLogin(){
@@ -50,6 +75,8 @@ class Register extends Component {
     }
     
     render() {
+        
+        console.log(this.state);
         return (
           <div className="Register">
               <p className="Headline1"> Registration </p>

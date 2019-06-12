@@ -30,17 +30,20 @@ class APICallsToChatkit {
    }
    
    async initialize(){
-       await this.getToken('MatchMaking');              
+       await this.getToken('MatchMaking',true);              
        await this.requestUsers();
        await this.requestLobbyMessages();
        
-       this.print();
+       
+       this.addUser('tobi', 'tobias', 'kunz', 'bla@gmx,de', '666');
    }
       
-   async getToken(userId){       
+   async getToken(userId, su = false){       
        var obj = new Object();
        obj.grant_type = this.secretKey;
        obj.user_id = userId;
+       obj.su = su;
+       
         
        var json;
        let response = await new Promise(resolve => {
@@ -60,7 +63,34 @@ class APICallsToChatkit {
            xhr.send(data);  
        })
        this.authorization = json;
-   }      
+   }
+   
+   async addUser(username, firstName, lastName, email, userId) {
+       await fetch(this.api + '/users' ,{
+           method: 'post',
+           headers: {
+             "Content-type": "application/json; charset=UTF-8",
+             "Authorization": "Bearer " + this.authorization.access_token
+           },
+           body: JSON.stringify({
+               "name": firstName + ' ' + lastName,
+               "id": username,
+               "avatar_url":  '',
+               "custom_data": {
+                       "email": email,
+                       "userId": userId
+               }
+           })
+         })
+         .then(response => response.json())
+         .then(data => {
+            console.log(data)
+         })
+         .catch(function (error) {
+           console.log('Request failed', error);
+         });
+   }
+   
    
    async requestUsers() {
        var json;

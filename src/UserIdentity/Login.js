@@ -11,9 +11,10 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
+      usecase: "",
       enableButton: false
     };
-    this.url = 'https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/default/MatchMakingAuth';
+    this.url = 'https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/Prod/MatchMakingAuth';
     
     this.register = this.register.bind( this );
     this.auth = this.auth.bind( this );
@@ -62,34 +63,45 @@ class Login extends Component {
   }
   
    
-  login(){     
-      // shortcut so i can see the chat
-      this.auth(true, 10);
-      // user id has to be provided => who am i? here, dummy user id = 10 is used
-      //TODO
-      var parameter = '?usecase=auth&email=' + this.state.email + '&password=' + this.state.password;
+  async login(){     
      
-      const http = new XMLHttpRequest();
-      http.open("GET", this.url + parameter);
-      http.send();
-      http.onreadystatechange=(e)=>{
-          if(http.response == "") {
-              console.log("no response")
-          }
-
+      var response = "";
+      this.setState({
+          usecase: "auth"
+      })
+      
+      
+      const payload = this.state
+      
+      await fetch(this.url,{
+          headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers":"*",
+          "Content-type": "application/json; utf-8"
+          },
+          method: 'post',
+          mode: 'cors',
+          body: JSON.stringify(this.state)
+        })
+        .then(response => response.json())
+        .then(data => {
+           console.log(data)     
+        })
+        .catch(function (error) {
+          console.log('Request failed', error);
+        });
+      
+      
+     
           
-          if(http.responseText.includes("Authentication successful")) {
-              this.auth(true, 10);
-              // user id has to be provided => who am i? here, dummy user id = 10 is used
-              this.chatkitauth.getToken('user nickname in the chat');
-              //TODO
-          }
-          else {
-              console.log(http.responseText);
-              
-          }
-          
-      }
+      if(response.includes("Authentication successful")) {
+          this.auth(true, 10);
+      // user id has to be provided => who am i? here, dummy user id = 10 is used
+    
+          this.chatkitauth.getToken('user nickname in the chat');
+      //TODO
+      }         
+      
   }
    
   render() {

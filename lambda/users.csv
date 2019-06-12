@@ -1,5 +1,3 @@
-title,firstname,lastname,gender,username,email,password,type,hometown,industry,avatartype
-test@testmail.com,billythekid
-clown@here.de,no
-tobi@wan.kenobi,nothere
-tobi@testbot.bot,reovnbxpul
+title,firstname,lastname,gender,company,industry,functionality,city,country,type,email,username,password,whitelist,blacklist,avatar
+Dr,Tobias,Kunz,male,TNG,other,IT,Munich,Germany,visitor,kunztobias@gmx.de,Tobias,test,,,3
+Prof,Felix,Kammerlander,male,TNG,other,IT,Munich,France,visitor,felix@kammerlander.de,Felix,testtest,,,7

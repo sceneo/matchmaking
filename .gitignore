@@ -31,3 +31,7 @@ neuralnetwork/scripts/__pycache__/
 lambda/__pycache__/
 lambda/key.py
 
+.env
+deploy.env
+event.json
+.lambda
