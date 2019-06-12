@@ -23,11 +23,11 @@ class Login extends Component {
   }
   
   componentDidMount() {
-      document.body.classList.add("background");
+      document.body.classList.add("background-login");
   }
 
   componentWillUnmount() {
-      document.body.classList.remove("background");
+      document.body.classList.remove("background-login");
   }
 
   validate(){
@@ -125,8 +125,9 @@ class Login extends Component {
               onChange={this.handleChange}
               />
             </Form.Group>
-            <p className="Link" onClick={this.forgot}> Password forgotten? </p> 
-            <p className="Link" onClick={this.register}> No account yet? Register here! </p> 
+            <br />
+            <p className="Link-login" onClick={this.forgot}> Password forgotten? </p> 
+            <p className="Link-login" onClick={this.register}> No account yet? Register here! </p> 
             <Button variant="secondary" className="ButtonLogin"  onClick={this.login} >
               Login
             </Button>
