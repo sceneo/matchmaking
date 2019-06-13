@@ -35,7 +35,12 @@ class APICallsToChatkit {
        await this.requestLobbyMessages();
        
        
-       this.addUser('tobi', 'tobias', 'kunz', 'bla@gmx,de', '666');
+//       this.addUser('tobi', 'tobias', 'kunz', 'bla@gmx,de', '666');
+   }
+   
+   async loginAs(username='') {
+       console.log(username)
+       await this.getToken(username,false);
    }
       
    async getToken(userId, su = false){       

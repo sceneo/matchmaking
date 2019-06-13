@@ -39,14 +39,14 @@ class ChatMessageList extends React.Component {
             {this.messages.map(value => {
                 console.log(this.messages);
                 
-              var avatar = '../img/avatar/0' + Math.floor(Math.random() * Math.floor(9)) + '.jpg'
+              var avatar = '../img/avatar/' + Math.floor(Math.random() * Math.floor(9)) + '.jpg'
 
                 
               return (
                            
                       <ListItem alignItems="flex-start">
                       <ListItemAvatar>
-                          <Avatar src={require('../img/avatar/0' + Math.floor(Math.random() * Math.floor(10)) + '.jpg')}/>
+                          <Avatar src={require('../img/avatar/' + Math.floor(Math.random() * Math.floor(10)) + '.jpg')}/>
                       </ListItemAvatar>
                       <ListItemText
                         primary={value.parts[0].content}

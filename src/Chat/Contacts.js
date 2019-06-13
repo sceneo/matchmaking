@@ -13,7 +13,6 @@ class Contacts extends React.Component {
     constructor(props){
         super(props);
         this.api = this.props.api;
-
         
     }
 
@@ -22,11 +21,11 @@ class Contacts extends React.Component {
     
         return (
           <List dense className='ContactList'>
-          {this.api.getUsers().map(value => {
+          {this.api.getUsers().map(value => {                
               return (
                 <ListItem key={value.name} button>
                   <ListItemAvatar>
-                      <Avatar src={require('../img/avatar/0' + Math.floor(Math.random() * Math.floor(10)) + '.jpg')}/>
+                      <Avatar src={require('../img/avatar/' + Math.floor(Math.random() * Math.floor(10)) + '.jpg')}/>
                   </ListItemAvatar>
                   <ListItemText primary={value.name} />
                 </ListItem>

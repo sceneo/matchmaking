@@ -4,6 +4,7 @@ import Login from "./UserIdentity/Login.js"
 import Register from "./UserIdentity/Register.js"
 import PasswordForgotton from "./UserIdentity/PasswordForgotton.js"
 import Chat from "./Chat/Chat.js"
+import APICallsToLambda from "./UserIdentity/APICallsToLambda.js"
 
 
 import Matcher from './Matching/Matcher.js';
@@ -18,12 +19,12 @@ class App extends React.Component {
             register: false,
             forgot: false,
             auth: false,
-            userId: 0,
+            userId: '',
             matchMeVisible: false,
             recommendationData: {},
         }
-
-        this.authorization = [];
+        
+        this.apiCallsToLambda = new APICallsToLambda();
 
         this.callbackRegister = this.callbackRegister.bind(this);
         this.callbackForgot = this.callbackForgot.bind(this);
@@ -50,10 +51,11 @@ class App extends React.Component {
         })
     }
 
-    async callbackAuth(status, authorization, user) {
+    async callbackAuth(status, user) {
         let recData = {};
         if (status === true) {
             // retrieve recommendation list
+            this.userDetails = await this.apiCallsToLambda.getUserDetailsByEmail(user);
             this.matchHandler.setUserId(user);
             await this.matchHandler.retrieveRecommendationList();
             recData = this.matchHandler.getRecommendation();
@@ -65,9 +67,6 @@ class App extends React.Component {
             userId: user,
             recommendationData: recData,
         })
-
-
-        this.authorization = authorization;
     }
     
     callbackBackToLogin(){
@@ -97,13 +96,11 @@ class App extends React.Component {
     }
 
     swipeLeftCallback() {
-
         this.matchHandler.swipe('left');
         this.updateRecommendation();
     }
 
     swipeRightCallback() {
-
         this.matchHandler.swipe('right');
         this.updateRecommendation();
     }
@@ -135,7 +132,6 @@ class App extends React.Component {
         }
 
         if (this.state.auth) {
-
             return (
                 <div className='main-page-div'>
                     <table className='menu-bar-table'>
@@ -150,9 +146,9 @@ class App extends React.Component {
                                         </Button.Group>
                                     </div>
                                 </td>
-                                <td align='right'>
+                                <td align='center'>
                                     <div className='user-info'>
-                                        <Icon name='user circle' size='large' />Hello Friend
+                                        <Icon name='user circle' size='large' />Hello {this.apiCallsToLambda.getPrimaryUserDetails()['username']}
                                     </div>
                                 </td>
                             </tr>
@@ -181,7 +177,7 @@ class App extends React.Component {
                             <Sidebar.Pusher dimmed={this.state.matchMeVisible}>
                                 <Segment basic>
                                     <div className='container-div'>
-                                        <Chat authorization={this.authorization} />
+                                        <Chat apiCallsToLambda={this.apiCallsToLambda} />
                                     </div>
                                 </Segment>
                             </Sidebar.Pusher>
@@ -193,7 +189,7 @@ class App extends React.Component {
 
         return (
             <div>
-                <Login callbackAuth={this.callbackAuth} callbackForgot={this.callbackForgot} callbackRegister={this.callbackRegister} />
+                <Login callbackAuth={this.callbackAuth} callbackForgot={this.callbackForgot} callbackRegister={this.callbackRegister} apiCallsToLambda={this.apiCallsToLambda} />
             </div>
         );
 

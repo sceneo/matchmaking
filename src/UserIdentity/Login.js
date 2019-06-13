@@ -58,7 +58,6 @@ class Login extends Component {
   }
   
   auth(status, user){
-      console.log("message to callback: " + status)
       this.props.callbackAuth(status, user);
   }
   
@@ -83,25 +82,14 @@ class Login extends Component {
         .then(response => response.json())
         .then(data => {
             if(data.includes("Authentication successful")) {
-                this.auth(true, 10); 
+                this.props.apiCallsToLambda.getUserDetailsByEmail(this.state.email);
+                this.auth(true, this.state.email); 
             }
             console.log(data)     
         })
         .catch(function (error) {
           console.log('Request failed', error);
-        });
-      
-      
-     
-          
-      if(response.includes("Authentication successful")) {
-          this.auth(true, 10);
-      // user id has to be provided => who am i? here, dummy user id = 10 is used
-    
-          this.chatkitauth.getToken('user nickname in the chat');
-      //TODO
-      }         
-      
+        });       
   }
    
   render() {

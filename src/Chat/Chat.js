@@ -24,13 +24,15 @@ class Chat extends Component {
       }  
       
       this.api = new APICallsToChatkit(this.state.loading);
-
-      
+      this.apiCallsToLambda = this.props.apiCallsToLambda;
+      this.chatUserMapping = new ChatUserMapping(this.api, this.apiCallsToLambda);
       this.callbackRefresh = this.callbackRefresh.bind(this);
   }
   
   async componentDidMount() {
     await this.api.initialize();
+    await this.chatUserMapping.initialize();
+    await this.api.loginAs(this.props.apiCallsToLambda.getPrimaryUserDetails().username)
     this.setState({
         loading: false
     })    

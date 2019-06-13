@@ -120,7 +120,11 @@ def getUser(email):
         if email == user['email']:
             return user
     
-    
+def getUserByUsername(username):
+    users = getUsersFromS3()
+    for user in users:
+        if username == user['username']:
+            return user    
     
 
 ## This is the basic handling function which is called first
@@ -154,9 +158,14 @@ def auth(event, context):
         else:
             return response('Offline',200)
 
-    if(body['usecase'] == 'details'):
+    if(body['usecase'] == 'detailsByEmail'):
         email = body['email']  
         return response(getUser(email),200)          
+
+    if(body['usecase'] == 'detailsByUsername'):
+        username = body['username']  
+        return response(getUserByUsername(username),200)          
+
 
     if(body['usecase'] == 'register'):
         if(exists(body['email'])):
