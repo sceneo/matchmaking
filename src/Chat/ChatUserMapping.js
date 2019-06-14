@@ -3,27 +3,32 @@ class ChatUserMapping {
    constructor(chatkitApi, lambdaApi) {
        this.apiChatkit = chatkitApi;
        this.apiLambda = lambdaApi;
-       this.allUsers = [];
-       this.friends = [];
-       
+       this.allUsersChatkit = [];
+       this.userInventory = [];
    }
    
    
    
    
    async initialize(){
-       this.allUsers = await this.apiChatkit.getUsers();
-       
-       for(var user in this.allUsers){
+       this.allUsersChatkit = await this.apiChatkit.getUsers();
+       for(var user in this.allUsersChatkit){
+           await this.apiLambda.getUserDetailsByUsername(this.allUsersChatkit[user].id);
            
-       }
-       
-       
-       
-       
-       console.log(this.allUsers);
+           //create object containing the information from Chatkit and the Lambda and fill to userInventory
+           
+       }     
    }
    
+   //TODO
+   getUserByUsername(){
+       
+   }
+   
+   //TODO
+   getUserByEmail(){
+       
+   }
    
 }
 export default ChatUserMapping;

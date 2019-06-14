@@ -37,7 +37,7 @@ class ChatMessageList extends React.Component {
         return (
           <List dense className='MessageList'>
             {this.messages.map(value => {
-                console.log(this.messages);
+//                console.log(this.messages);
                 
               var avatar = '../img/avatar/' + Math.floor(Math.random() * Math.floor(9)) + '.jpg'
 
