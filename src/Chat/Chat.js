@@ -46,8 +46,7 @@ class Chat extends Component {
   }
   
   
-  render() { 
-            
+  render(){  
       let data;
       if (this.state.loading) {
           data =
@@ -59,16 +58,17 @@ class Chat extends Component {
             </div> 
       } 
       else {
+        this.apiCallsToLambda.alive();     
         data =
                 <div>
                 <GridList cellHeight={250} spacing={1}>
                     <GridListTile>
-                       <Contacts className="Contacts" api={this.api} userMapping={this.userMapping}/>
+                       <Contacts className="Contacts" api={this.api} userMapping={this.chatUserMapping}/>
                        <GridListTileBar title={'Contacts'}/>
                     </GridListTile>
                     
                     <GridListTile>
-                        <ChatMessageList name="ChatMessageList" api={this.api} chatState={this.state} userMapping= {this.userMapping}/>
+                        <ChatMessageList name="ChatMessageList" api={this.api} chatState={this.state} userMapping={this.chatUserMapping}/>
                     </GridListTile>
                 
                     <GridListTile>

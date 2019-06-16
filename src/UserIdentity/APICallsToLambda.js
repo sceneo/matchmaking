@@ -4,6 +4,7 @@ class APICallsToLambda{
         this.url_lambdaAuth = 'https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/Prod/MatchMakingAuth';
         this.primaryUserDetails = [];
         this.secondaryUserDetails = [];
+        this.listOfOnlineUsers = '';
     }
     
     getPrimaryUserDetails(){
@@ -12,6 +13,10 @@ class APICallsToLambda{
     
     getSecondaryUserDetails(){
         return this.secondaryUserDetails;
+    }
+    
+    getListOfOnlineUsers(){
+        return this.listOfOnlineUsers;
     }
     
     
@@ -68,6 +73,49 @@ class APICallsToLambda{
             console.log('Request failed', error);
           });
         
+    }
+    async requestListOfOnlineUsers() {
+        var response = "";
+        var details = {
+                usecase: 'listOnline',
+        }
+        
+        await fetch(this.url_lambdaAuth,{
+            headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers":"*",
+            "Content-type": "application/json; utf-8"
+            },
+            method: 'post',
+            mode: 'cors',
+            body: JSON.stringify(details)
+          })
+          .then(response => response.json())
+          .then(data => {
+              this.listOfOnlineUsers = data;
+          })
+          
+          .catch(function (error) {
+            console.log('Request failed', error);
+          });
+    }
+    
+    alive(){
+        var details = {
+                usecase: 'alive',
+                email: this.primaryUserDetails.email
+        }
+        
+        fetch(this.url_lambdaAuth,{
+            headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers":"*",
+            "Content-type": "application/json; utf-8"
+            },
+            method: 'post',
+            mode: 'cors',
+            body: JSON.stringify(details)
+          })
     }
 }
 export default APICallsToLambda;

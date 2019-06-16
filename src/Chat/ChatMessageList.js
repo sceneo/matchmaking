@@ -12,6 +12,7 @@ class ChatMessageList extends React.Component {
         super(props);
         this.api = this.props.api;
         this.messages = this.api.getLobbyMessages();
+        this.userMapping = this.props.userMapping;
         this.state = this.props.chatState;
     }
     
@@ -26,9 +27,17 @@ class ChatMessageList extends React.Component {
 
     }
     
+    getKey(){
+        return Math.random();
+    }
+    
     async refresh(){
         await this.api.requestMessagesFromRoom();
         this.render();
+    }
+    
+    getAvatar(username){
+        return this.userMapping.getUserByUsername(username).matchMakingDetails.avatar;
     }
     
         
@@ -36,17 +45,12 @@ class ChatMessageList extends React.Component {
         
         return (
           <List dense className='MessageList'>
-            {this.messages.map(value => {
-//                console.log(this.messages);
-                
-              var avatar = '../img/avatar/' + Math.floor(Math.random() * Math.floor(9)) + '.jpg'
-
-                
+            {this.messages.map(value => {                              
               return (
                            
-                      <ListItem alignItems="flex-start">
+                      <ListItem key={this.getKey()} alignItems="flex-start">
                       <ListItemAvatar>
-                          <Avatar src={require('../img/avatar/' + Math.floor(Math.random() * Math.floor(10)) + '.jpg')}/>
+                          <Avatar src={require('../img/avatar/' + this.getAvatar(value.user_id) +  '.jpg')}/>
                       </ListItemAvatar>
                       <ListItemText
                         primary={value.parts[0].content}

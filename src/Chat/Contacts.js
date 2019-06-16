@@ -8,12 +8,19 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Checkbox from '@material-ui/core/Checkbox';
 import Avatar from '@material-ui/core/Avatar';
 
-
 class Contacts extends React.Component {
     constructor(props){
         super(props);
         this.api = this.props.api;
+        this.userMapping = this.props.userMapping;
         
+    }
+    
+    getStatus(username){
+        if(this.userMapping.getUserByUsername(username).isOnline) {
+            return 'online';
+        }       
+        return 'offline';
     }
 
 
@@ -21,13 +28,16 @@ class Contacts extends React.Component {
     
         return (
           <List dense className='ContactList'>
-          {this.api.getUsers().map(value => {                
+          {this.userMapping.getUserInventory().map(value => {
               return (
-                <ListItem key={value.name} button>
+                <ListItem key={value.matchMakingDetails.username} button>
                   <ListItemAvatar>
-                      <Avatar src={require('../img/avatar/' + Math.floor(Math.random() * Math.floor(10)) + '.jpg')}/>
+                      <Avatar src={require('../img/avatar/' + value.matchMakingDetails.avatar + '.jpg')}/>
                   </ListItemAvatar>
-                  <ListItemText primary={value.name} />
+                  <ListItemText primary={value.matchMakingDetails.username} />
+                  <ListItemAvatar>
+                      <Avatar  src={require('../img/status/' + this.getStatus(value.matchMakingDetails.username) + '.png')}/>
+                  </ListItemAvatar>
                 </ListItem>
               );
             })}

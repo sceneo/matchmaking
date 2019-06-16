@@ -4,16 +4,13 @@ import random
 import string
 import os
 import io
+import time
 import boto3
 from symbol import except_clause
 from getpass import getuser
 
 #note: this is not state of the art authentication. This just illustrates the 
 #usage of a lambda function to provide simple information
-
-#list of online users, separated by ';'
-onlineUsers = ''
-
 def response(message, status_code):
     return {
         'statusCode': str(status_code),
@@ -49,25 +46,12 @@ def getUsersFromS3():
     return users
 
 def isOnline(email):
-    global onlineUsers
-    if(email in onlineUsers):
-        print('User already exists')
-    else:
-        onlineUsers += ';' + email
-        
-def isOffline(email):
-    global onlineUsers
-    onlineUsers = onlineUsers.replace(';' + email, '')
-    
-def getOnlineList():
-    global onlineUsers
-    return onlineUsers
+    updateStatusOnS3(email)
 
 def updateUserListOnS3(newUser):
     bucket_name = "matchmaking.data"
     file_name = "users.csv"
     s3 = boto3.resource("s3")
-    
     #recreate old file 
     header="title,firstname,lastname,gender,company,industry,functionality,city,country,type,email,username,password,whitelist,blacklist,avatar\n"
     
@@ -80,7 +64,6 @@ def updateUserListOnS3(newUser):
     line = newUser['title'] + "," + newUser['firstName'] + "," + newUser['lastName'] + "," + newUser['gender'] + "," + newUser['company'] + "," + newUser['industry'] + "," + newUser['functionality'] + "," + newUser['city'] + "," + newUser['country'] + "," + newUser['type'] + "," + newUser['email'] + "," + newUser['username'] + "," + newUser['password'] + '' + ',' + '' + ',' + str(random.randint(0,15)) + '\n'
     body = body + line
     # add a new user
-    
     s3.Bucket(bucket_name).put_object(Key=file_name, Body=body)
     
 def createPassword(pwLength=10):
@@ -126,7 +109,40 @@ def getUserByUsername(username):
         if username == user['username']:
             return user    
     
+def getStatusFromS3():
+    s3 = boto3.resource(u's3')
+    bucket = s3.Bucket(u'matchmaking.data')
+    obj = bucket.Object(key=u'status.csv')
+    response = obj.get()
+    status = csv.DictReader(response[u'Body'].read().decode('utf-8').split())
+    return status
 
+def updateStatusOnS3(email):
+    bucket_name = "matchmaking.data"
+    file_name = "status.csv"
+    s3 = boto3.resource("s3")
+    #recreate old file 
+    header="email,timestamp\n"
+    body = header
+    status = getStatusFromS3();
+    for row in status:
+        if(time.time() - float(row['timestamp']) < 300):
+            line = row['email'] + "," + row['timestamp'] + '\n'
+            body = body + line
+    
+    line = email + ',' + str(time.time()) + '\n'
+    body = body + line
+    s3.Bucket(bucket_name).put_object(Key=file_name, Body=body)
+
+def getOnlineList():
+    status = getStatusFromS3()
+    onlineUsers = ''
+    for row in status:
+        if(time.time() - float(row['timestamp']) < 300):
+            if row['email'] not in onlineUsers:
+                onlineUsers += row['email'] + ';'
+    return onlineUsers
+                
 ## This is the basic handling function which is called first
 def auth(event, context):
     # URL is called via simple POST
@@ -148,7 +164,6 @@ def auth(event, context):
 
     if(body['usecase'] == 'logout'):
         email = body['email']       
-        isOffline(email)
         return response('Logout successfull',200)
 
     if(body['usecase'] == 'isOnline'):
@@ -173,14 +188,16 @@ def auth(event, context):
         updateUserListOnS3(body)
         return response('created',200)
 
+    if(body['usecase'] == 'alive'):
+        email = body['email']
+        isOnline(email)
+        return response('updated',200)
           
     return response('Lambda available, no usecase selected',200)
 
 if __name__ == '__main__':
-    getUsersFromS3()
-    checkUser('kunztobias@gmx.de', 'test')
-    checkUser('felix@kammerlander.de','testtest')
-    checkUser('kunztobias@gmx.de','falschesPasswort')
-    checkUser('falscherName@gmx.de','ein passwort')
+    checkUser('lea.reckhord@gmail.de','lea')
     
-
+    isOnline('testbert')
+    isOnline('gnuffbert')
+    print(getOnlineList())
