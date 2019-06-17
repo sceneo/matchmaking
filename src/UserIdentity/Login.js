@@ -64,8 +64,6 @@ class Login extends Component {
   
    
   async login(){     
-     
-      var response = "";
       this.setState({
           usecase: "auth"
       })

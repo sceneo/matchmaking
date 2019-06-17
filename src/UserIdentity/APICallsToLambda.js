@@ -47,7 +47,6 @@ class APICallsToLambda{
     }
     
     async getUserDetailsByUsername(usernameidentifier = ''){     
-        var response = "";
         var details = {
                 usecase: 'detailsByUsername',
                 username: usernameidentifier
@@ -74,7 +73,6 @@ class APICallsToLambda{
         
     }
     async requestListOfOnlineUsers() {
-        var response = "";
         var details = {
                 usecase: 'listOnline',
         }

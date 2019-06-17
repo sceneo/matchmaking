@@ -14,6 +14,7 @@ class APICallsToChatkit {
        this.users = [];
        this.lobbyMessages = [];
        this.currentChannel = '19865469';
+       this.currentUser = 'MatchMaking';
    }
    
    getLobbyMessages(){
@@ -24,22 +25,24 @@ class APICallsToChatkit {
        return this.users;
    }
    
+   getCurrentUser(){
+       return this.currrentUser;
+   }
+   
    print(){
        console.log(this.authorization)
        console.log(this.users);
+       console.log(this.currentUser);
    }
    
    async initialize(){
        await this.getToken('MatchMaking',true);              
        await this.requestUsers();
        await this.requestLobbyMessages();
-       
-       
-//       this.addUser('tobi', 'tobias', 'kunz', 'bla@gmx,de', '666');
    }
    
    async loginAs(username='') {
-       console.log(username)
+       this.currentUser = username;
        await this.getToken(username,false);
    }
       
@@ -49,10 +52,8 @@ class APICallsToChatkit {
        obj.user_id = userId;
        obj.su = su;
        
-        
        var json;
        let response = await new Promise(resolve => {
-
            var xhr = new XMLHttpRequest();
            xhr.open("POST", this.tokenProvider, true);
            xhr.setRequestHeader("Content-Type", "application/json");

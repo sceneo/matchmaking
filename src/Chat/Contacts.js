@@ -1,10 +1,8 @@
 import React from "react";
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Checkbox from '@material-ui/core/Checkbox';
 import Avatar from '@material-ui/core/Avatar';
 
 class Contacts extends React.Component {
@@ -21,15 +19,18 @@ class Contacts extends React.Component {
         }       
         return 'offline';
     }
-
-
+    
+    changeRoom(username){
+        console.log(username);
+    }
+    
     render() {
     
         return (
           <List dense className='ContactList'>
           {this.userMapping.getUserInventory().map(value => {
               return (
-                <ListItem key={value.matchMakingDetails.username} button>
+                <ListItem onClick={() => this.changeRoom(value.matchMakingDetails.username)} key={value.matchMakingDetails.username} button>
                   <ListItemAvatar>
                       <Avatar src={require('../img/avatar/' + value.matchMakingDetails.avatar + '.jpg')}/>
                   </ListItemAvatar>
