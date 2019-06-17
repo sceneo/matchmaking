@@ -42,29 +42,6 @@ class ChatUserMapping {
        return this.userInventory.find(details => details.matchMakingDetails.username == username)
    }
    
-   getUserByEmail(email){
-       for(var user in this.userInventory) {
-           if(email == user.matchMakingDetails.email) {
-               return user;
-           }
-       }
-   }
    
-   getFriendsByEmail(email){
-       var primary = this.getUserByEmail(email);
-       if(primary == null) {
-           return null;
-       }
-       
-       var friendsInString = primary.matchMakingDetails.whitelist;
-       // create array from string (whitelist is separated by ';')
-       
-       
-       // create an array with users in this array
-       
-       
-       // return the list of friends
-       
-   }
 }
 export default ChatUserMapping;

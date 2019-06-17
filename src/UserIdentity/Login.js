@@ -12,7 +12,8 @@ class Login extends Component {
       email: "",
       password: "",
       usecase: "auth",
-      enableButton: false
+      enableButton: false,
+      statusMessage: ""
     };
     this.url = 'https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/Prod/MatchMakingAuth';
     
@@ -85,10 +86,14 @@ class Login extends Component {
                 this.props.apiCallsToLambda.getUserDetailsByEmail(this.state.email);
                 this.auth(true, this.state.email); 
             }
-            console.log(data)     
+            else {
+                this.setState({
+                    statusMessage: "Wrong credentials."
+                })
+            }
         })
         .catch(function (error) {
-          console.log('Request failed', error);
+            console.log(error)
         });       
   }
    
@@ -100,6 +105,9 @@ class Login extends Component {
               Welcome to the Messe München Community Chat!
           </p>
       
+          <p className="StatusMessage">
+              {this.state.statusMessage}
+          </p>
           <Form onSubmit={this.handleSubmit}>
             <Form.Group className="Entry" controlId="email">
               <Form.Label></Form.Label>

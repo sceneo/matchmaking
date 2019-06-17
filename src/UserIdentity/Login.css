@@ -29,6 +29,18 @@
       top: 15px;
       left: 10px;
     }
+    
+    .StatusMessage {
+        color: red;
+        letter-spacing: 0px;
+        line-height: 0.8;
+        text-align: left;
+        vertical-align: center;
+        margin: 0 0.9em 1.3em;
+        position: relative;
+        top: 38px;
+        left: 310px;
+      }
 
     .Entry {
       position: relative;
