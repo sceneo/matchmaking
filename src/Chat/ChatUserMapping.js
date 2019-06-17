@@ -39,7 +39,7 @@ class ChatUserMapping {
    
 
    getUserByUsername(username){
-       return this.userInventory.find(details => details.matchMakingDetails.username == username)
+       return this.userInventory.find(details => details.matchMakingDetails.username === username)
    }
    
    

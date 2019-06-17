@@ -21,7 +21,6 @@ class APICallsToLambda{
     
     
     async getUserDetailsByEmail(emailidentifier = ''){     
-        var response = "";
         var details = {
                 usecase: 'detailsByEmail',
                 email: emailidentifier
