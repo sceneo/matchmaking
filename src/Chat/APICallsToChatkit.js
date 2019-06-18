@@ -12,17 +12,41 @@ class APICallsToChatkit {
        this.tokenProvider = 'https://us1.pusherplatform.io/services/chatkit_token_provider/v1/8a1e4d4b-5933-473f-bd5d-d4893859ffcd/token';
        this.authorization = [];
        this.users = [];
-       this.lobbyMessages = [];
+       this.roomMessages = [];
+       this.userRooms = [];
        this.currentChannel = '19865469';
        this.currentUser = 'MatchMaking';
+       this.newestRoomId = '';
+       this.newestRoomName = '';
    }
    
-   getLobbyMessages(){
-       return this.lobbyMessages;
+   getNewestRoomName(){
+       return this.newestRoomName;
+   }
+   
+   getNewestRoomId(){
+       return this.newestRoomId;
+   }
+   
+   getCurrentChannel(){
+       return this.currentChannel;
+   }
+   
+   async setCurrentChannel(channel){
+       this.currentChannel = channel;
+       await this.requestMessagesFromRoom(this.currentChannel);
+   }
+   
+   getRoomMessages(){
+       return this.roomMessages;
    }
    
    getUsers(){
        return this.users;
+   }
+   
+   getUserRooms(){
+       return this.userRooms;
    }
    
    getCurrentUser(){
@@ -38,7 +62,7 @@ class APICallsToChatkit {
    async initialize(){
        await this.getToken('MatchMaking',true);              
        await this.requestUsers();
-       await this.requestLobbyMessages();
+       await this.requestMessagesFromRoom(this.currentRoom);
    }
    
    async loginAs(username='') {
@@ -117,8 +141,40 @@ class APICallsToChatkit {
          this.users = json;
    }
    
-   async requestLobbyMessages() {
-       await this.requestMessagesFromRoom('19865469');
+   async requestUserRooms() {
+       await fetch(this.api + '/users/' + this.currentUser + '/rooms' ,{
+       method: 'get',
+       headers: {
+         "Content-type": "application/json; charset=UTF-8",
+         "Authorization": "Bearer " + this.authorization.access_token
+       }
+     })
+     .then(response => response.json())
+     .then(data => {
+        this.userRooms = data;
+     })
+     .catch(function (error) {
+       console.log('Request failed', error);
+     });
+   }
+   
+   async submitMessage(message='', roomId=this.currentChannel) {
+       await fetch(this.api + '/rooms/' + roomId + '/messages' ,{
+       method: 'post',
+       headers: {
+         "Content-type": "application/json; charset=UTF-8",
+         "Authorization": "Bearer " + this.authorization.access_token
+       },
+       body: JSON.stringify({
+           "parts": [{ "type": "text/plain",
+                       "content": message
+                     }]
+       })
+     })
+     .then(response => response.json())
+     .catch(function (error) {
+       console.log('Request failed', error);
+     });
    }
    
    
@@ -138,29 +194,30 @@ class APICallsToChatkit {
      .catch(function (error) {
        console.log('Request failed', error);
      });
-     this.lobbyMessages = json;
+     this.roomMessages = json;
    }
    
-   async submitMessage(message='', roomId=this.currentChannel) {
-       await fetch(this.api + '/rooms/' + roomId + '/messages' ,{
-       method: 'post',
-       headers: {
-         "Content-type": "application/json; charset=UTF-8",
-         "Authorization": "Bearer " + this.authorization.access_token
-       },
-       body: JSON.stringify({
-           "parts": [{ "type": "text/plain",
-                       "content": message
-                     }]
-       })
-     })
-     .then(response => response.json())
-     .then(data => {
-        console.log(data)
-     })
-     .catch(function (error) {
-       console.log('Request failed', error);
-     });
+   async requestNewPrivateRoom(username) {
+       await fetch(this.api + '/rooms' ,{
+           method: 'post',
+           headers: {
+             "Content-type": "application/json; charset=UTF-8",
+             "Authorization": "Bearer " + this.authorization.access_token
+           },
+           body: JSON.stringify({
+               "name": "1-1_"+this.currentUser+"_"+username,
+               "private": true,
+               "user_ids": [this.currentUser,username]
+
+           })
+         })
+         .then(response => response.json())
+         .then(data => {
+            console.log(data)
+         })
+         .catch(function (error) {
+           console.log('Request failed', error);
+         });
    }
 }
 

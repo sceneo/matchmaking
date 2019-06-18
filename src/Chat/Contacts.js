@@ -5,12 +5,13 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 
+
 class Contacts extends React.Component {
     constructor(props){
         super(props);
         this.api = this.props.api;
         this.userMapping = this.props.userMapping;
-        
+        this.callbackChangeRoom = this.props.callbackChangeRoom;
     }
     
     getStatus(username){
@@ -21,7 +22,7 @@ class Contacts extends React.Component {
     }
     
     changeRoom(username){
-        console.log(username);
+        this.callbackChangeRoom(username);
     }
     
     render() {

@@ -9,13 +9,13 @@ class ChatMessageList extends React.Component {
     constructor(props){
         super(props);
         this.api = this.props.api;
-        this.messages = this.api.getLobbyMessages();
+        this.messages = this.api.getRoomMessages();
         this.userMapping = this.props.userMapping;
         this.state = this.props.chatState;
     }
     
     componentWillReceiveProps(nextProps){
-        this.messages = this.api.getLobbyMessages();
+        this.messages = this.api.getRoomMessages();
         this.forceUpdate();
         this.setState(nextProps.chatState);
     }
@@ -37,7 +37,6 @@ class ChatMessageList extends React.Component {
     getAvatar(username){
         return this.userMapping.getUserByUsername(username).matchMakingDetails.avatar;
     }
-    
         
     render() {       
         
