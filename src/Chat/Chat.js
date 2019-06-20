@@ -9,8 +9,8 @@ import APICallsToChatkit from './APICallsToChatkit.js'
 import ChatUserMapping from './ChatUserMapping.js'
 import RoomHandler from './RoomHandler.js'
 import ClipLoader from 'react-spinners/ClipLoader';
+import { Segment } from 'semantic-ui-react';
 import './Chat.css';
-
 
 class Chat extends Component {
   constructor(props) {
@@ -54,37 +54,45 @@ class Chat extends Component {
   } 
   
   
+
+  
+  
   render(){  
       let data;
       if (this.state.loading) {
           data =
                  <div className='sweet-loading'>
-                      <ClipLoader
-                      sizeUnit={"px"}
-                      size={150}
-                      color={'#123abc'} />
-            </div> 
+                      <ClipLoader sizeUnit={"px"} size={50} color={'#123abc'} />
+                 </div> 
       } 
       else {
         this.apiCallsToLambda.alive();     
         data =
-                <div>
-                <GridList cellHeight={250} spacing={1}>
-                    <GridListTile>
-                       <Contacts className="Contacts" callbackChangeRoom={this.callbackChangeRoom} api={this.api} userMapping={this.chatUserMapping}/>
+               <div>
+                <Segment.Group horizontal>
+                  <Segment raised style={{ overflow: 'auto', maxHeight: '27em' }}>
+                   <GridListTile style={{overflow: 'auto'}}>
                        <GridListTileBar title={'Contacts'}/>
-                    </GridListTile>
-                    
-                    <GridListTile>
-                        <ChatMessageList name="ChatMessageList" api={this.api} chatState={this.state} userMapping={this.chatUserMapping}/>
-                    </GridListTile>
-                
-                    <GridListTile>
-                        <SendMessageForm className="SendMessageForm" api={this.api} callbackRefresh={this.callbackRefresh}/>
-                    </GridListTile>
-                    
-                </GridList>
-      </div>
+                       <Contacts className="Contacts" callbackChangeRoom={this.callbackChangeRoom} api={this.api} userMapping={this.chatUserMapping}/>
+                   </GridListTile> 
+                  </Segment> 
+                   <Segment.Group vertical>
+                       <Segment raised style={{ overflow: 'auto', maxHeight: '27em' }}>
+                           <GridListTile style={{overflow: 'hidden', maxHeight: 300 }}>
+                               <ChatMessageList name="ChatMessageList" api={this.api} chatState={this.state} userMapping={this.chatUserMapping}/>     
+                           </GridListTile>
+                       </Segment>
+                       <Segment>
+                           <SendMessageForm className="SendMessageForm" api={this.api} callbackRefresh={this.callbackRefresh}/>
+                       </Segment>
+                   </Segment.Group>
+                </Segment.Group>
+                                
+                        
+
+  
+                                
+               </div>
       }
                 
                 

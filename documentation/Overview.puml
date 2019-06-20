@@ -3,9 +3,11 @@
 cloud "AWS" {
 	
 	component "API Gateway" as api
-	
-	package "DynamoDB" {
+		
+	package "S3" {
+		component "Web Frontend" as web
 		database "User\nDatabaseusers.csv" as db
+
 	}
 	
 	package "Lambda" {
@@ -20,16 +22,14 @@ cloud "AWS" {
 	analytics -- trans
 }
 
-package "Frontend" {
-	component "Web Frontend" as web
 
-}
-
-package "Sendbird" {
-	component "API" as apisendbird
-	component "Backend" as backend
-	
-	backend -u- apisendbird
+cloud external{
+	package "Chatkit" {
+		component "API" as apisendbird
+		component "Backend" as backend
+		
+		backend -u- apisendbird
+	}
 }
 
 

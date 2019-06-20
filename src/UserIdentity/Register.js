@@ -40,7 +40,7 @@ class Register extends Component {
     }
     
     async callToAws() {
-        await fetch(this.url + '?usecase=register' ,{
+        await fetch(this.url ,{
         method: 'post',
         headers: {
           "Content-type": "application/json; charset=UTF-8"

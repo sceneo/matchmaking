@@ -1,5 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
+.pydevproject
 # dependencies
 /node_modules
 /.pnp
@@ -34,4 +34,6 @@ lambda/key.py
 .env
 deploy.env
 event.json
+.pydevproject
 .lambda
+

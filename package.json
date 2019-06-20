@@ -26,7 +26,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "pack": "npm-pack-zip"
+    "pack": "npm-pack-zip",
+    "deploy": "aws s3 sync build/ s3://matchmaking.site"
   },
   "eslintConfig": {
     "extends": "react-app"

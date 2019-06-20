@@ -208,7 +208,6 @@ class APICallsToChatkit {
                "name": "1-1_"+this.currentUser+"_"+username,
                "private": true,
                "user_ids": [this.currentUser,username]
-
            })
          })
          .then(response => response.json())

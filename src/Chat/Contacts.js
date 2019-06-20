@@ -31,7 +31,7 @@ class Contacts extends React.Component {
           <List dense className='ContactList'>
           {this.userMapping.getUserInventory().map(value => {
               return (
-                <ListItem onClick={() => this.changeRoom(value.matchMakingDetails.username)} key={value.matchMakingDetails.username} button>
+                <ListItem style={{overflow: 'auto'}}  onClick={() => this.changeRoom(value.matchMakingDetails.username)} key={value.matchMakingDetails.username} button>
                   <ListItemAvatar>
                       <Avatar src={require('../img/avatar/' + value.matchMakingDetails.avatar + '.jpg')}/>
                   </ListItemAvatar>
