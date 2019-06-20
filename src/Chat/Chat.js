@@ -12,6 +12,7 @@ import ClipLoader from 'react-spinners/ClipLoader';
 import { Segment } from 'semantic-ui-react';
 import './Chat.css';
 
+
 class Chat extends Component {
   constructor(props) {
       super(props)
@@ -54,7 +55,10 @@ class Chat extends Component {
   } 
   
   
-
+  scrollToBottom() {
+      var objDiv = document.getElementById("messages");
+      objDiv.scrollTop = objDiv.scrollHeight;
+  }
   
   
   render(){  
@@ -69,22 +73,25 @@ class Chat extends Component {
         this.apiCallsToLambda.alive();     
         data =
                <div>
-                <Segment.Group horizontal>
-                  <Segment raised style={{ overflow: 'auto', maxHeight: '27em' }}>
-                   <GridListTile style={{overflow: 'auto'}}>
-                       <GridListTileBar title={'Contacts'}/>
+                <Segment.Group horizontal borderless class="ui borderless menu">
+                  <Segment.Group vertical>
+                    <GridListTileBar actionPosition="right" titlePosition="top" title={'Contacts'}/>
+                    <Segment basic borderless style={{ lineWidth: 0, overflow: 'auto', maxHeight: '35em', width: '25em', border: '0px' }}>
+                      <GridListTile style={{overflow: 'auto'}}>
                        <Contacts className="Contacts" callbackChangeRoom={this.callbackChangeRoom} api={this.api} userMapping={this.chatUserMapping}/>
-                   </GridListTile> 
-                  </Segment> 
-                   <Segment.Group vertical>
-                       <Segment raised style={{ overflow: 'auto', maxHeight: '27em' }}>
-                           <GridListTile style={{overflow: 'hidden', maxHeight: 300 }}>
-                               <ChatMessageList name="ChatMessageList" api={this.api} chatState={this.state} userMapping={this.chatUserMapping}/>     
+                      </GridListTile> 
+                    </Segment>
+                  </Segment.Group>
+                  <Segment.Group vertical>
+                    <Segment basic borderless style={{lineWidth: 0, height: '31em', width: '30em', border: '0px' }}>
+                      <GridListTileBar actionPosition="right" titlePosition="top" title={'Messages'}/>   
+                      <GridListTile name="messages" scrollHeight style={{lineWidth: 0, overflow: 'auto', maxHeight: '31em' }}>
+                        <ChatMessageList name="ChatMessageList" api={this.api} chatState={this.state} userMapping={this.chatUserMapping}/>     
                            </GridListTile>
-                       </Segment>
-                       <Segment>
-                           <SendMessageForm className="SendMessageForm" api={this.api} callbackRefresh={this.callbackRefresh}/>
-                       </Segment>
+                    </Segment>
+                    <Segment>
+                        <SendMessageForm className="SendMessageForm" api={this.api} callbackRefresh={this.callbackRefresh}/>
+                    </Segment>
                    </Segment.Group>
                 </Segment.Group>
                                 

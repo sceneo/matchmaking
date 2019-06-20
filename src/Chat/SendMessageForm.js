@@ -1,4 +1,5 @@
 import React from "react";
+import Button from '@material-ui/core/Button';
 
 class SendMessageForm extends React.Component {
     constructor( props ) {
@@ -29,7 +30,7 @@ class SendMessageForm extends React.Component {
     }
     
     async submit() {
-    
+        
     }
     
     render() {
@@ -40,8 +41,10 @@ class SendMessageForm extends React.Component {
                 <input
                     onChange={this.handleChange}
                     value={this.state.message}
-                    placeholder="Type your message and hit ENTER"
+                    placeholder="Your message here"
                     type="text" />
+                
+                <Button onClick={this.handleSubmit}> submit </Button>
             </form>
         )
     }

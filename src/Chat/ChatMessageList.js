@@ -40,9 +40,11 @@ class ChatMessageList extends React.Component {
         
     render() {       
         
+        
+        
         return (
           <List dense className='MessageList'>
-            {this.messages.map(value => {                              
+            {this.messages.reverse().map(value => {                              
               return (
                            
                       <ListItem key={this.getKey()} alignItems="flex-start">
