@@ -18,17 +18,23 @@ function deploy {
 	echo "Deployment of $selectedLambda starting."
 	echo 'upload to aws'
 	lambda=""
+	sourceFile=""
 	if [ "$selectedLambda" = "auth" ]; then
 		lambda="MatchMakingAuth"
-        elif [ "$selectedLambda" = "analytics" ]; then
-                lambda="MatchMakingAnalytics"
-        elif [ "$selectedLambda" = "matchme" ]; then
-                lambda="MatchMakingMatchMe"
-        fi
+		sourceFile="Lambda_Auth.py"
+    elif [ "$selectedLambda" = "analytics" ]; then
+        lambda="MatchMakingAnalytics"
+        sourceFile="Lambda_Analytics.py"
+    elif [ "$selectedLambda" = "matchme" ]; then
+        lambda="MatchMakingMatchMe"
+		sourceFile="Lambda_MatchMe.py"
+    fi
+        
 	build_dir=$(pwd)
 	package_dir=$(mktemp -d)
-
-	pip3.7 install -rrequirements.txt -t src/
+#	pip3.7 install -rrequirements.txt -t src/
+	cp ${sourceFile} src/
+	
 	cp -r src/* ${package_dir}
 	pushd ${package_dir}
 	zip -r ${build_dir}/lambda.zip *
@@ -37,7 +43,7 @@ function deploy {
 	echo "deploying to AWS: ${lambda}"
 	aws lambda update-function-code --function-name $lambda --region eu-west-1 --zip-file fileb://lambda.zip
 	echo "cleaning up"
-	rm -f lambda.zip
+#	rm -f lambda.zip
 }
 
 function error_notFound {
@@ -96,7 +102,7 @@ if [ "$selectedLambda" = "ALL" ]; then
     		esac
 	done	
 else
-	./build.sh
+#	./build.sh
 	deploy
 fi
 

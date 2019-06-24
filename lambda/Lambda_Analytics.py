@@ -20,17 +20,12 @@ def response(message, status_code):
             'Access-Control-Allow-Origin': '*'
             },
         }
+
     
 ## This is the basic handling function which is called first
 def analytics(event, context):
-    # URL is called via simple GET
-    # https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/default/MatchMakingAnalytics
-    # directly followed by a '?' and the parameters, separated by '&'
-    
-    # the usecase defines the following parameters:
-    #?usecase=auth&email=ABCD@test.com&password=ABCDt
-    userId1 = event['queryStringParameters']['userId1']
-    userId2 = event['queryStringParameters']['userId2']
+
+#https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/Prod/MatchMakingAnalytics
     matchingAccepted = event['queryStringParameters']['matchingAccepted']
     
     
