@@ -32,10 +32,12 @@ class App extends React.Component {
         this.callbackBackToLogin = this.callbackBackToLogin.bind(this);
 
         this.matchHandler = new MatchHandler();
-
+        this.matchHandler.setApi(this.apiCallsToLambda);
+        
         this.handleMatchMeShowClick = this.handleMatchMeShowClick.bind(this);
         this.handleMatchMeHide = this.handleMatchMeHide.bind(this);
-
+        
+        
         this.swipeLeftCallback = this.swipeLeftCallback.bind(this);
         this.swipeRightCallback = this.swipeRightCallback.bind(this);
 
@@ -56,7 +58,7 @@ class App extends React.Component {
         if (status === true) {
             // retrieve recommendation list
             this.userDetails = await this.apiCallsToLambda.getUserDetailsByEmail(user);
-            this.matchHandler.setUserId(user);
+            this.matchHandler.setUserId(user['secretId']);
             await this.matchHandler.retrieveRecommendationList();
             recData = this.matchHandler.getRecommendation();
         }

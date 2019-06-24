@@ -43,7 +43,8 @@ function deploy {
 	echo "deploying to AWS: ${lambda}"
 	aws lambda update-function-code --function-name $lambda --region eu-west-1 --zip-file fileb://lambda.zip
 	echo "cleaning up"
-#	rm -f lambda.zip
+	rm -f lambda.zip
+	rm -rf src/Lambda*
 }
 
 function error_notFound {
@@ -92,7 +93,7 @@ if [ "$selectedLambda" = "ALL" ]; then
 			for i in "${lambdas[@]}"; do
 				selectedLambda=$i		
 				if [ "$selectedLambda" != "ALL" ]; then	
-					./build.sh			
+#					./build.sh			
 					deploy;
 				fi
  			done

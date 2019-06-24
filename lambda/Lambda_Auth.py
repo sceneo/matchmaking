@@ -65,6 +65,37 @@ def updateUserListOnS3(newUser):
     body = body + line
     # add a new user
     s3.Bucket(bucket_name).put_object(Key=file_name, Body=body)
+
+def addToList(email, candidateId, listname):
+    bucket_name = "matchmaking.data"
+    file_name = "users.csv"
+    s3 = boto3.resource("s3")
+    
+    candidate = getUserBySecretId(candidateId)
+    
+    #recreate old file 
+    header="title,firstname,lastname,gender,company,industry,functionality,city,country,type,email,username,password,whitelist,blacklist,avatar\n"
+    body = header
+    users = getUsersFromS3()
+    for row in users:
+        if(row['secretId'] == 1):
+            continue;
+        listing = row[listname]
+        if(email == row['email']):
+            if(candidate == None):
+                print('No candidate found!')
+                break
+            if(candidate['email'] in listing):
+                print("already in list")
+            else:
+                 listing = row[listname] + ';' + candidate['email']        
+        if(listname in 'whitelist' ):
+            line = row['title'] + "," + row['firstname'] + "," + row['lastname'] + "," + row['gender'] + "," + row['company'] + "," + row['industry'] + "," + row['functionality'] + "," + row['city'] + "," + row['country'] + "," + row['type'] + "," + row['email'] + "," + row['username'] + "," + row['password'] + ','+ listing + ',' + row['blacklist'] + ',' + row['avatar'] + '\n'
+        else:
+            line = row['title'] + "," + row['firstname'] + "," + row['lastname'] + "," + row['gender'] + "," + row['company'] + "," + row['industry'] + "," + row['functionality'] + "," + row['city'] + "," + row['country'] + "," + row['type'] + "," + row['email'] + "," + row['username'] + "," + row['password'] + ',' + row['whitelist'] + ',' + listing + ',' + row['avatar'] + '\n'
+        body = body + line
+    # add a new user
+#    s3.Bucket(bucket_name).put_object(Key=file_name, Body=body)
      
 def createPassword(pwLength=10):
     letters = string.ascii_lowercase
@@ -107,7 +138,15 @@ def getUserByUsername(username):
     users = getUsersFromS3()
     for user in users:
         if username == user['username']:
-            return user    
+            return user
+        
+def getUserBySecretId(secretId):
+    secretId = str(secretId)
+    users = getUsersFromS3()
+    for user in users:
+        if secretId == user['secretId']:
+            return user
+    print('SecretId not found!')
      
 def getStatusFromS3():
     s3 = boto3.resource(u's3')
@@ -179,7 +218,11 @@ def auth(event, context):
  
     if(body['usecase'] == 'detailsByUsername'):
         username = body['username']  
-        return response(getUserByUsername(username),200)          
+        return response(getUserByUsername(username),200)  
+        
+    if(body['usecase'] == 'detailsBySecretId'):
+        secretId = body['secretId']  
+        return response(getUserBySecretId(secretId),200)      
  
  
     if(body['usecase'] == 'register'):
@@ -192,8 +235,21 @@ def auth(event, context):
         email = body['email']
         isOnline(email)
         return response('updated',200)
+
+    if(body['usecase'] == 'addToBlacklist'):
+        email = body['email']
+        blacklistCandidate = body['blacklistCandidate']
+        isOnline(email)
+        addToList(email, blacklistCandidate,'blacklist')
+ 
+    if(body['usecase'] == 'addToWhitelist'):
+        email = body['email']
+        whitelistCandidate = body['whitelistCandidate']
+        isOnline(email)
+        addTolist(email, whitelistCandidate,'whitelist')       
           
     return response('Lambda available, no usecase selected',200)
 
 if __name__ == '__main__':
     checkUser('lea.reckhord@gmail.de','lea')
+    addToList('lea.reckhord@gmail.de',7,'blacklist')

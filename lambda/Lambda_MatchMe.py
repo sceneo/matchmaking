@@ -3,13 +3,11 @@ import csv
 import random
 import string
 import os
-
-#note: this is not state of the art authentication. This just illustrates the 
-#usage of a lambda function to provide simple information
-
-#In the webcase:
-url = "https://s3-eu-west-1.amazonaws.com/matchmaking.data/users.csv"
-
+import ast
+import boto3
+import requests
+import httplib2 as http
+from wheel.util import utf8
 
 def response(message, status_code):
     return {
@@ -21,21 +19,38 @@ def response(message, status_code):
             },
         }
     
+def getUsersFromAnalytics():
+    response = requests.get('https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/Prod/MatchMakingAnalytics')
+    data = response.json()
+    data = eval(json.dumps(data))
+    return data
+    
+def getMatchingList(secretId):
+        #this should be replaced by a call to "Analytics"-Lambda
+    list = getUsersFromAnalytics()
+    sortedList = [];
+    for user in list:
+        if(secretId == user['secretId']):
+            continue
+        if(secretId == 1):
+            continue;
+        sortedList.append(user['secretId'])
+        
+
+    # do some sorting:
+    # currently it is only random
+    random.shuffle(sortedList) #shuffle method
+    return sortedList
+
 ## This is the basic handling function which is called first
 def matchme(event, context):
-    # URL is called via simple GET
-    # https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/default/MatchMakingMatchMe
-    # directly followed by a '?' and the parameters, separated by '&'
-    
-    # the usecase defines the following parameters:
-    #?usecase=auth&email=ABCD@test.com&password=ABCDt
-    userId = event['queryStringParameters']['userId']
-    
-    return response(json.dumps('Sortiere liste von userIds: bestMatching [1,3,2,1,2,3,5]'),200)
+    body = json.loads(event['body'])    
+    if(body['usecase'] == 'matchme'):
+        secretId = body['secretId']
+        userlist = getMatchingList(secretId)
+        return(userlist,200)
+        
+    return response('Lambda available, no usecase selected',200)
 
 if __name__ == '__main__':
-     url = 'users.csv'
-
-
-
-
+    print(getMatchingList('lea.reckhord@gmail.com'))

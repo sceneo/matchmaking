@@ -19,6 +19,49 @@ class APICallsToLambda{
         return this.listOfOnlineUsers;
     }
     
+    async addToBlacklist(candidate) {
+        var details = {
+                usecase: 'addToBlacklist',
+                email: this.primaryUserDetails.email,
+                blacklistCandidate: candidate,
+        }
+        await fetch(this.url_lambdaAuth,{
+            headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers":"*",
+            "Content-type": "application/json; utf-8"
+            },
+            method: 'post',
+            mode: 'cors',
+            body: JSON.stringify(details)
+          })
+          .then(response => response.json())          
+          .catch(function (error) {
+            console.log('Request failed', error);
+          });
+    }
+    
+    async addToWhitelist(candidate){
+        var details = {
+                usecase: 'addToWhitelist',
+                email: this.primaryUserDetails.email,
+                whitelistCandidate: candidate,
+        }
+        await fetch(this.url_lambdaAuth,{
+            headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers":"*",
+            "Content-type": "application/json; utf-8"
+            },
+            method: 'post',
+            mode: 'cors',
+            body: JSON.stringify(details)
+          })
+          .then(response => response.json())          
+          .catch(function (error) {
+            console.log('Request failed', error);
+          });
+    }
     
     async getUserDetailsByEmail(emailidentifier = ''){     
         var details = {
