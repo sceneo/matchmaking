@@ -36,4 +36,9 @@ deploy.env
 event.json
 .pydevproject
 .lambda
+LMUMatchMaking-0.1.0.tgz
+LMUMatchMaking.zip
+lambda/src/
+
+
 
