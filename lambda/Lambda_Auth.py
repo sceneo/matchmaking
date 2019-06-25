@@ -46,7 +46,10 @@ def getUsersFromS3():
     return users
  
 def isOnline(email):
-    updateStatusOnS3(email)
+    updateStatusOnS3(email, True)
+
+def isOffline(email):
+    updateStatusOnS3(email, False)
  
 def updateUserListOnS3(newUser):
     bucket_name = "matchmaking.data"
@@ -156,7 +159,7 @@ def getStatusFromS3():
     status = csv.DictReader(response[u'Body'].read().decode('utf-8').split())
     return status
  
-def updateStatusOnS3(email):
+def updateStatusOnS3(email, isOnline):
     bucket_name = "matchmaking.data"
     file_name = "status.csv"
     s3 = boto3.resource("s3")
@@ -166,11 +169,16 @@ def updateStatusOnS3(email):
     status = getStatusFromS3();
     for row in status:
         if(time.time() - float(row['timestamp']) < 300):
+            if(isOnline == False):
+                if(row['email'] == email):
+                    continue
             line = row['email'] + "," + row['timestamp'] + '\n'
             body = body + line
-     
-    line = email + ',' + str(time.time()) + '\n'
-    body = body + line
+    
+    if(isOnline == True): 
+        line = email + ',' + str(time.time()) + '\n'
+        body = body + line
+        
     s3.Bucket(bucket_name).put_object(Key=file_name, Body=body)
  
 def getOnlineList():
@@ -202,7 +210,8 @@ def auth(event, context):
         return response(getOnlineList(),200) 
  
     if(body['usecase'] == 'logout'):
-        email = body['email']       
+        email = body['email']
+        isOffline(email)
         return response('Logout successfull',200)
  
     if(body['usecase'] == 'isOnline'):
@@ -223,7 +232,6 @@ def auth(event, context):
     if(body['usecase'] == 'detailsBySecretId'):
         secretId = body['secretId']  
         return response(getUserBySecretId(secretId),200)      
- 
  
     if(body['usecase'] == 'register'):
         if(exists(body['email'])):
@@ -246,10 +254,13 @@ def auth(event, context):
         email = body['email']
         whitelistCandidate = body['whitelistCandidate']
         isOnline(email)
-        addTolist(email, whitelistCandidate,'whitelist')       
+        addTolist(email, whitelistCandidate,'whitelist')   
           
     return response('Lambda available, no usecase selected',200)
 
 if __name__ == '__main__':
     checkUser('lea.reckhord@gmail.de','lea')
-    addToList('lea.reckhord@gmail.de',7,'blacklist')
+    isOnline('lea.reckhord@gmail.de')
+    print(getOnlineList())
+    isOffline('lea.reckhord@gmail.de')
+    print(getOnlineList())

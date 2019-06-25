@@ -63,6 +63,28 @@ class APICallsToLambda{
           });
     }
     
+    async logout() {
+        var details = {
+                usecase: 'logout',
+                email: this.primaryUserDetails.email
+        }
+        await fetch(this.url_lambdaAuth,{
+            headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers":"*",
+            "Content-type": "application/json; utf-8"
+            },
+            method: 'post',
+            mode: 'cors',
+            body: JSON.stringify(details)
+          })
+          .then(response => response.json())          
+          .catch(function (error) {
+            console.log('Request failed', error);
+          });
+// cleanup?
+    }
+    
     async getUserDetailsByEmail(emailidentifier = ''){     
         var details = {
                 usecase: 'detailsByEmail',

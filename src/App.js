@@ -30,6 +30,8 @@ class App extends React.Component {
         this.callbackForgot = this.callbackForgot.bind(this);
         this.callbackAuth = this.callbackAuth.bind(this);
         this.callbackBackToLogin = this.callbackBackToLogin.bind(this);
+        
+        this.logout = this.logout.bind(this);
 
         this.matchHandler = new MatchHandler();
         this.matchHandler.setApi(this.apiCallsToLambda);
@@ -113,6 +115,16 @@ class App extends React.Component {
             recommendationData: recData
         });
     }
+    
+    logout(){
+        this.apiCallsToLambda.logout();
+        this.setState({
+            register: false,
+            forgot: false,
+            auth: false,
+            matchMeVisible: false
+        })   
+    }
 
 
     render() {
@@ -139,19 +151,28 @@ class App extends React.Component {
                     <table className='menu-bar-table'>
                         <tbody>
                             <tr>
-                                <td width='80%'>
+                                <td width='10%'>
                                     <div className='menu-item'>
                                         <Button.Group>
                                             <Button primary disabled={this.state.matchMeVisible} onClick={this.handleMatchMeShowClick}>
-                                                Match Me!
-                                                </Button>
+                                                Match Me!    
+                                            </Button>
                                         </Button.Group>
                                     </div>
                                 </td>
-                                <td align='center'>
+                                <td width='30%' align='right'>
                                     <div className='user-info'>
                                         <Icon name='user circle' size='large' />Hello {this.apiCallsToLambda.getPrimaryUserDetails()['username']}
                                     </div>
+                                </td>
+                                <td width='30%' align='right'>
+                                  <div className='menu-item'>
+                                    <Button.Group>
+                                      <Button primary onClick={this.logout}>
+                                          Logout    
+                                      </Button>
+                                    </Button.Group>
+                                  </div>
                                 </td>
                             </tr>
                         </tbody>
