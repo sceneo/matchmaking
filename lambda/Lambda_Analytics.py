@@ -7,9 +7,7 @@ def response(message, status_code):
     return {
         'statusCode': str(status_code),
         'headers': {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers": "*",
-            "Access-Control-Allow-Methods": "*",
+            'Access-Control-Allow-Origin': '*',
             "Content-Type": "application/json; charset=utf-8'"
             },
         'body': json.dumps(message)

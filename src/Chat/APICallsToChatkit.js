@@ -1,3 +1,7 @@
+import { ChatManager, Chatkit, TokenProvider } from '@pusher/chatkit-client'
+import base64url from "base64url";
+import CryptoJS from "crypto-js"; 
+
 class APICallsToChatkit {
     
  // Chat Kit Credentials
@@ -18,6 +22,12 @@ class APICallsToChatkit {
        this.currentUser = 'MatchMaking';
        this.newestRoomId = '';
        this.newestRoomName = '';
+       this.chatManager = [];
+       this.rootToken = '';
+   }
+   
+   getRootToken(){
+       return this.rootToken;
    }
    
    getNewestRoomName(){
@@ -70,9 +80,9 @@ class APICallsToChatkit {
        await this.getToken(username,false);
    }
       
-   async getToken(userId, su = false){       
+   async getToken(userId, su = true){       
        var obj = new Object();
-       obj.grant_type = this.secretKey;
+       obj.grant_type = 'client_credentials';
        obj.user_id = userId;
        obj.su = su;
        
@@ -95,27 +105,22 @@ class APICallsToChatkit {
        this.authorization = json;
    }
    
-   async addUser(username, firstName, lastName, email, userId) {
+   async addUser(username, firstName, lastName, email) {
        await fetch(this.api + '/users' ,{
            method: 'post',
            headers: {
              "Content-type": "application/json; charset=UTF-8",
-             "Authorization": "Bearer " + this.authorization.access_token
+             "Authorization": "Bearer " + this.rootToken
            },
            body: JSON.stringify({
                "name": firstName + ' ' + lastName,
                "id": username,
-               "avatar_url":  '',
                "custom_data": {
-                       "email": email,
-                       "userId": userId
+                       "email": email
                }
            })
          })
          .then(response => response.json())
-         .then(data => {
-            console.log(data)
-         })
          .catch(function (error) {
            console.log('Request failed', error);
          });
@@ -218,6 +223,56 @@ class APICallsToChatkit {
            console.log('Request failed', error);
          });
    }
-}
 
+   
+
+   async initializeRoot() {
+      
+      var header = {
+              "alg": "HS256",
+              "typ": "JWT"
+            }
+       
+      var data = {
+           "instance": "8a1e4d4b-5933-473f-bd5d-d4893859ffcd",
+           "iss": "api_keys/6fbd13f5-4d17-4a14-b8bb-95d56416bfc2",
+           "iat": Math.round((new Date()).getTime() / 1000),
+           "exp": Math.round((new Date()).getTime() / 1000) + 8000,
+           "sub": "MatchMaking",
+           "su": true
+         }
+      
+      var secret = "BehYgWeMTwQ3kzNUUwgfca3lVTfK9/uG4syEM62U3Jc=";
+       
+      var stringifiedHeader = CryptoJS.enc.Utf8.parse(JSON.stringify(header));
+      var encodedHeader = this.encode(stringifiedHeader);
+
+      var stringifiedData = CryptoJS.enc.Utf8.parse(JSON.stringify(data));
+      var encodedData = this.encode(stringifiedData);
+
+      var signature = encodedHeader + "." + encodedData;
+      signature = CryptoJS.HmacSHA256(signature, secret);
+      signature = this.encode(signature);
+      
+      
+      this.rootToken = encodedHeader + '.' + encodedData + '.' + signature
+   }
+   
+   encode(source) {
+       var encodedSource = ''
+       // Encode in classical base64
+       encodedSource = CryptoJS.enc.Base64.stringify(source);
+       
+       // Remove padding equal characters
+       encodedSource = encodedSource.replace(/=+$/, '');
+       
+       // Replace characters according to base64url specifications
+       encodedSource = encodedSource.replace(/\+/g, '-');
+       encodedSource = encodedSource.replace(/\//g, '_');
+       
+       return encodedSource;
+     }
+       
+}
+ 
 export default APICallsToChatkit;

@@ -70,9 +70,7 @@ class Login extends Component {
       
       await fetch(this.url,{
           headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Headers":"*",
-          "Content-type": "application/json; utf-8"
+          "Content-Type": "application/json; utf-8"
           },
           method: 'post',
           mode: 'cors',
