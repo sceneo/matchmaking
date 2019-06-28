@@ -13,7 +13,8 @@ class Login extends Component {
       password: "",
       usecase: "auth",
       enableButton: false,
-      statusMessage: ""
+      statusMessage: "",
+      isLoading: false
     };
     this.url = 'https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/Prod/MatchMakingAuth';
     
@@ -63,8 +64,11 @@ class Login extends Component {
   }
   
    
-  async login(){     
+  async login(){
+      // trigger animation for the button
+      
       this.setState({
+          isLoading: true,
           usecase: "auth"
       })
       
@@ -84,7 +88,8 @@ class Login extends Component {
             }
             else {
                 this.setState({
-                    statusMessage: "Wrong credentials."
+                    statusMessage: "Wrong credentials.",
+                    isLoading: false
                 })
             }
         })
@@ -120,10 +125,10 @@ class Login extends Component {
             <br />
             <p className="Link-login" onClick={this.forgot}> Password forgotten? </p> 
             <p className="Link-login" onClick={this.register}> No account yet? Register here! </p> 
-            <Button variant="secondary" className="ButtonLogin"  onClick={this.login} >
-              Login
+            <Button variant="secondary" className="ButtonLogin"  disabled={this.state.isLoading} onClick={!this.state.isLoading ? this.login : null}>
+                    {this.state.isLoading ? 'wait...' : 'Login'}
             </Button>
-                </Form>
+            </Form>
 
             </div>
         );

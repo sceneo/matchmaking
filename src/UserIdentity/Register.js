@@ -73,12 +73,12 @@ class Register extends Component {
     }
           
     async registrationProcedure(){
-        if(this.registrationState === "created succesfully") {
+//        if(this.registrationState === "created succesfully") {
             await this.callToChatkit();
-        }
-        else {
-            // The registration failed - should we print something?
-        }
+//        }
+//        else {
+//            // The registration failed - should we print something?
+//        }
 
     }
     
