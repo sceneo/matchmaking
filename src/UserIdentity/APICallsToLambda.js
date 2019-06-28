@@ -174,7 +174,7 @@ class APICallsToLambda{
     }
     
     async registerNewUser(details) {
-        var details = {
+        var userdata = {
             usecase: 'register',
             title: details.title,
             firstName: details.firstName,
@@ -193,13 +193,11 @@ class APICallsToLambda{
         
         await fetch(this.url_lambdaAuth,{
             headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers":"*",
             "Content-type": "application/json; utf-8"
             },
             method: 'post',
             mode: 'cors',
-            body: JSON.stringify(details)
+            body: JSON.stringify(userdata)
           })
           .then(response => response.json())
           .then(data => {

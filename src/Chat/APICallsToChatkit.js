@@ -1,5 +1,3 @@
-import { ChatManager, Chatkit, TokenProvider } from '@pusher/chatkit-client'
-import base64url from "base64url";
 import CryptoJS from "crypto-js"; 
 
 class APICallsToChatkit {

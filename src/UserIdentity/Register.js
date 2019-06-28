@@ -25,6 +25,7 @@ class Register extends Component {
             password: ''
         })
         this.registrationProcedure = this.registrationProcedure.bind(this);
+        this.callToAws = this.callToAws.bind(this);
         this.registrationState = '';
     }
     
@@ -43,7 +44,23 @@ class Register extends Component {
     }
     
     
+    checkPrerequesites(){
+        if(this.state.firstName === '') return false;
+        if(this.state.lastName === '') return false;
+        if(this.state.functionality === '') return false;
+        if(this.state.industry === '') return false;
+        if(this.state.type === '') return false;
+        if(this.state.email === '') return false;
+        if(this.state.username === '') return false;
+        if(this.state.password === '') return false;  
+        return true;
+    }
+    
     async callToAws() {
+        if(!this.checkPrerequesites()) {
+            // we can then show something like "name already in use etc later on"
+            return false
+        }
         var api = new APICallsToLambda();
         await api.registerNewUser(this.state);
         this.registrationState = api.getRegistrationState();
@@ -56,8 +73,7 @@ class Register extends Component {
     }
           
     async registrationProcedure(){
-        await this.callToAws();
-        if(this.registrationState == "created succesfully") {
+        if(this.registrationState === "created succesfully") {
             await this.callToChatkit();
         }
         else {
@@ -201,7 +217,7 @@ class Register extends Component {
             
             
                     <p className="PasswordForgottenLink" onClick={this.backToLogin}> Back to Login </p>              
-                    <Button variant="primary" type="submit">
+                    <Button variant="primary" type="submit" onClick={this.callToAws}>
                       Submit
                     </Button>
                </Form>
