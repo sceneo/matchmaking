@@ -5,6 +5,7 @@ class APICallsToLambda{
         this.primaryUserDetails = [];
         this.secondaryUserDetails = [];
         this.listOfOnlineUsers = '';
+        this.registrationState = '';
     }
     
     getPrimaryUserDetails(){
@@ -19,6 +20,10 @@ class APICallsToLambda{
         return this.listOfOnlineUsers;
     }
     
+    getRegistrationState(){
+        return this.registrationState;
+    }
+    
     async addToBlacklist(candidate) {
         var details = {
                 usecase: 'addToBlacklist',
@@ -27,8 +32,6 @@ class APICallsToLambda{
         }
         await fetch(this.url_lambdaAuth,{
             headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers":"*",
             "Content-type": "application/json; utf-8"
             },
             method: 'post',
@@ -70,8 +73,6 @@ class APICallsToLambda{
         }
         await fetch(this.url_lambdaAuth,{
             headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers":"*",
             "Content-type": "application/json; utf-8"
             },
             method: 'post',
@@ -93,8 +94,6 @@ class APICallsToLambda{
         
         await fetch(this.url_lambdaAuth,{
             headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers":"*",
             "Content-type": "application/json; utf-8"
             },
             method: 'post',
@@ -119,8 +118,6 @@ class APICallsToLambda{
         
         await fetch(this.url_lambdaAuth,{
             headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers":"*",
             "Content-type": "application/json; utf-8"
             },
             method: 'post',
@@ -144,8 +141,6 @@ class APICallsToLambda{
         
         await fetch(this.url_lambdaAuth,{
             headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers":"*",
             "Content-type": "application/json; utf-8"
             },
             method: 'post',
@@ -170,8 +165,6 @@ class APICallsToLambda{
         
         fetch(this.url_lambdaAuth,{
             headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers":"*",
             "Content-type": "application/json; utf-8"
             },
             method: 'post',
@@ -179,5 +172,44 @@ class APICallsToLambda{
             body: JSON.stringify(details)
           })
     }
+    
+    async registerNewUser(details) {
+        var userdata = {
+            usecase: 'register',
+            title: details.title,
+            firstName: details.firstName,
+            lastName: details.lastName,
+            gender: details.gender,
+            company: details.company,
+            industry: details.industry,
+            functionality: details.functionality,
+            city: details.city,
+            country: details.country,
+            type: details.type,
+            email: details.email,
+            username: details.username,
+            password: details.password  
+        }
+        
+        await fetch(this.url_lambdaAuth,{
+            headers: {
+            "Content-type": "application/json; utf-8"
+            },
+            method: 'post',
+            mode: 'cors',
+            body: JSON.stringify(userdata)
+          })
+          .then(response => response.json())
+          .then(data => {
+              console.log(data);
+              this.registrationState = data;
+          })
+          
+          .catch(function (error) {
+            console.log('Request failed', error);
+            this.registrationState = error;
+          });
+    }
+    
 }
 export default APICallsToLambda;

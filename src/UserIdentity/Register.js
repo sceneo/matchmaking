@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { Button, Form } from "react-bootstrap";
-import APICallsToChatkit from '../Chat/APICallsToChatkit.js'
+import APICallsToChatkit from "./../Chat/APICallsToChatkit.js"
+import APICallsToLambda from "./../UserIdentity/APICallsToLambda.js"
 import "./Register.css";
 class Register extends Component {
     constructor(props) {
         super(props);
 
-        this.url = 'https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/default/MatchMakingAuth';
+        this.url = 'https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/Prod/MatchMakingAuth';
         this.backToLogin = this.backToLogin.bind(this);
-        this.api = new APICallsToChatkit();
         this.state = ({
             title: '',
             firstName: '',
@@ -16,6 +16,7 @@ class Register extends Component {
             gender: '',
             company: '',
             functionality: '',
+            industry: '',
             city: '',
             country: '',
             type: '',
@@ -23,6 +24,9 @@ class Register extends Component {
             username: '',
             password: ''
         })
+        this.registrationProcedure = this.registrationProcedure.bind(this);
+        this.callToAws = this.callToAws.bind(this);
+        this.registrationState = '';
     }
     
     componentDidMount() {
@@ -39,35 +43,43 @@ class Register extends Component {
         });
     }
     
-    async callToAws() {
-        await fetch(this.url ,{
-        method: 'post',
-        headers: {
-          "Content-type": "application/json; charset=UTF-8"
-        },
-        body: this.state
-      })
-      .then(response => response.json())
-      .then(data => {
-         console.log(data)
-      })
-      .catch(function (error) {
-        console.log('Request failed', error);
-      });
+    
+    checkPrerequesites(){
+        if(this.state.firstName === '') return false;
+        if(this.state.lastName === '') return false;
+        if(this.state.functionality === '') return false;
+        if(this.state.industry === '') return false;
+        if(this.state.type === '') return false;
+        if(this.state.email === '') return false;
+        if(this.state.username === '') return false;
+        if(this.state.password === '') return false;  
+        return true;
     }
     
+    async callToAws() {
+        if(!this.checkPrerequesites()) {
+            // we can then show something like "name already in use etc later on"
+            return false
+        }
+        var api = new APICallsToLambda();
+        await api.registerNewUser(this.state);
+        this.registrationState = api.getRegistrationState();
+    }
     
-    
-    async handleSubmit(){
-        // check in backend if available
-        // add to backend
-        // -> add to dynamoDB
-        // -> add to chatkit
-       
-        await this.callToAws();
-        
-        //TODO: this must be fixed: a signed su token must be crated to create users...
-   //     await this.api.addUser('tobi', 'tobias', 'kunz', 'bla@gmx,de', '666');
+    async callToChatkit() {
+        var api = new APICallsToChatkit();
+        await api.initializeRoot(); 
+        api.addUser(this.state.username, this.state.firstName,this.state.lastName,this.state.email)        
+    }
+          
+    async registrationProcedure(){
+//        if(this.registrationState === "created succesfully") {
+            await this.callToChatkit();
+//        }
+//        else {
+//            // The registration failed - should we print something?
+//        }
+
     }
     
     backToLogin(){
@@ -75,14 +87,12 @@ class Register extends Component {
     }
     
     render() {
-        
-        console.log(this.state);
         return (
           <div className="Register">
               <p className="Headline1"> Registration </p>
               <p className="Headline3"> Fields indicated with * need to be filled out. </p>
 
-              <Form onSubmit={this.handleSubmit}>
+              <Form onSubmit={this.registrationProcedure}>
                   <p className="Headline2"> Personal details </p>
           
                   <Form.Group labelId="Field" controlId="Title" >
@@ -125,7 +135,7 @@ class Register extends Component {
             
                   <Form.Group controlId="Industry">
                       <Form.Label>Industry*</Form.Label>              
-                      <Form.Control as="select" id='company' onChange={this.handleChange} required>
+                      <Form.Control as="select" id='industry' onChange={this.handleChange} required>
                         <option></option>
                         <option>Automotive</option>
                         <option>Chemistry</option>
@@ -207,7 +217,7 @@ class Register extends Component {
             
             
                     <p className="PasswordForgottenLink" onClick={this.backToLogin}> Back to Login </p>              
-                    <Button variant="primary" type="submit">
+                    <Button variant="primary" type="submit" onClick={this.callToAws}>
                       Submit
                     </Button>
                </Form>

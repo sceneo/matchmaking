@@ -14,8 +14,8 @@ def response(message, status_code):
         'statusCode': str(status_code),
         'body': json.dumps(message),
         'headers': {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': '*',
+            "Content-Type": "application/json; utf-8"
             },
         }
     

@@ -9,6 +9,7 @@ import boto3
 from symbol import except_clause
 from getpass import getuser
 
+
 #note: this is not state of the art authentication. This just illustrates the 
 #usage of a lambda function to provide simple information
 def response(message, status_code):
@@ -16,10 +17,8 @@ def response(message, status_code):
         'statusCode': str(status_code),
         'body': json.dumps(message),
         'headers': {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers": "*",
-            "Access-Control-Allow-Methods": "*",
-            "Content-Type": "application/json"
+            'Access-Control-Allow-Origin': '*',
+            "Content-Type": "application/json; utf-8"
             }
         }
 
@@ -61,11 +60,12 @@ def updateUserListOnS3(newUser):
     body = header
     users = getUsersFromS3()
     for row in users:
-        line = row['title'] + "," + row['firstname'] + "," + row['lastname'] + "," + row['gender'] + "," + row['company'] + "," + row['industry'] + "," + row['functionality'] + "," + row['city'] + "," + row['country'] + "," + row['type'] + "," + row['email'] + "," + row['username'] + "," + row['password'] + row['whitelist'] + ',' + row['blacklist'] + row['avatar'] + '\n'
+        line = row['title'] + "," + row['firstname'] + "," + row['lastname'] + "," + row['gender'] + "," + row['company'] + "," + row['industry'] + "," + row['functionality'] + "," + row['city'] + "," + row['country'] + "," + row['type'] + "," + row['email'] + "," + row['username'] + "," + row['password'] + "," + row['whitelist'] + ',' + row['blacklist'] + "," + row['avatar'] + '\n'
         body = body + line
      
-    line = newUser['title'] + "," + newUser['firstName'] + "," + newUser['lastName'] + "," + newUser['gender'] + "," + newUser['company'] + "," + newUser['industry'] + "," + newUser['functionality'] + "," + newUser['city'] + "," + newUser['country'] + "," + newUser['type'] + "," + newUser['email'] + "," + newUser['username'] + "," + newUser['password'] + '' + ',' + '' + ',' + str(random.randint(0,15)) + '\n'
+    line = newUser['title'] + "," + newUser['firstName'] + "," + newUser['lastName'] + "," + newUser['gender'] + "," + newUser['company'] + "," + newUser['industry'] + "," + newUser['functionality'] + "," + newUser['city'] + "," + newUser['country'] + "," + newUser['type'] + "," + newUser['email'] + "," + newUser['username'] + "," + newUser['password'] + ','+ '' + ',' + '' + ',' + str(random.randint(0,15)) + '\n'
     body = body + line
+    
     # add a new user
     s3.Bucket(bucket_name).put_object(Key=file_name, Body=body)
 
@@ -98,7 +98,7 @@ def addToList(email, candidateId, listname):
             line = row['title'] + "," + row['firstname'] + "," + row['lastname'] + "," + row['gender'] + "," + row['company'] + "," + row['industry'] + "," + row['functionality'] + "," + row['city'] + "," + row['country'] + "," + row['type'] + "," + row['email'] + "," + row['username'] + "," + row['password'] + ',' + row['whitelist'] + ',' + listing + ',' + row['avatar'] + '\n'
         body = body + line
     # add a new user
-#    s3.Bucket(bucket_name).put_object(Key=file_name, Body=body)
+    s3.Bucket(bucket_name).put_object(Key=file_name, Body=body)
      
 def createPassword(pwLength=10):
     letters = string.ascii_lowercase
@@ -188,7 +188,8 @@ def getOnlineList():
         if(time.time() - float(row['timestamp']) < 300):
             if row['email'] not in onlineUsers:
                 onlineUsers += row['email'] + ';'
-    return onlineUsers
+    return onlineUsers   
+    
                 
 ## This is the basic handling function which is called first
 def auth(event, context):
@@ -237,7 +238,7 @@ def auth(event, context):
         if(exists(body['email'])):
             return response('already existing',201)
         updateUserListOnS3(body)
-        return response('created',200)
+        return response("created succesfully",200)
  
     if(body['usecase'] == 'alive'):
         email = body['email']
@@ -260,7 +261,3 @@ def auth(event, context):
 
 if __name__ == '__main__':
     checkUser('lea.reckhord@gmail.de','lea')
-    isOnline('lea.reckhord@gmail.de')
-    print(getOnlineList())
-    isOffline('lea.reckhord@gmail.de')
-    print(getOnlineList())
