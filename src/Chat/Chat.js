@@ -17,7 +17,7 @@ class Chat extends Component {
       super(props)
       this.state = {
               loading: true,
-              refresh: false
+              refresh: false,
       }  
       
       this.api = new APICallsToChatkit(this.state.loading);
@@ -35,6 +35,7 @@ class Chat extends Component {
     this.setState({
         loading: false
     })    
+    this.chatUserMapping.setCurrentUser(this.props.apiCallsToLambda.getPrimaryUserDetails().username);
     this.roomHandler.getRoomsForUser();
   }
   

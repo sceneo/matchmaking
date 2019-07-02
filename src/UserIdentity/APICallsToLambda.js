@@ -52,8 +52,6 @@ class APICallsToLambda{
         }
         await fetch(this.url_lambdaAuth,{
             headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers":"*",
             "Content-type": "application/json; utf-8"
             },
             method: 'post',
