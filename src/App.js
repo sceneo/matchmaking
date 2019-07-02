@@ -24,7 +24,7 @@ class App extends React.Component {
             recommendationData: {},
         }
         
-        this.apiCallsToLambda = new APICallsToLambda();
+        this.apiCallsToLambda = new APICallsToLambda();      
 
         this.callbackRegister = this.callbackRegister.bind(this);
         this.callbackForgot = this.callbackForgot.bind(this);

@@ -35,8 +35,6 @@ class MatchHandler {
         
         await fetch(this.url,{
             headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers":"*",
             "Content-type": "application/json; utf-8"
             },
             method: 'post',

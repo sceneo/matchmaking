@@ -29,7 +29,7 @@ class Contacts extends React.Component {
     
         return (
           <List dense className='ContactList'>
-          {this.userMapping.getUserInventory().map(value => {
+          {this.userMapping.getFriends().map(value => {
               return (
                 <ListItem style={{overflow: 'auto'}}  onClick={() => this.changeRoom(value.matchMakingDetails.username)} key={value.matchMakingDetails.username} button>
                   <ListItemAvatar>
