@@ -1,0 +1,9 @@
+1. Chat aktualisieren:
+	-> Polling
+	
+2. Online Status aktualisieren
+	-> Polling
+	
+3. Überschrifen (Chat und Messages) sauber machen
+
+4. Scaling & css 
