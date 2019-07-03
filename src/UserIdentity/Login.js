@@ -31,6 +31,8 @@ class Login extends Component {
   componentWillUnmount() {
       document.body.classList.remove("background-login");
   }
+  
+  // email verification
 
   validate(){
     return this.state.email.length > 0 && this.state.email.includes("@") && this.state.password.length > 0;

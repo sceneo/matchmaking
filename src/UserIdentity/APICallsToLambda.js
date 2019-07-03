@@ -8,6 +8,8 @@ class APICallsToLambda{
         this.registrationState = '';
     }
     
+    // getting user details
+    
     getPrimaryUserDetails(){
         return this.primaryUserDetails;
     }
