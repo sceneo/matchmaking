@@ -7,7 +7,7 @@ import "./Login.css";
 class Login extends Component {
   constructor(props) {
     super(props);
-
+    
     this.state = {
       email: "",
       password: "",
@@ -24,6 +24,7 @@ class Login extends Component {
     this.forgot = this.forgot.bind( this );
   }
   
+  // load the background css part
   componentDidMount() {
       document.body.classList.add("background-login");
   }
@@ -131,6 +132,7 @@ class Login extends Component {
                     {this.state.isLoading ? 'wait...' : 'Login'}
             </Button>
             </Form>
+
 
             </div>
         );
