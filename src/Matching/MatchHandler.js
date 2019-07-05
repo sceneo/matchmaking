@@ -5,7 +5,6 @@ class MatchHandler {
 
 
     constructor() {
-        this.url = 'https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/Prod/MatchMakingAnalytics';
         this.recsList = [];
         this.userId = 0;
         this.currentProposalIndex = 0;
@@ -16,11 +15,6 @@ class MatchHandler {
     setApi(api){
         this.api = api;
     }
-
-    setUrl(url_) {
-        this.url = url_;
-    }
-
 
     setUserId(id_) {
         this.userId = id_;

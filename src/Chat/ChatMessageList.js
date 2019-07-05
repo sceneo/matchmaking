@@ -37,14 +37,19 @@ class ChatMessageList extends React.Component {
     getAvatar(username){
         return this.userMapping.getUserByUsername(username).matchMakingDetails.avatar;
     }
+    
+    sortMessages(){
+        this.messages.sort(function(a, b) {
+            return a.id > b.id;
+        });
+    }
         
     render() {       
-        
-        
+        this.sortMessages();
         
         return (
           <List dense className='MessageList'>
-            {this.messages.reverse().map(value => {                              
+            {this.messages.map(value => {                              
               return (
                            
                       <ListItem key={this.getKey()} alignItems="flex-start">

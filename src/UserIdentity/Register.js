@@ -17,6 +17,7 @@ class Register extends Component {
             company: '',
             functionality: '',
             industry: '',
+            interest: '',
             city: '',
             country: '',
             type: '',
@@ -155,6 +156,29 @@ class Register extends Component {
                         <option>Other</option>
                     </Form.Control>
                  </Form.Group>
+                    
+                 <Form.Group controlId="Interests">
+                    <Form.Label>Industry Interest*</Form.Label>              
+                    <Form.Control as="select" id='interests' onChange={this.handleChange} required>
+                      <option></option>
+                      <option>Automotive</option>
+                      <option>Chemistry</option>
+                      <option>Construction</option>
+                      <option>Consumer goods</option>
+                      <option>Electronics</option>
+                      <option>Energy</option>
+                      <option>Forestry</option>
+                      <option>Furnitures</option>
+                      <option>ICT</option>
+                      <option>Health Care</option>
+                      <option>Metal Production</option>
+                      <option>Publishing and Media</option>
+                      <option>Retail and Wholesale</option>
+                      <option>Textile and Clothing</option>
+                      <option>Traffic and Transport</option>
+                      <option>Other</option>
+                  </Form.Control>
+               </Form.Group>
           
                  <Form.Group controlId="Functionality">
                     <Form.Label>Functionality*</Form.Label>              

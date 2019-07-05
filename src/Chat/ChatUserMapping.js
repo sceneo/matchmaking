@@ -28,6 +28,31 @@ class ChatUserMapping {
        return this.userInventory;
    }
    
+   async updateOnlineStatus(){
+       if(this.verbose > 0) {
+           console.log('updating online status');
+       }
+       await this.apiLambda.requestListOfOnlineUsers();
+       
+       if(this.verbose > 0) {
+           console.log(this.userInventory);
+       }
+       for(var i = 0; i < this.userInventory.length; i++) {
+           if(this.userInventory[i].matchMakingDetails === null) {
+               continue;
+           }
+           this.userInventory[i].isOnline = false;
+           if( this.apiLambda.getListOfOnlineUsers().includes(this.userInventory[i].matchMakingDetails.email)) {
+               if(this.verbose > 0) {
+                   console.log( this.userInventory[i].matchMakingDetails.email + ' is online')
+               }
+               this.userInventory[i].isOnline = true;
+           }
+       }
+       
+       
+   }
+   
    
    async initialize(){
        this.allUsersChatkit = await this.apiChatkit.getUsers();
