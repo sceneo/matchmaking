@@ -69,12 +69,25 @@ class MatchHandler {
     }
 
 
-    getRecommendation() {
+    async getRecommendation() {
         if (this.recsList.length === 0 || this.currentProposalIndex >= this.recsList.length) {
             console.log("no recommendations left!");
             return null;
         }
-
+        
+        var username = this.recsList[this.currentProposalIndex].name;
+        await this.api.requestUserDetailsByUsername(username);
+        this.recsList[this.currentProposalIndex].functionality = this.api.getSecondaryUserDetails(username).functionality;
+        this.recsList[this.currentProposalIndex].gender = this.api.getSecondaryUserDetails(username).gender;
+        this.recsList[this.currentProposalIndex].industry = this.api.getSecondaryUserDetails(username).industry;
+        this.recsList[this.currentProposalIndex].name = this.api.getSecondaryUserDetails(username).username;
+        this.recsList[this.currentProposalIndex].secretId = this.api.getSecondaryUserDetails(username).secretId;
+        this.recsList[this.currentProposalIndex].title = this.api.getSecondaryUserDetails(username).title;
+        this.recsList[this.currentProposalIndex].type = this.api.getSecondaryUserDetails(username).type;
+        
+        
+        console.log(this.recsList[this.currentProposalIndex])
+        
         return this.recsList[this.currentProposalIndex];
     }
 }

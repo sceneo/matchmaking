@@ -62,7 +62,7 @@ class ChatUserMapping {
            console.log("initialize");
        }
        for(var user in this.allUsersChatkit){
-           await this.apiLambda.getUserDetailsByUsername(this.allUsersChatkit[user].id);
+           await this.apiLambda.requestUserDetailsByUsername(this.allUsersChatkit[user].id);
            
            //create object containing the information from Chatkit and the Lambda and fill to userInventory
            var chatkitDetails = this.allUsersChatkit[user];

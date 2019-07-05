@@ -10,6 +10,7 @@ class APICallsToLambda{
     
     // getting user details
     
+    
     getPrimaryUserDetails(){
         return this.primaryUserDetails;
     }
@@ -110,7 +111,7 @@ class APICallsToLambda{
           });
     }
     
-    async getUserDetailsByUsername(usernameidentifier = ''){     
+    async requestUserDetailsByUsername(usernameidentifier = ''){     
         var details = {
                 usecase: 'detailsByUsername',
                 username: usernameidentifier

@@ -62,7 +62,7 @@ class App extends React.Component {
             this.userDetails = await this.apiCallsToLambda.getUserDetailsByEmail(user);
             this.matchHandler.setUserId(user['secretId']);
             await this.matchHandler.retrieveRecommendationList();
-            recData = this.matchHandler.getRecommendation();
+            recData = await this.matchHandler.getRecommendation();
         }
 
         this.setState({
@@ -109,8 +109,8 @@ class App extends React.Component {
         this.updateRecommendation();
     }
 
-    updateRecommendation() {
-        let recData = this.matchHandler.getRecommendation();
+    async updateRecommendation() {
+        let recData = await this.matchHandler.getRecommendation();
         this.setState({
             recommendationData: recData
         });
