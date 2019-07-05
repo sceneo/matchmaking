@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
 import ChatMessageList from './ChatMessageList.js'
 import SendMessageForm from './SendMessageForm.js'
 import Contacts from './Contacts.js'

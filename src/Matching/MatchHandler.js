@@ -9,6 +9,7 @@ class MatchHandler {
         this.userId = 0;
         this.currentProposalIndex = 0;
         this.api = [];
+        this.url = 'https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/Prod/MatchMakingAnalytics';
         
     }
     
