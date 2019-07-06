@@ -73,7 +73,7 @@ class Chat extends Component {
         this.apiCallsToLambda.alive();     
         data =
                <div>
-                <Segment.Group horizontal borderless class="ui borderless menu">
+                <Segment.Group horizontal borderless className="ui borderless menu">
                   <Segment.Group vertical>
                     <GridListTileBar actionPosition="right" titlePosition="top" title={'Contacts'}/>
                     <Segment basic borderless style={{ lineWidth: 0, overflow: 'auto', maxHeight: '35em', width: '25em', border: '0px' }}>

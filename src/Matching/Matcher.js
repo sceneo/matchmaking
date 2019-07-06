@@ -113,6 +113,8 @@ class MatchMe extends React.Component {
             'functionality': this.props.recommendation['functionality']
         }
 
+        console.log(recData);
+
         return (
 
             <div className='matching-div'>

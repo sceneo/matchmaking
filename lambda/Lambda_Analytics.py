@@ -16,7 +16,7 @@ def response(message, status_code):
 def getUsersFromS3():
     s3 = boto3.resource(u's3')
     bucket = s3.Bucket(u'matchmaking.data')
-    obj = bucket.Object(key=u'users.csv')
+    obj = bucket.Object(key=u'users_fake_secrets.csv')
     response = obj.get()
     users = csv.DictReader(response[u'Body'].read().decode('utf-8').split())
     return users
@@ -114,13 +114,14 @@ def createAnonymousUserList():
     users = getUsersFromS3()
     anonymousList = []
     for user in users:
+
         newUser = {
             "title": getTitle(user['title']),
             "gender": getGender(user['gender']),
             "industry": getIndustry(user['industry']),
             "functionality": getFunctionality(['functionality']),
             "type": getType(user['type']),
-            "secretId": user['secretId'],
+            "secretId": int(user['secretId']),
             "name": user['username']
         }
         anonymousList.append(newUser)

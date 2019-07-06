@@ -108,6 +108,8 @@ class APICallsToLambda{
           .catch(function (error) {
             console.log('Request failed', error);
           });
+
+          return this.primaryUserDetails;
     }
     
     async getUserDetailsByUsername(usernameidentifier = ''){     

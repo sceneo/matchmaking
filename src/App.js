@@ -12,6 +12,7 @@ import MatchHandler from './Matching/MatchHandler.js';
 
 import { Button, Segment, Sidebar, Icon } from 'semantic-ui-react';
 
+
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -60,7 +61,7 @@ class App extends React.Component {
         if (status === true) {
             // retrieve recommendation list
             this.userDetails = await this.apiCallsToLambda.getUserDetailsByEmail(user);
-            this.matchHandler.setUserId(user['secretId']);
+            this.matchHandler.setUserId(this.userDetails['secretId']);
             await this.matchHandler.retrieveRecommendationList();
             recData = this.matchHandler.getRecommendation();
         }

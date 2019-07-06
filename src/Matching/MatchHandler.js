@@ -5,7 +5,7 @@ class MatchHandler {
 
 
     constructor() {
-        this.url = 'https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/Prod/MatchMakingAnalytics';
+        this.url = 'https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/Prod/MatchMakingMatchMe';
         this.recsList = [];
         this.userId = 0;
         this.currentProposalIndex = 0;
@@ -32,6 +32,8 @@ class MatchHandler {
                 usecase: 'matchme',
                 secretId: this.userId
         }
+
+        console.log(details);
         
         await fetch(this.url,{
             headers: {
@@ -50,6 +52,7 @@ class MatchHandler {
             console.log('Request failed', error);
           });
         this.currentProposalIndex = 0;
+        console.log(this.recsList);
     }
 
 
