@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
 import ChatMessageList from './ChatMessageList.js'
 import SendMessageForm from './SendMessageForm.js'
 import Contacts from './Contacts.js'
@@ -10,6 +9,9 @@ import RoomHandler from './RoomHandler.js'
 import ClipLoader from 'react-spinners/ClipLoader';
 import { Segment } from 'semantic-ui-react';
 import './Chat.css';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 
 
 class Chat extends Component {
@@ -36,8 +38,23 @@ class Chat extends Component {
         loading: false
     })    
     this.chatUserMapping.setCurrentUser(this.props.apiCallsToLambda.getPrimaryUserDetails().username);
-    this.roomHandler.getRoomsForUser();
+    this.roomHandler.getRoomsForUser(); 
+    
+    this.timer = setInterval(()=> this.updateOnlineStatus(), 10000);
   }
+  
+  componentWillUnmount() {
+      this.timer = null;
+  }
+  
+  updateOnlineStatus(){
+      this.chatUserMapping.updateOnlineStatus();
+      this.setState({
+          refresh: true
+      });
+  
+  }
+      
   
   async callbackRefresh(){
       await this.api.requestMessagesFromRoom();
@@ -75,30 +92,45 @@ class Chat extends Component {
                <div>
                 <Segment.Group horizontal borderless className="ui borderless menu">
                   <Segment.Group vertical>
-                    <GridListTileBar actionPosition="right" titlePosition="top" title={'Contacts'}/>
-                    <Segment basic borderless style={{ lineWidth: 0, overflow: 'auto', maxHeight: '35em', width: '25em', border: '0px' }}>
+                                    
+                  <AppBar position="static" color="default">
+                   <Toolbar>
+                    <Typography variant="h6" color="inherit">
+                      Contacts
+                    </Typography>
+                   </Toolbar>
+                  </AppBar>
+                  
+                  
+                  <Segment basic borderless style={{ lineWidth: 0, overflow: 'auto', maxHeight: '35em', width: '25em', border: '0px' }}>
                       <GridListTile style={{overflow: 'auto'}}>
                        <Contacts className="Contacts" callbackChangeRoom={this.callbackChangeRoom} api={this.api} userMapping={this.chatUserMapping}/>
                       </GridListTile> 
                     </Segment>
                   </Segment.Group>
-                  <Segment.Group vertical>
+                  
                     <Segment basic borderless style={{lineWidth: 0, height: '31em', width: '30em', border: '0px' }}>
-                      <GridListTileBar actionPosition="right" titlePosition="top" title={'Messages'}/>   
-                      <GridListTile name="messages" scrollHeight style={{lineWidth: 0, overflow: 'auto', maxHeight: '31em' }}>
-                        <ChatMessageList name="ChatMessageList" api={this.api} chatState={this.state} userMapping={this.chatUserMapping}/>     
-                           </GridListTile>
-                    </Segment>
-                    <Segment>
-                        <SendMessageForm className="SendMessageForm" api={this.api} callbackRefresh={this.callbackRefresh}/>
-                    </Segment>
-                   </Segment.Group>
-                </Segment.Group>
-                                
-                        
 
-  
-                                
+                      <AppBar position="static" color="default">
+                      <Toolbar>
+                       <Typography variant="h6" color="inherit">
+                         Messages
+                       </Typography>
+                      </Toolbar>
+                     </AppBar>
+                       <span style= {{height: '10em'}}>
+                         <GridListTile name="messages" scrollHeight style={{lineWidth: 0, overflow: 'auto', maxHeight: '31em' }}>
+                         <ChatMessageList name="ChatMessageList" api={this.api} chatState={this.state} userMapping={this.chatUserMapping}/>     
+                           </GridListTile>
+                      </span>
+                      <span>
+                        <SendMessageForm className="SendMessageForm" api={this.api} callbackRefresh={this.callbackRefresh}/>
+                      </span>
+                   </Segment>
+
+
+                   
+                </Segment.Group>
                </div>
       }
                 

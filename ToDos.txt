@@ -1,9 +1,17 @@
-1. Chat aktualisieren:
-	-> Polling
-	
-2. Online Status aktualisieren
-	-> Polling
-	
-3. Überschrifen (Chat und Messages) sauber machen
 
 4. Scaling & css 
+
+5. Fix "no matches available"
+
+6. Notifications for unread messages
+
+7. Fix registration mechanism
+
+8. Show unread messages (maybe as datetime)
+
+9. Add new button "-> Direct chat with this user"
+	* close matchme window
+	* add chat with this user
+	* in case the user clicks on "add" a hoover "the user has been added to your contact list"
+	
+10. Register -> Do inputs as a table so they are in one line.

@@ -182,6 +182,7 @@ class APICallsToChatkit {
    
    
    async requestMessagesFromRoom(roomId=this.currentChannel) {
+       this.messages = [];
        var json;
        await fetch(this.api + '/rooms/' + roomId + '/messages' ,{
        method: 'get',
@@ -198,6 +199,8 @@ class APICallsToChatkit {
        console.log('Request failed', error);
      });
      this.roomMessages = json;
+     // sort by id (lower id = older message)
+     // ?
    }
    
    async requestNewPrivateRoom(username) {
