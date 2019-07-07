@@ -13,7 +13,7 @@ class ChatUserMapping {
    setCurrentUser(user){
        this.currentUser = user;
    }
-   
+   // user mapping, showing the "friendslist" and online status of users
    getFriends(){
        
        // currently the friendslist is non existing as the matching has not been implmented so far.

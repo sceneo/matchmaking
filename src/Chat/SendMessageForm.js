@@ -1,6 +1,6 @@
 import React from "react";
 import Button from '@material-ui/core/Button';
-
+// this file is for sending messages and that entire functionality inside the chat
 class SendMessageForm extends React.Component {
     constructor( props ) {
         super( props )

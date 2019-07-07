@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-// import components from other files
+// Import components from other files
 import Login from "./UserIdentity/Login.js"
 import Register from "./UserIdentity/Register.js"
 import PasswordForgotton from "./UserIdentity/PasswordForgotton.js"

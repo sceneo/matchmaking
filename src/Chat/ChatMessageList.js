@@ -28,7 +28,7 @@ class ChatMessageList extends React.Component {
     getKey(){
         return Math.random();
     }
-    
+ // refreshing messages, this file is all about the message list and updating it    
     async refresh(){
         await this.api.requestMessagesFromRoom();
         this.render();
