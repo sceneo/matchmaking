@@ -6,7 +6,7 @@ class APICallsToChatkit {
  // v1:us1:8a1e4d4b-5933-473f-bd5d-d4893859ffcd
  // 6fbd13f5-4d17-4a14-b8bb-95d56416bfc2:BehYgWeMTwQ3kzNUUwgfca3lVTfK9/uG4syEM62U3Jc=
  // https://us1.pusherplatform.io/services/chatkit_token_provider/v1/8a1e4d4b-5933-473f-bd5d-d4893859ffcd/token
-       
+ // this is for creating the tokens and chat room, by importing users     
    constructor() {
        this.chatInstance = '8a1e4d4b-5933-473f-bd5d-d4893859ffcd';
        this.secretKey = '6fbd13f5-4d17-4a14-b8bb-95d56416bfc2:BehYgWeMTwQ3kzNUUwgfca3lVTfK9/uG4syEM62U3Jc=';
@@ -102,7 +102,7 @@ class APICallsToChatkit {
        })
        this.authorization = json;
    }
-   
+   // adding new user to the chat through the API
    async addUser(username, firstName, lastName, email) {
        await fetch(this.api + '/users' ,{
            method: 'post',
@@ -226,7 +226,7 @@ class APICallsToChatkit {
    }
 
    
-
+// dont know what this is really
    async initializeRoot() {
       
       var header = {

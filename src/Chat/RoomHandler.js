@@ -5,7 +5,7 @@ class RoomHandler {
         this.currentRoom = 'Lobby';
         this.currentRoomId = '19865469';
     }   
-    
+    // creaating the virtual 'room'/lobby for the chat for the two users 
     getCurrentRoom(){
         return this.currentRoom;
     }   

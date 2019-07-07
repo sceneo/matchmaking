@@ -5,7 +5,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 
-
+// contact lists inside the chat 
 class Contacts extends React.Component {
     constructor(props){
         super(props);
@@ -13,7 +13,7 @@ class Contacts extends React.Component {
         this.userMapping = this.props.userMapping;
         this.callbackChangeRoom = this.props.callbackChangeRoom;
     }
-    
+   // online/offline status
     getStatus(username){
         if(this.userMapping.getUserByUsername(username).isOnline) {
             return 'online';
