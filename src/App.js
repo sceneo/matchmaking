@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+// import components from other files
 import Login from "./UserIdentity/Login.js"
 import Register from "./UserIdentity/Register.js"
 import PasswordForgotton from "./UserIdentity/PasswordForgotton.js"
@@ -10,7 +11,11 @@ import APICallsToLambda from "./UserIdentity/APICallsToLambda.js"
 import Matcher from './Matching/Matcher.js';
 import MatchHandler from './Matching/MatchHandler.js';
 
+// import additional react components from official Semantic-UI-React integration.
 import { Button, Segment, Sidebar, Icon } from 'semantic-ui-react';
+
+// Here we can’t use this in a constructor until after we’ve called the parent constructor.
+// Refer to parent class constructor via super(props)
 
 class App extends React.Component {
     constructor(props) {
@@ -24,7 +29,12 @@ class App extends React.Component {
             recommendationData: {},
         }
         
-        this.apiCallsToLambda = new APICallsToLambda();      
+        this.apiCallsToLambda = new APICallsToLambda(); 
+        
+// With bind() we can assign any context to the functions. 
+// The first parameter acts as a new context "this". 
+// Additional parameters can be passed to the function. 
+// Very important: The bind() method does not call the function, but creates a new function.
 
         this.callbackRegister = this.callbackRegister.bind(this);
         this.callbackForgot = this.callbackForgot.bind(this);
@@ -47,6 +57,8 @@ class App extends React.Component {
 
     }
 
+// With a callback function as argument, not the result of the function x is passed to function y.
+// But the function itself, which is then executed at any other position.
 
     callbackRegister(status) {
         this.setState({
@@ -115,6 +127,7 @@ class App extends React.Component {
             recommendationData: recData
         });
     }
+ // Providing Logout functionality via Lambda
     
     logout(){
         this.apiCallsToLambda.logout();
@@ -126,7 +139,8 @@ class App extends React.Component {
         })   
     }
 
-
+// Depending on the status assigned, different functions are executed
+    
     render() {
 
         if (this.state.register) {
@@ -144,7 +158,7 @@ class App extends React.Component {
                 </div>
             )
         }
-
+// After successful authentication, the main page is played, which is structured as follows:
         if (this.state.auth) {
             return (
                 <div className='main-page-div'>
@@ -221,3 +235,4 @@ class App extends React.Component {
 
 
 export default App;
+// There is one default export per file --> extendede React component App

@@ -1,3 +1,5 @@
+// import CSS library animate.css to avoid JavaScript overhead and call functions for start and end of animations
+
 import 'animate.css';
 
 function animateElement(element, animation, delay, callback) {
