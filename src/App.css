@@ -1,4 +1,4 @@
-// styling of main page
+// Generic styling of main page.
 
 .App {
   text-align: center;
@@ -34,7 +34,7 @@
   padding-left: auto;
   padding-right: auto;
 }
-// styling of menu bar and its elements
+// Styling of menu bar and its elements.
 .menu-bar {
   background: #5b5c5c;
   font-style: bold;

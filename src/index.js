@@ -1,3 +1,4 @@
+//import of libraries and other files
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';

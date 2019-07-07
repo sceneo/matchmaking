@@ -139,7 +139,7 @@ class App extends React.Component {
         })   
     }
 
-// Depending on the status assigned, different functions are executed
+// Depending on the status assigned, different functions are executed.
     
     render() {
 
