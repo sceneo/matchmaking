@@ -6,6 +6,10 @@
 7. Fix registration mechanism
 
 8. Show unread messages (maybe as datetime)
+-> the id of each channel could be stored:
+datastructure:
+user room  id
+always add, when a user has seen a message 
 
 9. Add new button "-> Direct chat with this user"
 	* close matchme window
