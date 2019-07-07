@@ -86,8 +86,6 @@ class MatchHandler {
         this.recsList[this.currentProposalIndex].type = this.api.getSecondaryUserDetails(username).type;
         
         
-        console.log(this.recsList[this.currentProposalIndex])
-        
         return this.recsList[this.currentProposalIndex];
     }
 }
