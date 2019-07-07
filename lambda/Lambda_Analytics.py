@@ -3,6 +3,7 @@ import csv
 import random
 import boto3
 
+# setting up the initial format for a status message 
 def response(message, status_code):
     return {
         'statusCode': str(status_code),
@@ -13,6 +14,7 @@ def response(message, status_code):
         'body': json.dumps(message)
         }
 
+# getting users from S3
 def getUsersFromS3():
     s3 = boto3.resource(u's3')
     bucket = s3.Bucket(u'matchmaking.data')
@@ -21,6 +23,7 @@ def getUsersFromS3():
     users = csv.DictReader(response[u'Body'].read().decode('utf-8').split())
     return users
 
+# getting titel of users
 def getTitle(title):
     if(title == ''):
         return 0
@@ -32,6 +35,7 @@ def getTitle(title):
         return 3
     return -1
 
+# get gender of users 
 def getGender(gender):
     if(gender == 'male'):
         return 0
@@ -39,6 +43,7 @@ def getGender(gender):
         return 1
     return -1
 
+# get type of users
 def getType(type):
     if(type == 'Visitor'):
         return 0
@@ -47,7 +52,8 @@ def getType(type):
     if(type == 'Administrator'):
         return 3
     return -1
-    
+
+# get functionality of users    
 def getFunctionality(functionality):    
     if(functionality == 'Sales'):
         return 0
@@ -76,7 +82,8 @@ def getFunctionality(functionality):
     if(functionality == 'Other'):
         return 12    
     return -1
-    
+
+# get industry of users where they are currently working in   
 def getIndustry(industry):
     if(industry == 'Automotive'):
         return 0
@@ -109,7 +116,8 @@ def getIndustry(industry):
     if(industry == 'Traffic and Transport'):
         return  14
     return -1
-        
+
+# create anonymous list for each user to store information of each user        
 def createAnonymousUserList():
     users = getUsersFromS3()
     anonymousList = []

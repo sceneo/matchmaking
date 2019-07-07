@@ -14,6 +14,7 @@ argument=$1
 selectedLambda=""
 artefactDir=$originaldir
 
+# Deploying the different lambdas 
 function deploy {
 	echo "Deployment of $selectedLambda starting."
 	echo 'upload to aws'
@@ -47,6 +48,7 @@ function deploy {
 	rm -rf src/Lambda*
 }
 
+# Error Message if no lambda was selected 
 function error_notFound {
 	echo 'please select one of the following:'
 	counter=0
@@ -58,6 +60,7 @@ function error_notFound {
 	exit
 }
 
+# check which lambda is selected 
 function checkArgument {
 	echo "checking argument: $argument"
 	for i in "${lambdas[@]}"; do

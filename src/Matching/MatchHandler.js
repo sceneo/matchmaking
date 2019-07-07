@@ -21,7 +21,7 @@ class MatchHandler {
         this.userId = id_;
     }
 
-
+    // fetching recommendations list
     async retrieveRecommendationList() {
         var details = {
                 usecase: 'matchme',
@@ -47,7 +47,7 @@ class MatchHandler {
         this.currentProposalIndex = 0;
     }
 
-
+    // using the matchmaking data to update the training model
     swipe(swipeAction) {
         var addToList = this.currentProposalIndex;
         if (this.currentProposalIndex < this.recsList.length) {
@@ -68,13 +68,13 @@ class MatchHandler {
 
     }
 
-
+    // when 0 recommendations remain - no more users left for example
     async getRecommendation() {
         if (this.recsList.length === 0 || this.currentProposalIndex >= this.recsList.length) {
             console.log("no recommendations left!");
             return null;
         }
-        
+        // pulling recommendations and their attributes through the API
         var username = this.recsList[this.currentProposalIndex].name;
         await this.api.requestUserDetailsByUsername(username);
         this.recsList[this.currentProposalIndex].functionality = this.api.getSecondaryUserDetails(username).functionality;

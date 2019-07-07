@@ -1,3 +1,6 @@
+// Service worker is installed by register it in the script
+// Service worker provides offline capabilities to web App.
+
 // This optional code is used to register a service worker.
 // register() is not called by default.
 
