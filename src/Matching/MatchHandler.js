@@ -57,15 +57,12 @@ class MatchHandler {
         }
 
         if (swipeAction === 'left') {
-            // update user and training data: user not interested in recommendation
-            // ==> add user to blacklist
-            await this.api.addToBlacklist(this.recsList[addToList]['secretId']);
+            // update user and training data: user interested in recommendation
+            await this.api.addToWhitelist(this.recsList[addToList]['secretId']);
             
         } else {
-            // update user and training data: user interested in recommendation
-            // in particular: add current recommendation to contact list of logged in user  
-            // ==> add user to whitelist
-            await this.api.addToWhitelist(this.recsList[addToList]['secretId']);
+            // update user and training data: user not interested 
+            await this.api.addToBlacklistt(this.recsList[addToList]['secretId']);
         }
 
     }

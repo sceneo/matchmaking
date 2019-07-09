@@ -15,13 +15,13 @@ class ChatUserMapping {
    }
  // user mapping, showing the "friendslist" and online status of users
    getFriends(){
-       
-  
-       for(var user in this.userInventory) {
-           this.friends.push(user);
+       this.friends = [];
+       for(var i = 0; i < this.userInventory.length; i++) {
+           if(this.apiLambda.getPrimaryUserDetails().whitelist.includes(this.userInventory[i].matchMakingDetails.email)) {
+               this.friends.push(this.userInventory[i]);
+           }
        }
-       
-       return this.getUserInventory();
+       return this.friends;
    }
    
    getUserInventory(){

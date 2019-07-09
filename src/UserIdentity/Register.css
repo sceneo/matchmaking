@@ -2,6 +2,16 @@
   .Login {
     padding: 60px 0;
   }
+  
+  .label {
+      vertical-align: left;
+      color: red;
+  }
+
+  .inputData {
+      align: right;
+      color: red;
+  }
 
   .Login form {
 	margin: 0 auto;

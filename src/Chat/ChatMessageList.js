@@ -42,9 +42,11 @@ class ChatMessageList extends React.Component {
     }
     
     sortMessages(){
-        this.messages.sort(function(a, b) {
-            return a.id > b.id;
-        });
+        if(this.messages !== null && this.messages !== '') {
+            this.messages.sort(function(a, b) {
+                return a.id > b.id;
+            });
+        }
     }
 // List of messages that is then shown in chat        
     render() {       

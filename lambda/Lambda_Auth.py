@@ -96,7 +96,7 @@ def addToList(email, candidateId, listname):
                  listing = row[listname] + ';' + candidate['email']        
         if(listname in 'whitelist' ):
             line = row['title'] + "," + row['firstname'] + "," + row['lastname'] + "," + row['gender'] + "," + row['company'] + "," + row['industry'] + "," + row['functionality'] + "," + row['city'] + "," + row['country'] + "," + row['type'] + "," + row['email'] + "," + row['username'] + "," + row['password'] + ','+ listing + ',' + row['blacklist'] + ',' + row['avatar'] + ',' + row['secretId'] + '\n'
-        else:
+        if(listname in 'blacklist'):
             line = row['title'] + "," + row['firstname'] + "," + row['lastname'] + "," + row['gender'] + "," + row['company'] + "," + row['industry'] + "," + row['functionality'] + "," + row['city'] + "," + row['country'] + "," + row['type'] + "," + row['email'] + "," + row['username'] + "," + row['password'] + ',' + row['whitelist'] + ',' + listing + ',' + row['avatar'] + ',' + row['secretId'] + '\n'
         body = body + line
     # add a new user

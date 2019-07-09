@@ -92,7 +92,7 @@ class Chat extends Component {
         this.apiCallsToLambda.alive();     
         data =
                <div>
-                <Segment.Group horizontal borderless class="ui borderless menu">
+                <Segment.Group horizontal borderless class="ui borderless menu" style={{ lineWidth: 0, overflow: 'auto', maxHeight: '36em', border: '0px' }}>
                   <Segment.Group vertical>
                                     
                   <AppBar position="static" color="default">
