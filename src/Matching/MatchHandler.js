@@ -1,5 +1,5 @@
 
-
+// set up of the Match Handler for showing actual recommendations to the user
 
 class MatchHandler {
 
@@ -22,6 +22,7 @@ class MatchHandler {
     }
 
     // fetching recommendations list
+    
     async retrieveRecommendationList() {
         var details = {
                 usecase: 'matchme',
@@ -48,6 +49,7 @@ class MatchHandler {
     }
 
     // using the matchmaking data to update the training model
+    
     async swipe(swipeAction) {
         var addToList = this.currentProposalIndex;
         if (this.currentProposalIndex < this.recsList.length) {
@@ -68,7 +70,8 @@ class MatchHandler {
 
     }
 
-    // when 0 recommendations remain - no more users left for example
+    // when 0 recommendations remain - no more users left to be recommended
+    
     async getRecommendation() {
                 
         if (this.recsList.length === 0 || this.currentProposalIndex >= this.recsList.length) {
@@ -126,3 +129,5 @@ class MatchHandler {
 
 
 export default MatchHandler;
+
+// default export of the file

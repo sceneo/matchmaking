@@ -29,6 +29,8 @@ class MatchMe extends React.Component {
         this.onClickClose = this.onClickClose.bind(this);
 
     }
+    
+    // implementing the swipe left or right function
 
     async onClickSwipeLeft() {
         console.log("swipe left clicked");
@@ -54,6 +56,8 @@ class MatchMe extends React.Component {
             this.props.swipeRightCallback();
         }
     }
+    
+    // enabling to be able to close the recommendation window
 
     onClickClose() {
         console.log("close recommendation window");
@@ -63,6 +67,8 @@ class MatchMe extends React.Component {
         }
     }
 
+    // presentation of the name, industry and functionality beneath the recommended user
+    // button (yes/no) displayment
 
     render() {
 
@@ -106,6 +112,7 @@ class MatchMe extends React.Component {
                 </div>
             );
         }
+        
 
         recData = {
             'name': this.props.recommendation['name'],
@@ -175,3 +182,5 @@ class MatchMe extends React.Component {
 }
 
 export default MatchMe;
+
+// default export of the file
