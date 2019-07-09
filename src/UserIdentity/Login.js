@@ -91,7 +91,7 @@ class Login extends Component {
             }
             else {
                 this.setState({
-                    statusMessage: "Wrong credentials.",
+                    statusMessage: "Login failed. Please check your details and try again.",
                     isLoading: false
                 })
             }

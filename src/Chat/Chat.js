@@ -29,7 +29,7 @@ class Chat extends Component {
       this.callbackChangeRoom = this.callbackChangeRoom.bind(this);
   }
 
- // make calls to fetch data and use a timer for repeatedly updates
+ // make calls to fetch data and use a timer for repeated updates
   
   async componentDidMount() {
     await this.api.initialize();

@@ -41,7 +41,7 @@ class PasswordForgotton extends Component {
           <p className='PasswordForgottenHeadline'>   Forgot your password? </p>
           <p className='PasswordForgottenText'> Please enter your email address linked to the Messe München Community Chat account. </p>
           <p className='PasswordForgottenText'> If you are in our system, you will be redirected to the reset page. </p>	
-          <p className="PasswordForgottenEmail"> Email </p>
+          <p className="PasswordForgottenEmail"> Email: </p>
           <Form onSubmit={this.handleSubmit}>
               <Form.Group controlId="email">
                   <Form.Label></Form.Label>
