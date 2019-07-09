@@ -8,7 +8,7 @@
 */
 
 import React from 'react';
-import { Button, Icon } from 'semantic-ui-react'
+import { Button, ButtonToolbar,Icon } from 'semantic-ui-react'
 
 import './../CSSAnimation.js';
 
@@ -27,14 +27,13 @@ class MatchMe extends React.Component {
         this.onClickSwipeLeft = this.onClickSwipeLeft.bind(this);
         this.onClickSwipeRight = this.onClickSwipeRight.bind(this);
         this.onClickClose = this.onClickClose.bind(this);
+        this.startChatting = this.startChatting.bind(this);
 
     }
     
     // implementing the swipe left or right function
 
     async onClickSwipeLeft() {
-        console.log("swipe left clicked");
-
         await animateElement('.matching-div', 'fadeOutRight', 800, function () {
             animateElement('.matching-div', 'fadeInDown');
         });
@@ -46,8 +45,6 @@ class MatchMe extends React.Component {
     }
 
     async onClickSwipeRight() {
-        console.log("swipe right clicked");
-
         await animateElement('.matching-div', 'fadeOutLeft', 800, function () {
             animateElement('.matching-div', 'fadeInDown');
         });
@@ -67,6 +64,12 @@ class MatchMe extends React.Component {
         }
     }
 
+    startChatting(){
+        this.props.openChatWithNewFriendCallBack(this.props.recommendation['name'])
+        this.props.closeCallback();
+    }
+    
+    
     // presentation of the name, industry and functionality beneath the recommended user
     // button (yes/no) displayment
 
@@ -172,9 +175,14 @@ class MatchMe extends React.Component {
                                     </Button.Content>
                                 </Button>
                             </td>
-                        </tr>
-                    </tbody>
+                        </tr>                        
+                    </tbody>                    
                 </table>
+
+                <Button onClick={this.startChatting} className='startChattingButton' variant="primary">
+                    Start chatting now!
+                </Button>
+                
             </div>
 
         );

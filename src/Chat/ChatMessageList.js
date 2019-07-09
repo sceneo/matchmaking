@@ -15,6 +15,7 @@ class ChatMessageList extends React.Component {
         this.messages = this.api.getRoomMessages();
         this.userMapping = this.props.userMapping;
         this.state = this.props.chatState;
+        this.roomId = this.props.roomId;
     }
     
     componentWillReceiveProps(nextProps){
@@ -24,8 +25,6 @@ class ChatMessageList extends React.Component {
     }
 
     async componentDidMount(){
-
-
     }
     
     getKey(){
@@ -50,6 +49,9 @@ class ChatMessageList extends React.Component {
     }
 // List of messages that is then shown in chat        
     render() {       
+        
+        
+        
         this.sortMessages();
         
         return (

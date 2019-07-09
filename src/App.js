@@ -26,9 +26,9 @@ class App extends React.Component {
             auth: false,
             userId: '',
             matchMeVisible: false,
+            chatUserName: 'Lobby',
             recommendationData: {},
         }
-        
         this.apiCallsToLambda = new APICallsToLambda(); 
         
 // With bind() we can assign any context to the functions. 
@@ -52,6 +52,7 @@ class App extends React.Component {
         
         this.swipeLeftCallback = this.swipeLeftCallback.bind(this);
         this.swipeRightCallback = this.swipeRightCallback.bind(this);
+        this.openChatWithNewFriendCallBack = this.openChatWithNewFriendCallBack.bind(this);
 
         this.updateRecommendation = this.updateRecommendation.bind(this);
 
@@ -119,6 +120,11 @@ class App extends React.Component {
     swipeRightCallback() {
         this.matchHandler.swipe('right');
         this.updateRecommendation();
+    }
+    
+    openChatWithNewFriendCallBack(name){
+        // add to Whitelist?? //TODO
+        this.setState({ chatUserName: name})
     }
 
     async updateRecommendation() {
@@ -207,14 +213,15 @@ class App extends React.Component {
                                     <Matcher recommendation={this.state.recommendationData}
                                         closeCallback={this.handleMatchMeHide}
                                         swipeLeftCallback={this.swipeLeftCallback}
-                                        swipeRightCallback={this.swipeRightCallback} />
+                                        swipeRightCallback={this.swipeRightCallback} 
+                                        openChatWithNewFriendCallBack= {this.openChatWithNewFriendCallBack} />
                                 </div>
                             </Sidebar>
 
                             <Sidebar.Pusher dimmed={this.state.matchMeVisible}>
                                 <Segment basic>
                                     <div className='container-div'>
-                                        <Chat apiCallsToLambda={this.apiCallsToLambda} />
+                                        <Chat apiCallsToLambda={this.apiCallsToLambda} state={this.state}/>
                                     </div>
                                 </Segment>
                             </Sidebar.Pusher>

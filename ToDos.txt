@@ -14,7 +14,6 @@ user room  id
 always add, when a user has seen a message 
 
 9. Add new button "-> Direct chat with this user"
-	* close matchme window
 	* add chat with this user
 	* in case the user clicks on "add" a hoover "the user has been added to your contact list"
 	

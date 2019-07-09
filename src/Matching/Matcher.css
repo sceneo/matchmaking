@@ -35,3 +35,9 @@
 .matching-table td {
     height: 50px;
 }
+
+.startChattingButton{
+    position: absolute;
+    left: 30%;
+    top: 40%;
+}

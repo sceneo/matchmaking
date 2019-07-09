@@ -60,11 +60,11 @@ class MatchHandler {
             // update user and training data: user interested in recommendation
             await this.api.addToWhitelist(this.recsList[addToList]['secretId']);
             
-        } else {
+        } 
+        else if (swipeAction === 'right') {
             // update user and training data: user not interested 
             await this.api.addToBlacklistt(this.recsList[addToList]['secretId']);
         }
-
     }
 
     // when 0 recommendations remain - no more users left to be recommended

@@ -20,6 +20,7 @@ class Chat extends Component {
               loading: true,
               refresh: false,
       }  
+      this.chatUserName = 'Lobby';
       
       this.api = new APICallsToChatkit(this.state.loading);
       this.apiCallsToLambda = this.props.apiCallsToLambda;
@@ -39,7 +40,7 @@ class Chat extends Component {
         loading: false
     })    
     this.chatUserMapping.setCurrentUser(this.props.apiCallsToLambda.getPrimaryUserDetails().username);
-    this.roomHandler.getRoomsForUser(); 
+    this.roomHandler.getRoomsForUser();     
     
     this.timer = setInterval(()=> this.updateOnlineStatus(), 10000);
   }
@@ -81,6 +82,12 @@ class Chat extends Component {
   
 // building chat windows  
   render(){  
+      if(this.props.state.chatUserName !== "Lobby" && this.chatUserName !== this.props.state.chatUserName) {
+          this.roomHandler.switchRoom(this.props.state.chatUserName);
+          this.api.setCurrentChannel(this.roomHandler.getCurrentRoomId());
+      }
+      
+      
       let data;
       if (this.state.loading) {
           data =
@@ -122,7 +129,7 @@ class Chat extends Component {
                      </AppBar>
                        <span style= {{height: '10em'}}>
                          <GridListTile name="messages" scrollHeight style={{lineWidth: 0, overflow: 'auto', maxHeight: '31em' }}>
-                         <ChatMessageList name="ChatMessageList" api={this.api} chatState={this.state} userMapping={this.chatUserMapping}/>     
+                         <ChatMessageList name="ChatMessageList" api={this.api} chatState={this.state} userMapping={this.chatUserMapping} roomId={this.roomHandler.getCurrentRoom()} />     
                            </GridListTile>
                       </span>
                       <span>
