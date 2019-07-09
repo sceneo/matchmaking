@@ -13,7 +13,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
-// this is the chat base code
 class Chat extends Component {
   constructor(props) {
       super(props)
@@ -29,6 +28,8 @@ class Chat extends Component {
       this.callbackRefresh = this.callbackRefresh.bind(this);
       this.callbackChangeRoom = this.callbackChangeRoom.bind(this);
   }
+
+ // make calls to fetch data and use a timer to have the data updated every so often without the user ever having to refresh the page.
   
   async componentDidMount() {
     await this.api.initialize();
@@ -55,6 +56,7 @@ class Chat extends Component {
   
   }
       
+// Refresh of messages and rooms as callback
   
   async callbackRefresh(){
       await this.api.requestMessagesFromRoom();
@@ -71,13 +73,13 @@ class Chat extends Component {
       }) 
   } 
   
-  
+// scrolling functionality - ElementID refers to date of message  
   scrollToBottom() {
       var objDiv = document.getElementById("messages");
       objDiv.scrollTop = objDiv.scrollHeight;
   }
   
-  
+// building chat windows  
   render(){  
       let data;
       if (this.state.loading) {

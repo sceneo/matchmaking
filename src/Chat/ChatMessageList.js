@@ -5,6 +5,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 
+// introduce message list as component
+// call constructor before component is mounted
+
 class ChatMessageList extends React.Component {
     constructor(props){
         super(props);
@@ -28,7 +31,7 @@ class ChatMessageList extends React.Component {
     getKey(){
         return Math.random();
     }
- // refreshing messages, this file is all about the message list and updating it    
+ // refresh for messages, get avatar and sort messages by date by calling functions via 'this'
     async refresh(){
         await this.api.requestMessagesFromRoom();
         this.render();
@@ -43,7 +46,7 @@ class ChatMessageList extends React.Component {
             return a.id > b.id;
         });
     }
-        
+// List of messages that is then shown in chat        
     render() {       
         this.sortMessages();
         
