@@ -65,7 +65,7 @@ class MatchMe extends React.Component {
     }
 
     startChatting(){
-        this.props.openChatWithNewFriendCallBack(this.props.recommendation['name'])
+        this.props.openChatWithNewFriendCallback(this.props.recommendation['name'],this.props.recommendation['secretId'])
         this.props.closeCallback();
     }
     

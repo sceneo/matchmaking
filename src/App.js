@@ -6,7 +6,8 @@ import Register from "./UserIdentity/Register.js"
 import PasswordForgotton from "./UserIdentity/PasswordForgotton.js"
 import Chat from "./Chat/Chat.js"
 import APICallsToLambda from "./UserIdentity/APICallsToLambda.js"
-
+import HowTo from "./Details/HowTo.js"
+import Details from "./Details/Details.js"
 
 import Matcher from './Matching/Matcher.js';
 import MatchHandler from './Matching/MatchHandler.js';
@@ -24,6 +25,8 @@ class App extends React.Component {
             register: false,
             forgot: false,
             auth: false,
+            details: false,
+            howTo: false,
             userId: '',
             matchMeVisible: false,
             chatUserName: 'Lobby',
@@ -52,11 +55,49 @@ class App extends React.Component {
         
         this.swipeLeftCallback = this.swipeLeftCallback.bind(this);
         this.swipeRightCallback = this.swipeRightCallback.bind(this);
-        this.openChatWithNewFriendCallBack = this.openChatWithNewFriendCallBack.bind(this);
+        this.openChatWithNewFriendCallBack = this.openChatWithNewFriendCallback.bind(this);
 
         this.updateRecommendation = this.updateRecommendation.bind(this);
 
+        this.buttonHowTo = this.buttonHowTo.bind(this);
+        this.buttonDetails = this.buttonDetails.bind(this);
+        this.buttonLobby = this.buttonLobby.bind(this);
     }
+    
+    buttonHowTo(){
+        this.setState({
+            register: false,
+            forgot: false,
+            auth: true,
+            details: false,
+            howTo: true,
+            matchMeVisible: false
+        })
+    }
+    
+    buttonDetails(){
+        this.setState({
+            register: false,
+            forgot: false,
+            auth: true,
+            details: true,
+            howTo: false,
+            matchMeVisible: false
+        })
+    }
+    
+    buttonLobby() {
+        this.setState({
+            register: false,
+            forgot: false,
+            auth: true,
+            details: false,
+            howTo: false,
+            matchMeVisible: false,
+            chatUserName: 'Lobby'
+        })
+    }
+    
 
 // With a callback function as argument, not the result of the function x is passed to function y.
 // But the function itself, which is then executed at any other position.
@@ -92,7 +133,9 @@ class App extends React.Component {
             register: false,
             forgot: false,
             auth: false,
-            matchMeVisible: false
+            matchMeVisible: false,
+            details: false,
+            howTo: false
         })
     }
 
@@ -100,7 +143,9 @@ class App extends React.Component {
         this.setState({
             register: false,
             forgot: true,
-            auth: false
+            auth: false,
+            details: false,
+            howTo: false,
         })
     }
 
@@ -123,8 +168,8 @@ class App extends React.Component {
         this.updateRecommendation();
     }
     
-    openChatWithNewFriendCallBack(name){
-        // add to Whitelist?? //TODO
+    openChatWithNewFriendCallback(name,secretId){
+        this.apiCallsToLambda.addToWhitelist(secretId);
         this.setState({ chatUserName: name})
     }
 
@@ -142,7 +187,9 @@ class App extends React.Component {
             register: false,
             forgot: false,
             auth: false,
-            matchMeVisible: false
+            matchMeVisible: false,
+            details: false,
+            howTo: false,
         })   
     }
 
@@ -166,7 +213,7 @@ class App extends React.Component {
             )
         }
 // After successful authentication, the main page is played, which is structured as follows:
-        if (this.state.auth) {
+        if (this.state.auth) {          
             return (
                 <div className='main-page-div'>
                     <table className='menu-bar-table'>
@@ -177,6 +224,17 @@ class App extends React.Component {
                                         <Button.Group>
                                             <Button primary disabled={this.state.matchMeVisible} onClick={this.handleMatchMeShowClick}>
                                                 Match Me!    
+                                            </Button>
+                                                
+                                            <Button primary onClick={this.buttonLobby}>
+                                                Lobby    
+                                            </Button>
+                                            
+                                            <Button primary onClick={this.buttonDetails}>
+                                                My Details   
+                                            </Button>    
+                                            <Button primary onClick={this.buttonHowTo}>
+                                                How it works
                                             </Button>
                                         </Button.Group>
                                     </div>
@@ -220,11 +278,32 @@ class App extends React.Component {
                             </Sidebar>
 
                             <Sidebar.Pusher dimmed={this.state.matchMeVisible}>
-                                <Segment basic>
-                                    <div className='container-div'>
-                                        <Chat apiCallsToLambda={this.apiCallsToLambda} state={this.state}/>
-                                    </div>
-                                </Segment>
+                            
+                                {!this.state.howTo && !this.state.details ? (
+                                    <Segment basic>
+                                        <div className='container-div'>
+                                            <Chat apiCallsToLambda={this.apiCallsToLambda} state={this.state}/>
+                                        </div>
+                                    </Segment>
+                                        ) : ""
+                                }
+                                    {this.state.howTo ? (
+                                        <Segment basic>
+                                            <div className='container-div'>
+                                                <HowTo hidden={false}/>
+                                            </div>
+                                        </Segment>
+                                            ) : ""
+                                    }
+                                    {this.state.details ? (
+                                        <Segment basic>
+                                            <div className='container-div'>
+                                                <Details apiCallsToLambda={this.apiCallsToLambda} />
+                                            </div>
+                                        </Segment>
+                                            ) : ""
+                                    }
+                                    
                             </Sidebar.Pusher>
                         </Sidebar.Pushable>
                     </div >
