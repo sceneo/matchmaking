@@ -123,7 +123,7 @@ class Chat extends Component {
                       <AppBar position="static" color="default">
                       <Toolbar>
                        <Typography variant="h6" color="inherit">
-                         Messages
+                         Messages (Chatting with {this.roomHandler.getChatPartner()})
                        </Typography>
                       </Toolbar>
                      </AppBar>

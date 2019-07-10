@@ -4,6 +4,7 @@ class RoomHandler {
         this.chatkitApi = chatkitApi;
         this.currentRoom = 'Lobby';
         this.currentRoomId = '19865469';
+        this.currentChatPartner = 'all Users';
     }   
   // creaating the virtual 'room'/lobby for the chat for the two users 
     getCurrentRoom(){
@@ -12,6 +13,10 @@ class RoomHandler {
     
     getCurrentRoomId(){
         return this.currentRoomId;
+    }
+    
+    getChatPartner(){
+        return this.currentChatPartner;
     }
     
     print(){
@@ -27,6 +32,7 @@ class RoomHandler {
  // if 1:1 room already exists, chat will be continued there - if not, new room is requested
     
     async switchRoom(username) {
+        this.currentChatPartner = username
         await this.getRoomsForUser();
         var foundUser = false;
         for(var i = 0; i < this.rooms.length; i++) {
