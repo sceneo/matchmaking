@@ -9,7 +9,7 @@ import boto3
 from symbol import except_clause
 from getpass import getuser
 
-
+# setting up initial format for a status message
 #note: this is not state of the art authentication. This just illustrates the 
 #usage of a lambda function to provide simple information
 def response(message, status_code):
@@ -22,6 +22,7 @@ def response(message, status_code):
             }
         }
 
+# convert one line from CSV file into a string 
 def csvLineToString(line):
     si = BytesIO.StringIO()
     cw = csv.writer(si)
@@ -35,7 +36,7 @@ def csvToString(data):
         cw.writerow(line)
     return si.getvalue()
  
-         
+# get users from S3         
 def getUsersFromS3():
     s3 = boto3.resource(u's3')
     bucket = s3.Bucket(u'matchmaking.data')
@@ -49,21 +50,22 @@ def isOnline(email):
 
 def isOffline(email):
     updateStatusOnS3(email, False)
- 
+
+# adding a new user to the user list on S3  
 def updateUserListOnS3(newUser):
     bucket_name = "matchmaking.data"
     file_name = "users.csv"
     s3 = boto3.resource("s3")
     #recreate old file 
-    header="title,firstname,lastname,gender,company,industry,functionality,city,country,type,email,username,password,whitelist,blacklist,avatar\n"
+    header="title,firstname,lastname,gender,company,industry,functionality,city,country,type,email,username,password,whitelist,blacklist,avatar,secretId\n"
      
     body = header
     users = getUsersFromS3()
     for row in users:
-        line = row['title'] + "," + row['firstname'] + "," + row['lastname'] + "," + row['gender'] + "," + row['company'] + "," + row['industry'] + "," + row['functionality'] + "," + row['city'] + "," + row['country'] + "," + row['type'] + "," + row['email'] + "," + row['username'] + "," + row['password'] + "," + row['whitelist'] + ',' + row['blacklist'] + "," + row['avatar'] + '\n'
+        line = row['title'] + "," + row['firstname'] + "," + row['lastname'] + "," + row['gender'] + "," + row['company'] + "," + row['industry'] + "," + row['functionality'] + "," + row['city'] + "," + row['country'] + "," + row['type'] + "," + row['email'] + "," + row['username'] + "," + row['password'] + "," + row['whitelist'] + ',' + row['blacklist'] + "," + row['avatar'] + "," + row['secretId'] + '\n'
         body = body + line
      
-    line = newUser['title'] + "," + newUser['firstName'] + "," + newUser['lastName'] + "," + newUser['gender'] + "," + newUser['company'] + "," + newUser['industry'] + "," + newUser['functionality'] + "," + newUser['city'] + "," + newUser['country'] + "," + newUser['type'] + "," + newUser['email'] + "," + newUser['username'] + "," + newUser['password'] + ','+ '' + ',' + '' + ',' + str(random.randint(0,15)) + '\n'
+    line = newUser['title'] + "," + newUser['firstName'] + "," + newUser['lastName'] + "," + newUser['gender'] + "," + newUser['company'] + "," + newUser['industry'] + "," + newUser['functionality'] + "," + newUser['city'] + "," + newUser['country'] + "," + newUser['type'] + "," + newUser['email'] + "," + newUser['username'] + "," + newUser['password'] + ','+ '' + ',' + '' + ',' + str(random.randint(0,15)) + ',' + createToken(64) + '\n'
     body = body + line
     
     # add a new user
@@ -77,7 +79,7 @@ def addToList(email, candidateId, listname):
     candidate = getUserBySecretId(candidateId)
     
     #recreate old file 
-    header="title,firstname,lastname,gender,company,industry,functionality,city,country,type,email,username,password,whitelist,blacklist,avatar\n"
+    header="title,firstname,lastname,gender,company,industry,functionality,city,country,type,email,username,password,whitelist,blacklist,avatar,secretId\n"
     body = header
     users = getUsersFromS3()
     for row in users:
@@ -93,22 +95,24 @@ def addToList(email, candidateId, listname):
             else:
                  listing = row[listname] + ';' + candidate['email']        
         if(listname in 'whitelist' ):
-            line = row['title'] + "," + row['firstname'] + "," + row['lastname'] + "," + row['gender'] + "," + row['company'] + "," + row['industry'] + "," + row['functionality'] + "," + row['city'] + "," + row['country'] + "," + row['type'] + "," + row['email'] + "," + row['username'] + "," + row['password'] + ','+ listing + ',' + row['blacklist'] + ',' + row['avatar'] + '\n'
-        else:
-            line = row['title'] + "," + row['firstname'] + "," + row['lastname'] + "," + row['gender'] + "," + row['company'] + "," + row['industry'] + "," + row['functionality'] + "," + row['city'] + "," + row['country'] + "," + row['type'] + "," + row['email'] + "," + row['username'] + "," + row['password'] + ',' + row['whitelist'] + ',' + listing + ',' + row['avatar'] + '\n'
+            line = row['title'] + "," + row['firstname'] + "," + row['lastname'] + "," + row['gender'] + "," + row['company'] + "," + row['industry'] + "," + row['functionality'] + "," + row['city'] + "," + row['country'] + "," + row['type'] + "," + row['email'] + "," + row['username'] + "," + row['password'] + ','+ listing + ',' + row['blacklist'] + ',' + row['avatar'] + ',' + row['secretId'] + '\n'
+        if(listname in 'blacklist'):
+            line = row['title'] + "," + row['firstname'] + "," + row['lastname'] + "," + row['gender'] + "," + row['company'] + "," + row['industry'] + "," + row['functionality'] + "," + row['city'] + "," + row['country'] + "," + row['type'] + "," + row['email'] + "," + row['username'] + "," + row['password'] + ',' + row['whitelist'] + ',' + listing + ',' + row['avatar'] + ',' + row['secretId'] + '\n'
         body = body + line
     # add a new user
     s3.Bucket(bucket_name).put_object(Key=file_name, Body=body)
-     
+
+# create password      
 def createPassword(pwLength=10):
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(pwLength))
- 
+
+# create token  
 def createToken(tokenLength=64):
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(tokenLength))
  
- 
+# check if user is authenticated on S3
 def checkUser(username, password): 
     users = getUsersFromS3()
     for user in users:
@@ -121,7 +125,8 @@ def checkUser(username, password):
                     return False
     print('could not find user ' + username)
     return False
- 
+
+#check if user already exists 
 def exists(username):
     users = getUsersFromS3()
     for user in users:
@@ -130,7 +135,8 @@ def exists(username):
             return True
     print('user ' + username + ' does not exist')
     return False
- 
+
+# getting user with different options from S3 
 def getUser(email):
     users = getUsersFromS3()
     for user in users:
@@ -150,7 +156,8 @@ def getUserBySecretId(secretId):
         if secretId == user['secretId']:
             return user
     print('SecretId not found!')
-     
+
+# get a status report from S3      
 def getStatusFromS3():
     s3 = boto3.resource(u's3')
     bucket = s3.Bucket(u'matchmaking.data')
@@ -158,7 +165,8 @@ def getStatusFromS3():
     response = obj.get()
     status = csv.DictReader(response[u'Body'].read().decode('utf-8').split())
     return status
- 
+
+# update status on S3 
 def updateStatusOnS3(email, isOnline):
     bucket_name = "matchmaking.data"
     file_name = "status.csv"
@@ -180,7 +188,8 @@ def updateStatusOnS3(email, isOnline):
         body = body + line
         
     s3.Bucket(bucket_name).put_object(Key=file_name, Body=body)
- 
+
+# get information about online status of users 
 def getOnlineList():
     status = getStatusFromS3()
     onlineUsers = ''
@@ -255,9 +264,13 @@ def auth(event, context):
         email = body['email']
         whitelistCandidate = body['whitelistCandidate']
         isOnline(email)
-        addTolist(email, whitelistCandidate,'whitelist')   
+        addToList(email, whitelistCandidate,'whitelist')   
           
     return response('Lambda available, no usecase selected',200)
 
 if __name__ == '__main__':
     checkUser('lea.reckhord@gmail.de','lea')
+    
+    print(getUserBySecretId(1212))
+    
+    addToList('lea.reckhord@gmail.de', 6666,'whitelist')   

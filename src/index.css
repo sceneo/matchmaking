@@ -1,3 +1,5 @@
+// Specification of specific and generic font-family. However, the actual output depends on OS and browser.
+
 body {
   margin: 0;
   padding: 0;

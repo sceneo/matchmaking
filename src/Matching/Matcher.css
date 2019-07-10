@@ -1,3 +1,7 @@
+/* Styling of the recommendation field */
+
+
+
 .name-label {
     color: lightblue;
     font-style: bold;
@@ -6,10 +10,12 @@
 
 .industry-label {
     font-size: 20px;
+	font-style: italic;
 }
 
 .functionality-label {
     font-size: 20px;
+	font-style: italic;
 }
 
 .no-recommendations {
@@ -30,4 +36,10 @@
 
 .matching-table td {
     height: 50px;
+}
+
+.startChattingButton{
+    position: absolute;
+    left: 30%;
+    top: 40%;
 }

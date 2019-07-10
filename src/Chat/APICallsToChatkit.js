@@ -6,7 +6,7 @@ class APICallsToChatkit {
  // v1:us1:8a1e4d4b-5933-473f-bd5d-d4893859ffcd
  // 6fbd13f5-4d17-4a14-b8bb-95d56416bfc2:BehYgWeMTwQ3kzNUUwgfca3lVTfK9/uG4syEM62U3Jc=
  // https://us1.pusherplatform.io/services/chatkit_token_provider/v1/8a1e4d4b-5933-473f-bd5d-d4893859ffcd/token
-       
+   
    constructor() {
        this.chatInstance = '8a1e4d4b-5933-473f-bd5d-d4893859ffcd';
        this.secretKey = '6fbd13f5-4d17-4a14-b8bb-95d56416bfc2:BehYgWeMTwQ3kzNUUwgfca3lVTfK9/uG4syEM62U3Jc=';
@@ -23,7 +23,7 @@ class APICallsToChatkit {
        this.chatManager = [];
        this.rootToken = '';
    }
-   
+// request current status and details 
    getRootToken(){
        return this.rootToken;
    }
@@ -77,12 +77,16 @@ class APICallsToChatkit {
        this.currentUser = username;
        await this.getToken(username,false);
    }
-      
+
+// receiving the token with the user ID and valid credentials
+   
    async getToken(userId, su = true){       
        var obj = new Object();
        obj.grant_type = 'client_credentials';
        obj.user_id = userId;
        obj.su = su;
+
+// handling JSON web token for authentication
        
        var json;
        let response = await new Promise(resolve => {
@@ -102,6 +106,8 @@ class APICallsToChatkit {
        })
        this.authorization = json;
    }
+
+// Adding new users
    
    async addUser(username, firstName, lastName, email) {
        await fetch(this.api + '/users' ,{
@@ -161,6 +167,8 @@ class APICallsToChatkit {
      });
    }
    
+// message is submitted into a room / channel - auth. via token in header
+   
    async submitMessage(message='', roomId=this.currentChannel) {
        await fetch(this.api + '/rooms/' + roomId + '/messages' ,{
        method: 'post',
@@ -180,6 +188,7 @@ class APICallsToChatkit {
      });
    }
    
+// message is requested from room -auth. via token in header
    
    async requestMessagesFromRoom(roomId=this.currentChannel) {
        this.messages = [];
@@ -198,10 +207,10 @@ class APICallsToChatkit {
      .catch(function (error) {
        console.log('Request failed', error);
      });
-     this.roomMessages = json;
-     // sort by id (lower id = older message)
-     // ?
+     this.roomMessages = json;   
    }
+   
+// private room refers to 1:1 chat functionality
    
    async requestNewPrivateRoom(username) {
        await fetch(this.api + '/rooms' ,{
@@ -226,7 +235,7 @@ class APICallsToChatkit {
    }
 
    
-
+// Initialization of cryptographic key / token for authentication
    async initializeRoot() {
       
       var header = {

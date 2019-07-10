@@ -1,4 +1,5 @@
 import React from "react";
+// import button as react component from material-ui and introduce SendMessageForm as class component
 import Button from '@material-ui/core/Button';
 
 class SendMessageForm extends React.Component {
@@ -17,7 +18,7 @@ class SendMessageForm extends React.Component {
             message: e.target.value
         })
     }
-    
+// handle sending and requesting messages by calling functions of API via 'this'   
     async handleSubmit(e) {
         e.preventDefault()
         this.submit();
@@ -32,7 +33,7 @@ class SendMessageForm extends React.Component {
     async submit() {
         
     }
-    
+// Field and button to send messages as shown on web page   
     render() {
         return (
             <form

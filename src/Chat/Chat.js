@@ -13,7 +13,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
-
 class Chat extends Component {
   constructor(props) {
       super(props)
@@ -21,6 +20,7 @@ class Chat extends Component {
               loading: true,
               refresh: false,
       }  
+      this.chatUserName = 'Lobby';
       
       this.api = new APICallsToChatkit(this.state.loading);
       this.apiCallsToLambda = this.props.apiCallsToLambda;
@@ -29,6 +29,8 @@ class Chat extends Component {
       this.callbackRefresh = this.callbackRefresh.bind(this);
       this.callbackChangeRoom = this.callbackChangeRoom.bind(this);
   }
+
+ // make calls to fetch data and use a timer for repeated updates
   
   async componentDidMount() {
     await this.api.initialize();
@@ -38,7 +40,7 @@ class Chat extends Component {
         loading: false
     })    
     this.chatUserMapping.setCurrentUser(this.props.apiCallsToLambda.getPrimaryUserDetails().username);
-    this.roomHandler.getRoomsForUser(); 
+    this.roomHandler.getRoomsForUser();     
     
     this.timer = setInterval(()=> this.updateOnlineStatus(), 10000);
   }
@@ -55,6 +57,7 @@ class Chat extends Component {
   
   }
       
+// Refresh of messages and rooms as callback
   
   async callbackRefresh(){
       await this.api.requestMessagesFromRoom();
@@ -71,14 +74,20 @@ class Chat extends Component {
       }) 
   } 
   
-  
+// scrolling functionality - ElementID refers to date of message  
   scrollToBottom() {
       var objDiv = document.getElementById("messages");
       objDiv.scrollTop = objDiv.scrollHeight;
   }
   
-  
+// building chat windows  
   render(){  
+      if(this.props.state.chatUserName !== "Lobby" && this.chatUserName !== this.props.state.chatUserName) {
+          this.roomHandler.switchRoom(this.props.state.chatUserName);
+          this.api.setCurrentChannel(this.roomHandler.getCurrentRoomId());
+      }
+      
+      
       let data;
       if (this.state.loading) {
           data =
@@ -90,7 +99,7 @@ class Chat extends Component {
         this.apiCallsToLambda.alive();     
         data =
                <div>
-                <Segment.Group horizontal borderless className="ui borderless menu">
+                <Segment.Group horizontal borderless class="ui borderless menu" style={{ lineWidth: 0, overflow: 'auto', maxHeight: '36em', border: '0px' }}>
                   <Segment.Group vertical>
                                     
                   <AppBar position="static" color="default">
@@ -120,7 +129,7 @@ class Chat extends Component {
                      </AppBar>
                        <span style= {{height: '10em'}}>
                          <GridListTile name="messages" scrollHeight style={{lineWidth: 0, overflow: 'auto', maxHeight: '31em' }}>
-                         <ChatMessageList name="ChatMessageList" api={this.api} chatState={this.state} userMapping={this.chatUserMapping}/>     
+                         <ChatMessageList name="ChatMessageList" api={this.api} chatState={this.state} userMapping={this.chatUserMapping} roomId={this.roomHandler.getCurrentRoom()} />     
                            </GridListTile>
                       </span>
                       <span>

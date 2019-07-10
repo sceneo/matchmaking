@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Col, Row } from "react-bootstrap";
 import APICallsToChatkit from "./../Chat/APICallsToChatkit.js"
 import APICallsToLambda from "./../UserIdentity/APICallsToLambda.js"
 import "./Register.css";
+import { Segment } from 'semantic-ui-react';
 class Register extends Component {
     constructor(props) {
         super(props);
@@ -92,19 +93,21 @@ class Register extends Component {
           <div className="Register">
               <p className="Headline1"> Registration </p>
               <p className="Headline3"> Fields indicated with * need to be filled out. </p>
-
               <Form onSubmit={this.registrationProcedure}>
-                  <p className="Headline2"> Personal details </p>
           
-                  <Form.Group labelId="Field" controlId="Title" >
-                      <Form.Label> Title </Form.Label >              
+              <Segment.Group horizontal borderless class="ui borderless menu">
+              <Segment>
+                <p className="Headline2"> Personal details </p>               
+                
+                  <Form.Group as={Row} md="4" labelId="Field" controlId="Title" >
+                  <Form.Label> Title </Form.Label >
                       <Form.Control as="select" id='title' onChange={this.handleChange}>
                           <option></option>
                           <option>Prof.</option>
                           <option>Prof. Dr.</option>
                           <option>Dr.</option>
                       </Form.Control>
-                      <Form.Text className="text-label"/>    
+ 
                   </Form.Group>          
           
                   <Form.Group controlId="FirstName">
@@ -199,7 +202,8 @@ class Register extends Component {
                       <option>Other</option>
                     </Form.Control>
                  </Form.Group> 
-      
+                 </Segment>
+                 <Segment>
                     <Form.Group controlId="City">
                     <Form.Label>City*</Form.Label>
                     <Form.Control type="text" id='city' onChange={this.handleChange} placeholder="City" required/>
@@ -244,6 +248,8 @@ class Register extends Component {
                     <Button variant="primary" type="submit" onClick={this.callToAws}>
                       Submit
                     </Button>
+                    </Segment>
+                 </Segment.Group>
                </Form>
             
       </div>

@@ -13,20 +13,21 @@ class ChatUserMapping {
    setCurrentUser(user){
        this.currentUser = user;
    }
-   
+ // user mapping, showing the "friendslist" and online status of users
    getFriends(){
-       
-       // currently the friendslist is non existing as the matching has not been implmented so far.
-       for(var user in this.userInventory) {
-           this.friends.push(user);
+       this.friends = [];
+       for(var i = 0; i < this.userInventory.length; i++) {
+           if(this.apiLambda.getPrimaryUserDetails().whitelist.includes(this.userInventory[i].matchMakingDetails.email)) {
+               this.friends.push(this.userInventory[i]);
+           }
        }
-       
-       return this.getUserInventory();
+       return this.friends;
    }
    
    getUserInventory(){
        return this.userInventory;
    }
+// retrieving list of online users from lambda.auth   
    
    async updateOnlineStatus(){
        if(this.verbose > 0) {
@@ -64,7 +65,7 @@ class ChatUserMapping {
        for(var user in this.allUsersChatkit){
            await this.apiLambda.requestUserDetailsByUsername(this.allUsersChatkit[user].id);
            
-           //create object containing the information from Chatkit and the Lambda and fill to userInventory
+//create object containing the information from Chatkit and the Lambda and fill to userInventory
            var chatkitDetails = this.allUsersChatkit[user];
            if(this.verbose > 0) {
                console.log('secondary details')
