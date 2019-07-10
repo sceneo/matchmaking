@@ -142,7 +142,14 @@ def getUser(email):
     for user in users:
         if email == user['email']:
             return user
-     
+        
+def getDetailsList():
+    users = getUsersFromS3()
+    list = []
+    for user in users:
+        list.append(user)
+    return list
+ 
 def getUserByUsername(username):
     users = getUsersFromS3()
     for user in users:
@@ -233,7 +240,7 @@ def auth(event, context):
  
     if(body['usecase'] == 'detailsByEmail'):
         email = body['email']  
-        return response(getUser(email),200)          
+        return response(getUser(email),200)         
  
     if(body['usecase'] == 'detailsByUsername'):
         username = body['username']  
@@ -265,12 +272,11 @@ def auth(event, context):
         whitelistCandidate = body['whitelistCandidate']
         isOnline(email)
         addToList(email, whitelistCandidate,'whitelist')   
+        
+    if(body['usecase'] == 'detailsList'):
+        return response(getDetailsList(),200)  
           
     return response('Lambda available, no usecase selected',200)
 
 if __name__ == '__main__':
-    checkUser('lea.reckhord@gmail.de','lea')
-    
-    print(getUserBySecretId(1212))
-    
-    addToList('lea.reckhord@gmail.de', 6666,'whitelist')   
+    print(getDetailsList())

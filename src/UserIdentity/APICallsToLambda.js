@@ -4,12 +4,16 @@ class APICallsToLambda{
         this.url_lambdaAuth = 'https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/Prod/MatchMakingAuth';
         this.primaryUserDetails = [];
         this.secondaryUserDetails = [];
+        this.fullUserList = [];
         this.listOfOnlineUsers = '';
         this.registrationState = '';
     }
     
     // getting user details
     
+    getFullUserList(){
+        return this.fullUserList;
+    }
     
     getPrimaryUserDetails(){
         return this.primaryUserDetails;
@@ -151,6 +155,29 @@ class APICallsToLambda{
           .then(response => response.json())
           .then(data => {
               this.listOfOnlineUsers = data;
+          })
+          
+          .catch(function (error) {
+            console.log('Request failed', error);
+          });
+    }
+    
+    async requestFullUserList() {
+        var details = {
+                usecase: 'detailsList',
+        }
+        
+        await fetch(this.url_lambdaAuth,{
+            headers: {
+            "Content-type": "application/json; utf-8"
+            },
+            method: 'post',
+            mode: 'cors',
+            body: JSON.stringify(details)
+          })
+          .then(response => response.json())
+          .then(data => {
+              this.fullUserList = data;
           })
           
           .catch(function (error) {

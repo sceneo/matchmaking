@@ -12,9 +12,5 @@
 datastructure:
 user room  id
 always add, when a user has seen a message 
-
-9. Add new button "-> Direct chat with this user"
-	* add chat with this user
-	* in case the user clicks on "add" a hoover "the user has been added to your contact list"
 	
 10. Register -> Do inputs as a table so they are in one line.

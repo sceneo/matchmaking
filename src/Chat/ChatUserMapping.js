@@ -6,6 +6,7 @@ class ChatUserMapping {
        this.apiLambda = lambdaApi;
        this.currentUser = 'MatchMaking';
        this.allUsersChatkit = [];
+       this.allUsersLambda = [];
        this.userInventory = [];
        this.friends= [];
    }
@@ -54,29 +55,50 @@ class ChatUserMapping {
        
    }
    
+   getUserLambdaByUsername(username){
+       for(var i = 0; i < this.allUsersLambda.length; i++) {
+           if(username === this.allUsersLambda[i].username) {
+               return this.allUsersLambda[i];
+           }
+       }
+   }
+   
    
    async initialize(){
        this.allUsersChatkit = await this.apiChatkit.getUsers();
+       await this.apiLambda.requestFullUserList();
+       this.allUsersLambda = this.apiLambda.getFullUserList();
+       if(this.verbose > 0) {
+           console.log(this.allUsersLambda)
+       }
        await this.apiLambda.requestListOfOnlineUsers();
        
        if(this.verbose > 0) {
            console.log("initialize");
        }
+       
        for(var user in this.allUsersChatkit){
-           await this.apiLambda.requestUserDetailsByUsername(this.allUsersChatkit[user].id);
+//           await this.apiLambda.requestUserDetailsByUsername(this.allUsersChatkit[user].id);
+//           var matchMakingDetails = this.apiLambda.getSecondaryUserDetails();
+           
+           var matchMakingDetails = this.getUserLambdaByUsername(this.allUsersChatkit[user].id);
+           if(this.verbose > 0) {
+               console.log(matchMakingDetails);
+           }
            
 //create object containing the information from Chatkit and the Lambda and fill to userInventory
            var chatkitDetails = this.allUsersChatkit[user];
            if(this.verbose > 0) {
                console.log('secondary details')
            }
-           var matchMakingDetails = this.apiLambda.getSecondaryUserDetails();
-           if(matchMakingDetails === null) {
+
+           if(matchMakingDetails === null || matchMakingDetails == undefined) {
                if(this.verbose > 0) {
                    console.log('could not find' + this.allUsersChatkit[user].id)
                }
                continue;
            }
+
            var isOnline = false;
            if( this.apiLambda.getListOfOnlineUsers().includes(matchMakingDetails.email)) {
                if(this.verbose > 0) {

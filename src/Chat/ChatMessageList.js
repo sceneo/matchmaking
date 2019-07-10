@@ -41,7 +41,7 @@ class ChatMessageList extends React.Component {
     }
     
     sortMessages(){
-        if(this.messages !== null && this.messages !== '') {
+        if(this.messages !== null && this.messages !== '' && this.messages !== undefined) {
             this.messages.sort(function(a, b) {
                 return a.id > b.id;
             });

@@ -69,6 +69,7 @@ class App extends React.Component {
     }
 
     async callbackAuth(status, user) {
+        
         let recData = {};
         if (status === true) {
             // retrieve recommendation list
