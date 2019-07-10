@@ -10,10 +10,12 @@
 
 .industry-label {
     font-size: 20px;
+	font-style: italic;
 }
 
 .functionality-label {
     font-size: 20px;
+	font-style: italic;
 }
 
 .no-recommendations {
