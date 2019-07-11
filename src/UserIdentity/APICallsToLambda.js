@@ -229,13 +229,11 @@ class APICallsToLambda{
           })
           .then(response => response.json())
           .then(data => {
-              console.log(data);
+              console.log('Response: ' +  data);
               this.registrationState = data;
           })
-          
           .catch(function (error) {
             console.log('Request failed', error);
-            this.registrationState = error;
           });
     }
     

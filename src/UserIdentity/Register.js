@@ -7,7 +7,7 @@ import { Segment } from 'semantic-ui-react';
 class Register extends Component {
     constructor(props) {
         super(props);
-
+        this.verbose = 1;
         this.url = 'https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/Prod/MatchMakingAuth';
         this.backToLogin = this.backToLogin.bind(this);
         this.state = ({
@@ -28,7 +28,6 @@ class Register extends Component {
         })
         this.registrationProcedure = this.registrationProcedure.bind(this);
         this.callToAws = this.callToAws.bind(this);
-        this.registrationState = '';
     }
     
     componentDidMount() {
@@ -59,29 +58,36 @@ class Register extends Component {
     }
     
     async callToAws() {
+        if(this.verbose > 1) {
+            console.log('Call to aws');
+            console.log(this.state);
+        }
+        
         if(!this.checkPrerequesites()) {
             // we can then show something like "name already in use etc later on"
             return false
         }
         var api = new APICallsToLambda();
         await api.registerNewUser(this.state);
-        this.registrationState = api.getRegistrationState();
+        this.registrationProcedure();
     }
     
     async callToChatkit() {
+        if(this.verbose > 1) {
+            console.log('Call to chatkit');
+        }
+        
         var api = new APICallsToChatkit();
         await api.initializeRoot(); 
         api.addUser(this.state.username, this.state.firstName,this.state.lastName,this.state.email)        
     }
           
     async registrationProcedure(){
-//        if(this.registrationState === "created succesfully") {
-            await this.callToChatkit();
-//        }
-//        else {
-//            // The registration failed - should we print something?
-//        }
-
+        if(this.verbose > 1) {
+            console.log('Registration')
+        }
+        await this.callToAws();
+        await this.callToChatkit();
     }
     
     backToLogin(){
@@ -245,7 +251,7 @@ class Register extends Component {
             
             
                     <p className="PasswordForgottenLink" onClick={this.backToLogin}> Back to Login </p>              
-                    <Button variant="primary" type="submit" onClick={this.callToAws}>
+                    <Button variant="primary" type="submit">
                       Submit
                     </Button>
                     </Segment>

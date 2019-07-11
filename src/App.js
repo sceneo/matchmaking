@@ -55,7 +55,7 @@ class App extends React.Component {
         
         this.swipeLeftCallback = this.swipeLeftCallback.bind(this);
         this.swipeRightCallback = this.swipeRightCallback.bind(this);
-        this.openChatWithNewFriendCallBack = this.openChatWithNewFriendCallback.bind(this);
+        this.openChatWithNewFriendCallback = this.openChatWithNewFriendCallback.bind(this);
 
         this.updateRecommendation = this.updateRecommendation.bind(this);
 
@@ -273,7 +273,7 @@ class App extends React.Component {
                                         closeCallback={this.handleMatchMeHide}
                                         swipeLeftCallback={this.swipeLeftCallback}
                                         swipeRightCallback={this.swipeRightCallback} 
-                                        openChatWithNewFriendCallBack= {this.openChatWithNewFriendCallBack} />
+                                        openChatWithNewFriendCallback={this.openChatWithNewFriendCallback} />
                                 </div>
                             </Sidebar>
 

@@ -255,7 +255,7 @@ def auth(event, context):
             return response('already existing',201)
         updateUserListOnS3(body)
         return response("created succesfully",200)
- 
+
     if(body['usecase'] == 'alive'):
         email = body['email']
         isOnline(email)
