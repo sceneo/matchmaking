@@ -21,9 +21,14 @@ class APICallsToChatkit {
        this.newestRoomId = '';
        this.newestRoomName = '';
        this.chatManager = [];
+       this.latestMessage = [];
        this.rootToken = '';
    }
 // request current status and details 
+   getLatestMessage(){
+       return this.latestMessage;
+   }
+   
    getRootToken(){
        return this.rootToken;
    }
@@ -208,6 +213,27 @@ class APICallsToChatkit {
        console.log('Request failed', error);
      });
      this.roomMessages = json;   
+   }
+   
+   async requestLatestMessagesFromRoom(roomId=this.currentChannel) {
+       this.latestMessage = [];
+       var json;
+       await fetch(this.api + '/rooms/' + roomId + '/messages?limit=1' ,{
+       method: 'get',
+       headers: {
+         "Content-type": "application/json; charset=UTF-8",
+         "Authorization": "Bearer " + this.authorization.access_token
+       }
+     })
+     .then(response => response.json())
+     .then(data => {
+        json = data;
+        this.latestMessage = json;
+     })
+     .catch(function (error) {
+       console.log('Request failed', error);
+     });
+     this.latestMessage = json;   
    }
    
 // private room refers to 1:1 chat functionality

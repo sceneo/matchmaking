@@ -12,7 +12,16 @@ class Contacts extends React.Component {
         this.api = this.props.api;
         this.userMapping = this.props.userMapping;
         this.callbackChangeRoom = this.props.callbackChangeRoom;
+        this.messageHandler = this.props.messageHandler;
+        this.state = this.props.chatState;
     }
+    
+    componentWillReceiveProps(nextProps){
+        this.setState(nextProps.chatState);
+        this.forceUpdate();
+    }
+    
+    
 /// check online/offline status through userMapping
     getStatus(username){
         if(this.userMapping.getUserByUsername(username).isOnline) {
@@ -26,7 +35,7 @@ class Contacts extends React.Component {
     }
 /// list of contacts as shown on web page
     render() {
-    
+        
         return (
           <List dense className='ContactList'>
           {this.userMapping.getFriends().map(value => {
@@ -36,6 +45,14 @@ class Contacts extends React.Component {
                       <Avatar src={require('../img/avatar/' + value.matchMakingDetails.avatar + '.jpg')}/>
                   </ListItemAvatar>
                   <ListItemText primary={value.matchMakingDetails.username} />
+                  {!this.messageHandler.hasUnreadMessages(value.matchMakingDetails.username) ? (
+                      <ListItemAvatar>
+                          <Avatar  src={require('../img/message/unread.jpg')}/>
+                      </ListItemAvatar>
+                    ) : ""
+                  }
+                  
+                  
                   <ListItemAvatar>
                       <Avatar  src={require('../img/status/' + this.getStatus(value.matchMakingDetails.username) + '.png')}/>
                   </ListItemAvatar>

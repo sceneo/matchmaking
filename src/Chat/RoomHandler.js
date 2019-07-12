@@ -1,10 +1,11 @@
 class RoomHandler {
-    constructor(chatkitApi) {
+    constructor(chatkitApi, messageHandler) {
         this.rooms = [];
         this.chatkitApi = chatkitApi;
         this.currentRoom = 'Lobby';
         this.currentRoomId = '19865469';
         this.currentChatPartner = 'all Users';
+        this.messageHandler = messageHandler;
     }   
   // creaating the virtual 'room'/lobby for the chat for the two users 
     getCurrentRoom(){
@@ -62,6 +63,7 @@ class RoomHandler {
             this.currentRoom = this.chatkitApi.getNewestRoomName();
             this.currentRoomId = this.chatkitApi.getNewestRoomId();
         }
+        this.messageHandler.seenMessageByRoomId(this.currentRoomId);
         
     }
 }

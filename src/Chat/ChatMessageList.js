@@ -30,6 +30,7 @@ class ChatMessageList extends React.Component {
     getKey(){
         return Math.random();
     }
+    
  // refresh for messages, get avatar and sort messages by date by calling functions via 'this'
     async refresh(){
         await this.api.requestMessagesFromRoom();
@@ -48,14 +49,20 @@ class ChatMessageList extends React.Component {
                 });
             }
         }
+        else {
+            this.message.push({
+                    id: 0,
+                    user_id: 1,
+                    parts: {
+                        0: "No content available",
+                }
+            })
+            
+        }
     }
 // List of messages that is then shown in chat        
     render() {       
-        
-        
-        
         this.sortMessages();
-        
         return (
           <List dense className='MessageList'>
             {this.messages.map(value => {                              

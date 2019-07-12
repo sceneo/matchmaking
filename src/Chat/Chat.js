@@ -6,6 +6,7 @@ import Contacts from './Contacts.js'
 import APICallsToChatkit from './APICallsToChatkit.js'
 import ChatUserMapping from './ChatUserMapping.js'
 import RoomHandler from './RoomHandler.js'
+import MessageHandler from './MessageHandler.js'
 import ClipLoader from 'react-spinners/ClipLoader';
 import { Segment } from 'semantic-ui-react';
 import './Chat.css';
@@ -25,7 +26,8 @@ class Chat extends Component {
       this.api = new APICallsToChatkit(this.state.loading);
       this.apiCallsToLambda = this.props.apiCallsToLambda;
       this.chatUserMapping = new ChatUserMapping(this.api, this.apiCallsToLambda);
-      this.roomHandler = new RoomHandler(this.api);
+      this.messageHandler = new MessageHandler(this.api, this.apiCallsToLambda);
+      this.roomHandler = new RoomHandler(this.api, this.messageHandler);
       this.callbackRefresh = this.callbackRefresh.bind(this);
       this.callbackChangeRoom = this.callbackChangeRoom.bind(this);
   }
@@ -41,16 +43,26 @@ class Chat extends Component {
     })    
     this.chatUserMapping.setCurrentUser(this.props.apiCallsToLambda.getPrimaryUserDetails().username);
     this.roomHandler.getRoomsForUser();     
+    this.messageHandler.init();
     
-    this.timer = setInterval(()=> this.updateOnlineStatus(), 10000);
+    this.timer = setInterval(()=> this.update(), 2000);
+    this.timer = setInterval(()=> this.updateMessagingSystem(), 10000);
   }
   
   componentWillUnmount() {
       this.timer = null;
   }
   
-  updateOnlineStatus(){
+  async updateMessagingSystem(){
+      await this.messageHandler.updateRooms();
+      await this.messageHandler.updateMessages();
+      await this.messageHandler.checkMessages();
+  }
+      
+  
+  update(){
       this.chatUserMapping.updateOnlineStatus();
+      this.api.requestMessagesFromRoom();
       this.setState({
           refresh: true
       });
@@ -77,7 +89,7 @@ class Chat extends Component {
 // scrolling functionality - ElementID refers to date of message  
   scrollToBottom() {
       var objDiv = document.getElementById("messages");
-      objDiv.scrollTop = objDiv.scrollHeight;
+      objDiv.scrolltop = objDiv.scrollheight;
   }
   
 // building chat windows  
@@ -99,8 +111,8 @@ class Chat extends Component {
         this.apiCallsToLambda.alive();     
         data =
                <div>
-                <Segment.Group horizontal borderless class="ui borderless menu" style={{ lineWidth: 0, overflow: 'auto', maxHeight: '36em', border: '0px' }}>
-                  <Segment.Group vertical>
+                <Segment.Group horizontal borderless class="ui borderless menu" style={{ lineWidth: 0, overflow: 'auto', maxHeight: '40em', border: '0px' }}>
+                  <Segment.Group vertical class="ui borderless menu">
                                     
                   <AppBar position="static" color="default">
                    <Toolbar>
@@ -113,12 +125,12 @@ class Chat extends Component {
                   
                   <Segment basic borderless style={{ lineWidth: 0, overflow: 'auto', maxHeight: '35em', width: '25em', border: '0px' }}>
                       <GridListTile style={{overflow: 'auto'}}>
-                       <Contacts className="Contacts" callbackChangeRoom={this.callbackChangeRoom} api={this.api} userMapping={this.chatUserMapping}/>
+                       <Contacts className="Contacts" chatState={this.state} callbackChangeRoom={this.callbackChangeRoom} api={this.api} userMapping={this.chatUserMapping} messageHandler={this.messageHandler}/>
                       </GridListTile> 
                     </Segment>
                   </Segment.Group>
                   
-                    <Segment basic borderless style={{lineWidth: 0, height: '31em', width: '30em', border: '0px' }}>
+                    <Segment basic borderless style={{lineWidth: 0, maxHeight: '27em', width: '30em', border: '0px' }}>
 
                       <AppBar position="static" color="default">
                       <Toolbar>
@@ -127,8 +139,8 @@ class Chat extends Component {
                        </Typography>
                       </Toolbar>
                      </AppBar>
-                       <span style= {{height: '10em'}}>
-                         <GridListTile name="messages" scrollHeight style={{lineWidth: 0, overflow: 'auto', maxHeight: '31em' }}>
+                       <span style= {{height: '8em'}}>
+                         <GridListTile name="messages" scrollheight style={{lineWidth: 0, overflow: 'auto', maxHeight: '18em' }}>
                          <ChatMessageList name="ChatMessageList" api={this.api} chatState={this.state} userMapping={this.chatUserMapping} roomId={this.roomHandler.getCurrentRoom()} />     
                            </GridListTile>
                       </span>
