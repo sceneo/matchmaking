@@ -63,7 +63,7 @@ class MatchHandler {
         } 
         else if (swipeAction === 'right') {
             // update user and training data: user not interested 
-            await this.api.addToBlacklistt(this.recsList[addToList]['secretId']);
+            await this.api.addToBlacklist(this.recsList[addToList]['secretId']);
         }
     }
 
