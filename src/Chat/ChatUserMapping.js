@@ -92,7 +92,7 @@ class ChatUserMapping {
                console.log('secondary details')
            }
 
-           if(matchMakingDetails === null || matchMakingDetails == undefined) {
+           if(matchMakingDetails === null || matchMakingDetails === undefined) {
                if(this.verbose > 0) {
                    console.log('could not find' + this.allUsersChatkit[user].id)
                }

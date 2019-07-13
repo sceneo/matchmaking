@@ -1,14 +1,5 @@
-/*  call backend service
-    get list of possible matches
-    for each match get user info
-    show match
-    swipe left or right
-    submit selection to backend
-    if click in middle, open chat 
-*/
-
 import React from 'react';
-import { Button, ButtonToolbar,Icon } from 'semantic-ui-react'
+import { Button, Icon } from 'semantic-ui-react'
 
 import './../CSSAnimation.js';
 

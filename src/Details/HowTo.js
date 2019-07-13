@@ -1,8 +1,5 @@
 import React, { Component } from "react";
-import { Button, Form, Col, Row } from "react-bootstrap";
 
-import APICallsToLambda from "./../UserIdentity/APICallsToLambda.js"
-import { Segment } from 'semantic-ui-react';
 class HowTo extends Component {
     constructor(props) {
         super(props);
