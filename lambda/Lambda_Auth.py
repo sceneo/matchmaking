@@ -98,7 +98,7 @@ def updateMessageHistory(email,roomId,messageId):
     header="email,roomId,messageId\n"
     body = header
     for row in messages:
-        if(email == row['email'] and str(roomId) == row['roomId']):
+        if(email == row['email'] and roomId == row['roomId']):
             print('line is updated')
             row['messageId'] = str(messageId);
             foundItem = True
@@ -107,7 +107,7 @@ def updateMessageHistory(email,roomId,messageId):
 
     if(foundItem == False):
         print('adding a new line')
-        line = email + "," + str(roomId) + "," + str(messageId) + '\n'  
+        line = email + "," + roomId + "," + str(messageId) + '\n'  
         body = body + line
         
     s3.Bucket(bucket_name).put_object(Key=file_name, Body=body)    
