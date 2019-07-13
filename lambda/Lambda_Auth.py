@@ -67,9 +67,51 @@ def updateUserListOnS3(newUser):
      
     line = newUser['title'] + "," + newUser['firstName'] + "," + newUser['lastName'] + "," + newUser['gender'] + "," + newUser['company'] + "," + newUser['industry'] + "," + newUser['functionality'] + "," + newUser['city'] + "," + newUser['country'] + "," + newUser['type'] + "," + newUser['email'] + "," + newUser['username'] + "," + newUser['password'] + ','+ '' + ',' + '' + ',' + str(random.randint(0,15)) + ',' + createToken(64) + '\n'
     body = body + line
-    
     # add a new user
     s3.Bucket(bucket_name).put_object(Key=file_name, Body=body)
+    
+def getMessagesFromS3():
+    s3 = boto3.resource(u's3')
+    bucket = s3.Bucket(u'matchmaking.data')
+    obj = bucket.Object(key=u'messages.csv')
+    response = obj.get()
+    messages = csv.DictReader(response[u'Body'].read().decode('utf-8').split())
+    return messages
+
+def getMessageHistory(email):
+    filtered = []
+    messages = getMessagesFromS3()
+    for message in messages:
+        if(email == message['email']):
+            filtered.append(message)
+    return filtered
+
+def updateMessageHistory(email,roomId,messageId):
+    print('updating stuff')
+    messages = getMessagesFromS3()
+    foundItem = False
+
+    bucket_name = "matchmaking.data"
+    file_name = "messages.csv"
+    s3 = boto3.resource("s3")
+    #recreate old file 
+    header="email,roomId,messageId\n"
+    body = header
+    for row in messages:
+        if(email == row['email'] and str(roomId) == row['roomId']):
+            print('line is updated')
+            row['messageId'] = str(messageId);
+            foundItem = True
+        line = row['email'] + "," + row['roomId'] + "," + row['messageId'] + '\n'
+        body = body + line
+
+    if(foundItem == False):
+        print('adding a new line')
+        line = email + "," + str(roomId) + "," + str(messageId) + '\n'  
+        body = body + line
+        
+    s3.Bucket(bucket_name).put_object(Key=file_name, Body=body)    
+ 
 
 def addToList(email, candidateId, listname):
     bucket_name = "matchmaking.data"
@@ -271,7 +313,17 @@ def auth(event, context):
         email = body['email']
         whitelistCandidate = body['whitelistCandidate']
         isOnline(email)
-        addToList(email, whitelistCandidate,'whitelist')   
+        addToList(email, whitelistCandidate,'whitelist')
+        
+    if(body['usecase'] == 'getMessageHistory'):
+        email = body['email']
+        return response(getMessageHistory(email),200) 
+    
+    if(body['usecase'] == 'updateMessageHistory'):
+        email = body['email']
+        roomId = body['roomId']
+        messageId = body['messageId']
+        return response(updateMessageHistory(email,roomId,messageId),200)         
         
     if(body['usecase'] == 'detailsList'):
         return response(getDetailsList(),200)  
@@ -279,4 +331,9 @@ def auth(event, context):
     return response('Lambda available, no usecase selected',200)
 
 if __name__ == '__main__':
-    print(getDetailsList())
+    print('Before: ')
+    print(getMessageHistory('lea.reckhord@gmail.de'))
+    updateMessageHistory('lea.reckhord@gmail.de',1,27)
+    updateMessageHistory('lea.reckhord@gmail.de',22,13)
+    print('After: ')
+    print(getMessageHistory('lea.reckhord@gmail.de'))

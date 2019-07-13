@@ -5,11 +5,15 @@ class APICallsToLambda{
         this.primaryUserDetails = [];
         this.secondaryUserDetails = [];
         this.fullUserList = [];
+        this.messageList = [];
         this.listOfOnlineUsers = '';
         this.registrationState = '';
     }
     
     // getting user details
+    getMessageList(){
+        return this.messageList;
+    }
     
     getFullUserList(){
         return this.fullUserList;
@@ -178,6 +182,56 @@ class APICallsToLambda{
           .then(response => response.json())
           .then(data => {
               this.fullUserList = data;
+          })
+          
+          .catch(function (error) {
+            console.log('Request failed', error);
+          });
+    }
+    
+    async requestMessageList() {
+        var details = {
+                usecase: 'getMessageHistory',
+                email: this.primaryUserDetails.email
+        }
+        
+        await fetch(this.url_lambdaAuth,{
+            headers: {
+            "Content-type": "application/json; utf-8"
+            },
+            method: 'post',
+            mode: 'cors',
+            body: JSON.stringify(details)
+          })
+          .then(response => response.json())
+          .then(data => {
+              this.messageList = data;
+          })
+          
+          .catch(function (error) {
+            console.log('Request failed', error);
+          });
+    }
+    
+    updateMessageList(roomId,messageId) {
+        var details = {
+                usecase: 'updateMessageHistory',
+                email: this.primaryUserDetails.email,
+                roomId: roomId,
+                messageId: messageId
+        }
+        
+        fetch(this.url_lambdaAuth,{
+            headers: {
+            "Content-type": "application/json; utf-8"
+            },
+            method: 'post',
+            mode: 'cors',
+            body: JSON.stringify(details)
+          })
+          .then(response => response.json())
+          .then(data => {
+              this.messageList = data;
           })
           
           .catch(function (error) {
