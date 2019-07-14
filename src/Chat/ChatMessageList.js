@@ -17,11 +17,13 @@ class ChatMessageList extends React.Component {
         this.state = this.props.chatState;
         this.roomId = this.props.roomId;
     }
+  
+    componentDidMount(){
+        this.timer = setInterval(()=> this.update(), 10000);
+    }
     
-    componentWillReceiveProps(nextProps){
-        this.messages = this.api.getRoomMessages();
+    update(){
         this.forceUpdate();
-        this.setState(nextProps.chatState);
     }
 
     async componentDidMount(){
@@ -31,11 +33,6 @@ class ChatMessageList extends React.Component {
         return Math.random();
     }
     
- // refresh for messages, get avatar and sort messages by date by calling functions via 'this'
-    async refresh(){
-        await this.api.requestMessagesFromRoom();
-        this.render();
-    }
     
     getAvatar(username){
         return this.userMapping.getUserByUsername(username).matchMakingDetails.avatar;

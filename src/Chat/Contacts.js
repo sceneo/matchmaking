@@ -13,10 +13,19 @@ class Contacts extends React.Component {
         this.userMapping = this.props.userMapping;
         this.callbackChangeRoom = this.props.callbackChangeRoom;
         this.messageHandler = this.props.messageHandler;
-        this.state = this.props.chatState;
+    }
+    
+    componentDidMount(){
+        this.timer = setInterval(()=> this.update(), 1000);
+    }
+    
+    update(){
+        console.log('update contacts');
+        this.forceUpdate();
     }
     
     componentWillReceiveProps(nextProps){
+        this.userMapping.updateOnlineStatus();
         this.setState(nextProps.chatState);
         this.forceUpdate();
     }

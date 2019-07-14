@@ -282,7 +282,7 @@ class App extends React.Component {
                                 {!this.state.howTo && !this.state.details ? (
                                     <Segment basic>
                                         <div className='container-div'>
-                                            <Chat apiCallsToLambda={this.apiCallsToLambda} state={this.state}/>
+                                            <Chat appState={this.state} apiCallsToLambda={this.apiCallsToLambda} state={this.state}/>
                                         </div>
                                     </Segment>
                                         ) : ""

@@ -31,6 +31,12 @@ class Chat extends Component {
       this.callbackRefresh = this.callbackRefresh.bind(this);
       this.callbackChangeRoom = this.callbackChangeRoom.bind(this);
   }
+  
+  componentWillReceiveProps(nextProps){
+      this.chatUserMapping.updateOnlineStatus();
+      this.setState(nextProps.appState);
+      this.forceUpdate();
+  }
 
  // make calls to fetch data and use a timer for repeated updates
   
