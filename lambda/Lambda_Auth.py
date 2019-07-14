@@ -70,6 +70,20 @@ def updateUserListOnS3(newUser):
     # add a new user
     s3.Bucket(bucket_name).put_object(Key=file_name, Body=body)
     
+def getNumberOfUsersOnS3():
+    users = getUsersFromS3()
+    numUsers = 0
+    for user in users:
+        numUsers = numUsers + 1
+    return numUsers
+
+def getNumberOfMessagesOnS3():
+    messages = getMessagesFromS3()
+    numMessages = 0
+    for message in messages:
+        numMessages = numMessages + 1
+    return numMessages    
+
 def getMessagesFromS3():
     s3 = boto3.resource(u's3')
     bucket = s3.Bucket(u'matchmaking.data')
@@ -247,13 +261,82 @@ def getOnlineList():
             if row['email'] not in onlineUsers:
                 onlineUsers += row['email'] + ';'
     return onlineUsers   
+
+
+def autoRecovery():
+    s3 = boto3.resource(u's3')
+    bucket = s3.Bucket(u'matchmaking.data')
+    obj = bucket.Object(key=u'autoRecovery.csv')
+    response = obj.get()
+    users = csv.DictReader(response[u'Body'].read().decode('utf-8').split())
+    reco_numUsers = -1
+    reco_numMessages = -1
+    for user in users:
+        reco_numUsers = user['numUsers']
+        reco_numMessages = user['numMessages']
+    numUsers = getNumberOfUsersOnS3()
+    numMessages = getNumberOfMessagesOnS3()
     
+    if reco_numUsers != str(numUsers) or reco_numMessages != str(numMessages):
+        if int(reco_numUsers) > numUsers:
+            recoverUsers()
+        if int(reco_numUsers) < numUsers:
+            backupUsers()
+        if int(reco_numMessages) > numMessages:
+           recoverMessages()
+        if int(reco_numMessages) < numMessages:
+            backupMessages()
+            
+        updateRecoveryCounter(max(reco_numUsers,numUsers), max(reco_numMessages,numMessages))
+    else:
+        print('no recovery needed')
+
+def backupUsers():
+    print('backup users')
+    s3 = boto3.resource('s3')
+    source= { 'Bucket' : 'matchmaking.data','Key':'users.csv'}
+    s3.meta.client.copy(source, 'matchmaking.data', 'backup_users.csv')
+    
+
+def recoverUsers():
+    print('recover users')
+    s3 = boto3.resource('s3')
+    source= { 'Bucket' : 'matchmaking.data','Key':'backup_users.csv'}
+    s3.meta.client.copy(source, 'matchmaking.data', 'users.csv')
+
+def backupMessages():
+    print('backup messages')
+    s3 = boto3.resource('s3')
+    source= { 'Bucket' : 'matchmaking.data','Key':'messages.csv'}
+    s3.meta.client.copy(source, 'matchmaking.data', 'backup_messages.csv')
+
+def recoverMessages():
+    print('recover messages')
+    s3 = boto3.resource('s3')
+    source= { 'Bucket' : 'matchmaking.data','Key':'backup_messages.csv'}
+    s3.meta.client.copy(source, 'matchmaking.data', 'messages.csv')
+    
+def updateRecoveryCounter(numUsers,numMessages):
+    print('update counter')
+    bucket_name = "matchmaking.data"
+    file_name = "autoRecovery.csv"
+    s3 = boto3.resource("s3")
+
+    header="numUsers,numMessages\n"
+    body = header
+    line = str(numUsers) + "," + str(numMessages) + '\n'
+    body = body + line
+    # add a new user
+    s3.Bucket(bucket_name).put_object(Key=file_name, Body=body)
+
+    
+
                 
 ## This is the basic handling function which is called first
 def auth(event, context):
     # URL is called via simple POST
     # https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/default/MatchMakingAuth
-
+    autoRecovery()
     body = json.loads(event['body'])    
     if(body['usecase'] == 'auth'):
         email = body['email']
@@ -331,9 +414,5 @@ def auth(event, context):
     return response('Lambda available, no usecase selected',200)
 
 if __name__ == '__main__':
-    print('Before: ')
-    print(getMessageHistory('lea.reckhord@gmail.de'))
-    updateMessageHistory('lea.reckhord@gmail.de',1,27)
-    updateMessageHistory('lea.reckhord@gmail.de',22,13)
-    print('After: ')
-    print(getMessageHistory('lea.reckhord@gmail.de'))
+    
+    autoRecovery()

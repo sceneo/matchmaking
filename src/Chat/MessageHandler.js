@@ -35,7 +35,7 @@ class MessageHandler {
         for(var i = 0; i < this.userRooms.length; i++) {
             await this.chatkit.requestLatestMessagesFromRoom(this.userRooms[i].id);
             var latestMessage = this.chatkit.getLatestMessage();
-            if(latestMessage != undefined) {
+            if(latestMessage[0].id != undefined) {
                 var message = {
                         room: this.userRooms[i].id,
                         participants: this.userRooms[i].member_user_ids,
