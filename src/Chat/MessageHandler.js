@@ -6,8 +6,7 @@ class MessageHandler {
         
         this.userRooms = [];
         this.messageInventory = [];
-        this.viewedMessages = [];
-        
+        this.viewedMessages = [];        
     }
     
     async init(){
@@ -20,6 +19,7 @@ class MessageHandler {
         // get a list of all seen messages for the user from lambda
         await this.lambda.requestMessageList();
         this.viewedMessages = this.lambda.getMessageList();
+        console.log(this.viewedMessages)
     }
     
     seenMessageByRoomId(roomId, messageId) {
@@ -27,6 +27,7 @@ class MessageHandler {
     }
     
     async updateRooms(){
+        // clear inventory?
         await this.chatkit.requestUserRooms();
         this.userRooms = this.chatkit.getUserRooms();
         if(this.verbose > 0) {
@@ -52,6 +53,13 @@ class MessageHandler {
     
     checkMessages(){
         // check all rooms if there is a new message for the user
+        
+        console.log('Inventory: ')
+        console.log(this.messageInventory)
+        console.log('Viewed Messages:')
+        console.log(this.viewedMessages) // warum ist das leer???
+        
+        
         for(var i = 0 ; i < this.messageInventory.length; i++) {
             var foundRoom = false;
             for(var j = 0; j < this.viewedMessages.length; j++) {
@@ -72,6 +80,7 @@ class MessageHandler {
     }
   
     hasUnreadMessages(username){
+        
         if(this.verbose > 0) {
             console.log(username);
         }
@@ -81,13 +90,17 @@ class MessageHandler {
             }   
             for(var j = 0; j < this.messageInventory[i].participants.length; j++) {
                 if(this.messageInventory[i].participants[j] === username) {
-                    console.log('found unread message from ' + username)
+                    if(this.verbose > 0) {
+                        console.log('found unread message from ' + username)
+                    }
                     return true;
                 }
             }
         }
-        console.log('no new message with ' + username)
-        return false; // shoulde be false in prod, true for testing -> always unread messages
+        if(this.verbose > 0) {
+            console.log('no new message with ' + username)
+        }        
+        return false; 
     }
 }
 export default MessageHandler;

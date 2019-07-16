@@ -414,5 +414,5 @@ def auth(event, context):
     return response('Lambda available, no usecase selected',200)
 
 if __name__ == '__main__':
-    
-    autoRecovery()
+    updateMessageHistory('lea.reckhord@gmail.de','testchannel','20002')
+    print(getNumberOfMessagesOnS3())

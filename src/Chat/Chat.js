@@ -33,6 +33,14 @@ class Chat extends Component {
       this.callbackChangeRoom = this.callbackChangeRoom.bind(this);
   }
   
+  async componentWillReceiveProps(nextProps) {
+      const { refresh } = this.props;
+      await this.apiCallsToLambda.getUserDetailsByEmail(this.apiCallsToLambda.getPrimaryUserDetails().email)
+      this.refreshContacts();
+      this.forceUpdate();
+      this.setState(nextProps.appState);
+    }
+  
  // make calls to fetch data and use a timer for repeated updates
   
   async componentDidMount() {
@@ -63,6 +71,7 @@ class Chat extends Component {
   
   update(){
       this.chatUserMapping.updateOnlineStatus();
+      this.updateMessagingSystem();
       this.api.requestMessagesFromRoom();
       this.setState({
           refreshMessages: !this.state.refreshMessages,
@@ -95,11 +104,14 @@ class Chat extends Component {
       await this.callbackRefresh();
       
       if(this.messageHandler.hasUnreadMessages(username)) {
-          console.log('user ' + username + ' has sent unread messages')
+//          console.log('user ' + username + ' has sent unread messages')
           await this.api.requestLatestMessagesFromRoom(this.roomHandler.getCurrentRoom())
           await this.messageHandler.seenMessageByRoomId(this.roomHandler.getCurrentRoom(), this.api.getLatestMessage().id)
           this.refreshContacts();
       }
+//      else {
+//          console.log('user has no new messages')
+//      }
   } 
   
 // scrolling functionality - ElementID refers to date of message  
@@ -141,7 +153,7 @@ class Chat extends Component {
                   
                   <Segment basic borderless style={{ lineWidth: 0, overflow: 'auto', maxHeight: '35em', width: '25em', border: '0px' }}>
                       <GridListTile style={{overflow: 'auto'}}>
-                       <Contacts className="Contacts" refresh={this.refreshContacts} callbackChangeRoom={this.callbackChangeRoom} api={this.api} userMapping={this.chatUserMapping} messageHandler={this.messageHandler}/>
+                       <Contacts className="Contacts" chatState={this.state} refresh={this.refreshContacts} callbackChangeRoom={this.callbackChangeRoom} api={this.api} userMapping={this.chatUserMapping} messageHandler={this.messageHandler}/>
                       </GridListTile> 
                     </Segment>
                   </Segment.Group>

@@ -31,6 +31,7 @@ class App extends React.Component {
             matchMeVisible: false,
             chatUserName: 'Lobby',
             recommendationData: {},
+            refreshContacs: false
         }
         this.apiCallsToLambda = new APICallsToLambda(); 
         
@@ -71,7 +72,7 @@ class App extends React.Component {
             auth: true,
             details: false,
             howTo: true,
-            matchMeVisible: false
+            matchMeVisible: false,
         })
     }
     
@@ -178,6 +179,9 @@ class App extends React.Component {
         this.setState({
             recommendationData: recData
         });
+        this.setState({
+            refreshContacts: !this.state.refreshContacts
+        })
     }
  // Providing Logout functionality via Lambda
     

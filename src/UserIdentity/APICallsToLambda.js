@@ -220,7 +220,7 @@ class APICallsToLambda{
                 roomId: roomId,
                 messageId: messageId
         }
-        
+        console.log(details)
         fetch(this.url_lambdaAuth,{
             headers: {
             "Content-type": "application/json; utf-8"
@@ -231,6 +231,7 @@ class APICallsToLambda{
           })
           .then(response => response.json())
           .then(data => {
+              console.log(data)
               this.messageList = data;
           })
           

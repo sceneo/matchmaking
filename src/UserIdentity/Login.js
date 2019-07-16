@@ -85,15 +85,21 @@ class Login extends Component {
         })
         .then(response => response.json())
         .then(data => {
-            if(data.includes("Authentication successful")) {
-                this.props.apiCallsToLambda.getUserDetailsByEmail(this.state.email);
-                this.auth(true, this.state.email); 
+            if(data.message == "Internal server error") {
+                console.log('error with lambda!')
             }
             else {
-                this.setState({
-                    statusMessage: "Login failed. Please check your details and try again.",
-                    isLoading: false
-                })
+                
+                if(data.includes("Authentication successful")) {
+                    this.props.apiCallsToLambda.getUserDetailsByEmail(this.state.email);
+                    this.auth(true, this.state.email); 
+                }
+                else {
+                    this.setState({
+                        statusMessage: "Login failed. Please check your details and try again.",
+                        isLoading: false
+                    })
+                }
             }
         })
         .catch(function (error) {

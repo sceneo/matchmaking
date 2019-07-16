@@ -36,7 +36,6 @@ class Contacts extends React.Component {
         if (props.refresh !== refresh) {
             this.refreshContacts()
         }
-        console.log('refresh contacts tried to be called here')
         this.setState({
             rerender: !this.state.rerender
         })
@@ -47,7 +46,7 @@ class Contacts extends React.Component {
     render() {
         
         if(this.state.rerender) {
-            console.log('rerendering contacts')
+//            console.log('rerendering contacts')
         }
         
         return (
