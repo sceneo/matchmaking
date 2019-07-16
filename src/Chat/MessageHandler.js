@@ -27,12 +27,12 @@ class MessageHandler {
     }
     
     async updateRooms(){
-        // clear inventory?
         await this.chatkit.requestUserRooms();
         this.userRooms = this.chatkit.getUserRooms();
         if(this.verbose > 0) {
             console.log(this.userRooms);
         }
+        var messageInventoryNew = [];
         for(var i = 0; i < this.userRooms.length; i++) {
             await this.chatkit.requestLatestMessagesFromRoom(this.userRooms[i].id);
             var latestMessage = this.chatkit.getLatestMessage();
@@ -43,12 +43,13 @@ class MessageHandler {
                         latestMessage: latestMessage[0].id,
                         newMessage: false
                 }
-                this.messageInventory.push(message);
+                messageInventoryNew.push(message);
                 if(this.verbose > 0) {
                     console.log(message);               
                 }
             }
         }
+        this.messageInventory = messageInventoryNew;
     }
     
     checkMessages(){

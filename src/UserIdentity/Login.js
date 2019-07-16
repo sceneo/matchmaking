@@ -3,7 +3,6 @@ import { Form } from "react-bootstrap";
 import Button from 'react-bootstrap/Button'
 import "./Login.css";
 
-
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -25,7 +24,7 @@ class Login extends Component {
   }
   
   // load the background css part
-  componentDidMount() {
+  async componentDidMount() {
       document.body.classList.add("background-login");
   }
 

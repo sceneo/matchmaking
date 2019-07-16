@@ -101,7 +101,6 @@ def getMessageHistory(email):
     return filtered
 
 def updateMessageHistory(email,roomId,messageId):
-    print('updating stuff')
     messages = getMessagesFromS3()
     foundItem = False
 
@@ -114,14 +113,14 @@ def updateMessageHistory(email,roomId,messageId):
     for row in messages:
         if(email == row['email'] and roomId == row['roomId']):
             print('line is updated')
-            row['messageId'] = str(messageId);
+            row['messageId'] = messageId;
             foundItem = True
         line = row['email'] + "," + row['roomId'] + "," + row['messageId'] + '\n'
         body = body + line
 
     if(foundItem == False):
         print('adding a new line')
-        line = email + "," + roomId + "," + str(messageId) + '\n'  
+        line = email + "," + roomId + "," + messageId + '\n'  
         body = body + line
         
     s3.Bucket(bucket_name).put_object(Key=file_name, Body=body)    
@@ -336,8 +335,9 @@ def updateRecoveryCounter(numUsers,numMessages):
 def auth(event, context):
     # URL is called via simple POST
     # https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/default/MatchMakingAuth
-    autoRecovery()
+#     autoRecovery()
     body = json.loads(event['body'])    
+    
     if(body['usecase'] == 'auth'):
         email = body['email']
         password = body['password']
@@ -414,5 +414,6 @@ def auth(event, context):
     return response('Lambda available, no usecase selected',200)
 
 if __name__ == '__main__':
-    updateMessageHistory('lea.reckhord@gmail.de','testchannel','20002')
+#     updateMessageHistory('lea.reckhord@gmail.de','testchannel','20002')
     print(getNumberOfMessagesOnS3())
+    

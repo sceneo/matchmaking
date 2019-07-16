@@ -95,7 +95,7 @@ class APICallsToLambda{
 // cleanup?
     }
     
-    async getUserDetailsByEmail(emailidentifier = ''){     
+    async getUserDetailsByEmail(emailidentifier = ''){ 
         var details = {
                 usecase: 'detailsByEmail',
                 email: emailidentifier
@@ -213,14 +213,16 @@ class APICallsToLambda{
           });
     }
     
-    updateMessageList(roomId,messageId) {
+    updateMessageList(roomId,messageId,email='') {
+        if(email === '') {
+            email = this.primaryUserDetails.email
+        }
         var details = {
                 usecase: 'updateMessageHistory',
-                email: this.primaryUserDetails.email,
+                email: email,
                 roomId: roomId,
                 messageId: messageId
         }
-        console.log(details)
         fetch(this.url_lambdaAuth,{
             headers: {
             "Content-type": "application/json; utf-8"
@@ -229,10 +231,13 @@ class APICallsToLambda{
             mode: 'cors',
             body: JSON.stringify(details)
           })
-          .then(response => response.json())
+          .then(response => { 
+              response.json();
+//              console.log(response)
+          })
           .then(data => {
-              console.log(data)
               this.messageList = data;
+//              console.log(this.messageList)
           })
           
           .catch(function (error) {
