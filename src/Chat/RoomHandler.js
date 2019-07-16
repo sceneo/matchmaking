@@ -4,7 +4,7 @@ class RoomHandler {
         this.chatkitApi = chatkitApi;
         this.currentRoom = 'Lobby';
         this.currentRoomId = '19865469';
-        this.currentChatPartner = 'all Users';
+        this.currentChatPartner = 'community chat';
         this.messageHandler = messageHandler;
     }   
   // creaating the virtual 'room'/lobby for the chat for the two users 
@@ -55,7 +55,9 @@ class RoomHandler {
         
         if(username === 'Lobby') {
             this.currentRoom = 'Lobby';
+            this.currentChatPartner = 'community chat'
             this.currentRoomId = '19865469';
+            foundUser = true;
         }
         
         if(!foundUser) {

@@ -19,7 +19,8 @@ class Chat extends Component {
       super(props)
       this.state = {
               loading: true,
-              refresh: false,
+              refreshContacts: false,
+              refreshMessages: false
       }  
       this.chatUserName = 'Lobby';
       
@@ -32,12 +33,6 @@ class Chat extends Component {
       this.callbackChangeRoom = this.callbackChangeRoom.bind(this);
   }
   
-  componentWillReceiveProps(nextProps){
-      this.chatUserMapping.updateOnlineStatus();
-      this.setState(nextProps.appState);
-      this.forceUpdate();
-  }
-
  // make calls to fetch data and use a timer for repeated updates
   
   async componentDidMount() {
@@ -70,9 +65,19 @@ class Chat extends Component {
       this.chatUserMapping.updateOnlineStatus();
       this.api.requestMessagesFromRoom();
       this.setState({
-          refresh: true
+          refreshMessages: !this.state.refreshMessages,
+          refreshContacts: !this.state.refreshContacts
       });
   
+  }
+  
+
+  refreshMessages(){
+      this.setState({refreshMessages: !this.state.refreshMessages})
+  }
+  
+  refreshContacts(){
+      this.setState({refreshContacts: !this.state.refreshContacts})          
   }
       
 // Refresh of messages and rooms as callback
@@ -80,16 +85,21 @@ class Chat extends Component {
   async callbackRefresh(){
       await this.api.requestMessagesFromRoom();
       this.setState({
-          refresh: true
+          refreshMessages: !this.state.refreshMessages
       })
   }
   
   async callbackChangeRoom(username) {
       await this.roomHandler.switchRoom(username);
       await this.api.setCurrentChannel(this.roomHandler.getCurrentRoomId());
-      this.setState({
-          refresh: true
-      }) 
+      await this.callbackRefresh();
+      
+      if(this.messageHandler.hasUnreadMessages(username)) {
+          console.log('user ' + username + ' has sent unread messages')
+          await this.api.requestLatestMessagesFromRoom(this.roomHandler.getCurrentRoom())
+          await this.messageHandler.seenMessageByRoomId(this.roomHandler.getCurrentRoom(), this.api.getLatestMessage().id)
+          this.refreshContacts();
+      }
   } 
   
 // scrolling functionality - ElementID refers to date of message  
@@ -131,7 +141,7 @@ class Chat extends Component {
                   
                   <Segment basic borderless style={{ lineWidth: 0, overflow: 'auto', maxHeight: '35em', width: '25em', border: '0px' }}>
                       <GridListTile style={{overflow: 'auto'}}>
-                       <Contacts className="Contacts" chatState={this.state} callbackChangeRoom={this.callbackChangeRoom} api={this.api} userMapping={this.chatUserMapping} messageHandler={this.messageHandler}/>
+                       <Contacts className="Contacts" refresh={this.refreshContacts} callbackChangeRoom={this.callbackChangeRoom} api={this.api} userMapping={this.chatUserMapping} messageHandler={this.messageHandler}/>
                       </GridListTile> 
                     </Segment>
                   </Segment.Group>
@@ -147,7 +157,7 @@ class Chat extends Component {
                      </AppBar>
                        <span style= {{height: '8em'}}>
                          <GridListTile name="messages" scrollheight style={{lineWidth: 0, overflow: 'auto', maxHeight: '18em' }}>
-                         <ChatMessageList name="ChatMessageList" api={this.api} chatState={this.state} userMapping={this.chatUserMapping} roomId={this.roomHandler.getCurrentRoom()} />     
+                         <ChatMessageList className="ChatMessageList" chatState={this.state} refresh={this.refreshMessages} api={this.api} userMapping={this.chatUserMapping} roomId={this.roomHandler.getCurrentRoom()} />     
                            </GridListTile>
                       </span>
                       <span>

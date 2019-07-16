@@ -61,7 +61,7 @@ class App extends React.Component {
 
         this.buttonHowTo = this.buttonHowTo.bind(this);
         this.buttonDetails = this.buttonDetails.bind(this);
-        this.buttonLobby = this.buttonLobby.bind(this);
+        this.buttonChat = this.buttonChat.bind(this);
     }
     
     buttonHowTo(){
@@ -86,7 +86,7 @@ class App extends React.Component {
         })
     }
     
-    buttonLobby() {
+    buttonChat() {
         this.setState({
             register: false,
             forgot: false,
@@ -226,8 +226,8 @@ class App extends React.Component {
                                                 Match Me!    
                                             </Button>
                                                 
-                                            <Button primary onClick={this.buttonLobby}>
-                                                Lobby    
+                                            <Button primary onClick={this.buttonChat}>
+                                                Chat
                                             </Button>
                                             
                                             <Button primary onClick={this.buttonDetails}>

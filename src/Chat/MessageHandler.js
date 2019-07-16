@@ -81,11 +81,13 @@ class MessageHandler {
             }   
             for(var j = 0; j < this.messageInventory[i].participants.length; j++) {
                 if(this.messageInventory[i].participants[j] === username) {
+                    console.log('found unread message from ' + username)
                     return true;
                 }
             }
         }
-        return true;
+        console.log('no new message with ' + username)
+        return false; // shoulde be false in prod, true for testing -> always unread messages
     }
 }
 export default MessageHandler;

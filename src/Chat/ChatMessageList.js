@@ -11,6 +11,9 @@ import Avatar from '@material-ui/core/Avatar';
 class ChatMessageList extends React.Component {
     constructor(props){
         super(props);
+        this.state = {
+                rerender: false
+        }
         this.api = this.props.api;
         this.messages = this.api.getRoomMessages();
         this.userMapping = this.props.userMapping;
@@ -18,12 +21,32 @@ class ChatMessageList extends React.Component {
         this.roomId = this.props.roomId;
     }
   
+    
+    componentWillReceiveProps(nextProps) {
+        const { refresh } = this.props;
+        if (nextProps.refresh !== refresh) {
+            this.refreshMessages()
+        }
+//        console.log('refresh messages tried to be called here')
+        this.messages = this.api.getRoomMessages();
+        this.forceUpdate();
+        this.setState(nextProps.chatState);
+//        this.setState({
+//            rerender: !this.state.rerender
+//        })
+        
+        
+        
+      }
+    
     componentDidMount(){
         this.timer = setInterval(()=> this.update(), 10000);
     }
     
     update(){
-        this.forceUpdate();
+        this.setState({
+            refresh: true
+        })
     }
 
     async componentDidMount(){
@@ -58,7 +81,7 @@ class ChatMessageList extends React.Component {
         }
     }
 // List of messages that is then shown in chat        
-    render() {       
+    render() {        
         this.sortMessages();
         return (
           <List dense className='MessageList'>
