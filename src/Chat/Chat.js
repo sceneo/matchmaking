@@ -66,6 +66,7 @@ class Chat extends Component {
       await this.messageHandler.updateRooms();
       await this.messageHandler.updateMessages();
       await this.messageHandler.checkMessages();
+      this.apiCallsToLambda.alive();
   }
       
   
@@ -102,6 +103,7 @@ class Chat extends Component {
       await this.roomHandler.switchRoom(username);
       await this.api.setCurrentChannel(this.roomHandler.getCurrentRoomId());
       await this.callbackRefresh();
+      this.apiCallsToLambda.alive();
       
       if(this.messageHandler.hasUnreadMessages(username)) {
 //          console.log('user ' + username + ' has sent unread messages')

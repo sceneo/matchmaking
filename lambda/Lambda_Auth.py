@@ -335,7 +335,7 @@ def updateRecoveryCounter(numUsers,numMessages):
 def auth(event, context):
     # URL is called via simple POST
     # https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/default/MatchMakingAuth
-#     autoRecovery()
+    autoRecovery()
     body = json.loads(event['body'])    
     
     if(body['usecase'] == 'auth'):
