@@ -63,9 +63,10 @@ class MatchHandler {
                     console.log('waiting for a second')
                 },1000);
             }
-            if(!this.recsList[addToList] === null) {
-                await this.api.addToWhitelist(this.recsList[addToList]['secretId']);
+            if(this.recsList[addToList] === null) {
+                console.log('regs is zero')
             }
+                await this.api.addToWhitelist(this.recsList[addToList]['secretId']);
         } 
         else if (swipeAction === 'right') {
             // update user and training data: user not interested 
@@ -74,9 +75,11 @@ class MatchHandler {
                     console.log('waiting for a second')
                 },1000);
             }
-            if(!this.recsList[addToList] === null) {
-                await this.api.addToBlacklist(this.recsList[addToList]['secretId']);
+            if(this.recsList[addToList] === null) {
+                console.log('regs is zero')
             }
+            await this.api.addToBlacklist(this.recsList[addToList]['secretId']);
+            
         }
     }
 
