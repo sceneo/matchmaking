@@ -45,7 +45,7 @@ class SendMessageForm extends React.Component {
                     placeholder="Your message here"
                     type="text" />
                 
-                <Button onClick={this.handleSubmit}> submit </Button>
+                <Button onClick={this.handleSubmit}> send </Button>
             </form>
         )
     }

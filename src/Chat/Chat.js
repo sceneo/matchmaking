@@ -165,7 +165,11 @@ class Chat extends Component {
                       <AppBar position="static" color="default">
                       <Toolbar>
                        <Typography variant="h6" color="inherit">
-                         Messages (Chatting with {this.roomHandler.getChatPartner()})
+
+                          Your chat with {this.roomHandler.getChatPartner()}
+       
+
+                         
                        </Typography>
                       </Toolbar>
                      </AppBar>

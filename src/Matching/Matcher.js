@@ -129,14 +129,14 @@ class MatchMe extends React.Component {
                         <tr>
                             <td colSpan='2'>
                                 <div className="industry-label">
-                                    {recData['industry']}
+                                    Industry: {recData['industry']}
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td colSpan='2'>
                                 <div className="functionality-label">
-                                    {recData['functionality']}
+                                    Functionality: {recData['functionality']}
                                 </div>
                             </td>
                         </tr>

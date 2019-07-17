@@ -235,10 +235,10 @@ class App extends React.Component {
                                             </Button>
                                             
                                             <Button primary onClick={this.buttonDetails}>
-                                                My Details   
+                                                My Profile
                                             </Button>    
                                             <Button primary onClick={this.buttonHowTo}>
-                                                How it works
+                                                Help
                                             </Button>
                                         </Button.Group>
                                     </div>
