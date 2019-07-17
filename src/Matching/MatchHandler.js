@@ -96,6 +96,7 @@ class MatchHandler {
         
         
         // I don t  want to have the blacklisted users
+        if (!this.api.getSecondaryUserDetails()==0){
         if(this.api.getPrimaryUserDetails().blacklist.includes(this.api.getSecondaryUserDetails().email)) {
             this.currentProposalIndex++;
 //            console.log("I do not like this guy...")
@@ -103,12 +104,13 @@ class MatchHandler {
         }
         
         // I don t want to have the users I already have in my friend's list
+        
         if(this.api.getPrimaryUserDetails().whitelist.includes(this.api.getSecondaryUserDetails().email)) {
             this.currentProposalIndex++;
 //            console.log("I already like this guy...")
             return this.getRecommendation();
         }
-        
+        }
         
             
         this.recsList[this.currentProposalIndex].functionality = this.api.getSecondaryUserDetails(username).functionality;
