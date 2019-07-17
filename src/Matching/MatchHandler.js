@@ -134,7 +134,7 @@ class MatchHandler {
             },1000);
         }
         
-        if(this.recsList[this.currentProposalIndex] === null) {
+
             this.recsList[this.currentProposalIndex].functionality = this.api.getSecondaryUserDetails(username).functionality;
             this.recsList[this.currentProposalIndex].gender = this.api.getSecondaryUserDetails(username).gender;
             this.recsList[this.currentProposalIndex].industry = this.api.getSecondaryUserDetails(username).industry;
@@ -142,7 +142,7 @@ class MatchHandler {
             this.recsList[this.currentProposalIndex].secretId = this.api.getSecondaryUserDetails(username).secretId;
             this.recsList[this.currentProposalIndex].title = this.api.getSecondaryUserDetails(username).title;
             this.recsList[this.currentProposalIndex].type = this.api.getSecondaryUserDetails(username).type;
-        }
+
         
         return this.recsList[this.currentProposalIndex];
     }
