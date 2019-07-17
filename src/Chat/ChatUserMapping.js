@@ -44,12 +44,14 @@ class ChatUserMapping {
                continue;
            }
            this.userInventory[i].isOnline = false;
+           if(!this.apiLambda.getListOfOnlineUsers()== null) {
            if( this.apiLambda.getListOfOnlineUsers().includes(this.userInventory[i].matchMakingDetails.email)) {
                if(this.verbose > 0) {
                    console.log( this.userInventory[i].matchMakingDetails.email + ' is online')
                }
                this.userInventory[i].isOnline = true;
            }
+       }
        }
        
        
