@@ -72,7 +72,6 @@ class Chat extends Component {
   
   update(){
       this.chatUserMapping.updateOnlineStatus();
-      this.updateMessagingSystem();
       this.api.requestMessagesFromRoom();
       this.setState({
           refreshMessages: !this.state.refreshMessages,
@@ -106,14 +105,10 @@ class Chat extends Component {
       this.apiCallsToLambda.alive();
       
       if(this.messageHandler.hasUnreadMessages(username)) {
-//          console.log('user ' + username + ' has sent unread messages')
-          await this.api.requestLatestMessagesFromRoom(this.roomHandler.getCurrentRoom())
-          await this.messageHandler.seenMessageByRoomId(this.roomHandler.getCurrentRoom(), this.api.getLatestMessage().id)
+
+          await this.api.requestLatestMessagesFromRoom(this.roomHandler.getCurrentRoomId())
           this.refreshContacts();
       }
-//      else {
-//          console.log('user has no new messages')
-//      }
   } 
   
 // scrolling functionality - ElementID refers to date of message  

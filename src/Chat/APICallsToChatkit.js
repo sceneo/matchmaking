@@ -26,7 +26,12 @@ class APICallsToChatkit {
    }
 // request current status and details 
    getLatestMessage(){
-       return this.latestMessage;
+       if(this.latestMessage == [] || this.latestMessage == null ) {
+           return ({
+               id: 0
+           })
+       }
+           return this.latestMessage;
    }
    
    getRootToken(){
@@ -234,6 +239,7 @@ class APICallsToChatkit {
        console.log('Request failed', error);
      });
      this.latestMessage = json;   
+
    }
    
 // private room refers to 1:1 chat functionality

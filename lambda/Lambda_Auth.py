@@ -335,7 +335,7 @@ def updateRecoveryCounter(numUsers,numMessages):
 def auth(event, context):
     # URL is called via simple POST
     # https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/default/MatchMakingAuth
-    autoRecovery()
+#     autoRecovery()
     body = json.loads(event['body'])    
     
     if(body['usecase'] == 'auth'):
@@ -415,5 +415,5 @@ def auth(event, context):
 
 if __name__ == '__main__':
 #     updateMessageHistory('lea.reckhord@gmail.de','testchannel','20002')
-    print(getNumberOfMessagesOnS3())
-    
+    print(getMessageHistory('lea.reckhord@gmail.de'))
+    autoRecovery()

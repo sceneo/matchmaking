@@ -34,6 +34,7 @@ class RoomHandler {
     
     async switchRoom(username) {
         this.currentChatPartner = username
+        await this.chatkitApi.requestLatestMessagesFromRoom(this.currentRoomId);
         await this.getRoomsForUser();
         var foundUser = false;
         for(var i = 0; i < this.rooms.length; i++) {
@@ -44,6 +45,7 @@ class RoomHandler {
                 if(this.rooms[i].member_user_ids[name] === username) {
                     this.currentRoom = this.rooms[i].name;
                     this.currentRoomId = this.rooms[i].id;
+                    await this.chatkitApi.requestLatestMessagesFromRoom(this.currentRoomId);
                     foundUser = true;
                     break;
                 }
@@ -57,6 +59,7 @@ class RoomHandler {
             this.currentRoom = 'Lobby';
             this.currentChatPartner = 'community chat'
             this.currentRoomId = '19865469';
+            await this.chatkitApi.requestLatestMessagesFromRoom(this.currentRoomId);
             foundUser = true;
         }
         
@@ -65,7 +68,7 @@ class RoomHandler {
             this.currentRoom = this.chatkitApi.getNewestRoomName();
             this.currentRoomId = this.chatkitApi.getNewestRoomId();
         }
-        this.messageHandler.seenMessageByRoomId(this.currentRoomId);
+        this.messageHandler.seenMessageByRoomId(this.currentRoomId, this.chatkitApi.getLatestMessage()[0].id);
         
     }
 }

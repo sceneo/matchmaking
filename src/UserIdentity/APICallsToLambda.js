@@ -220,8 +220,8 @@ class APICallsToLambda{
         var details = {
                 usecase: 'updateMessageHistory',
                 email: email,
-                roomId: roomId,
-                messageId: messageId
+                roomId: roomId.toString(),
+                messageId: messageId.toString()
         }
         fetch(this.url_lambdaAuth,{
             headers: {
