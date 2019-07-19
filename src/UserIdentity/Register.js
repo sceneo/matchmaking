@@ -28,6 +28,29 @@ class Register extends Component {
         })
         this.registrationProcedure = this.registrationProcedure.bind(this);
         this.callToAws = this.callToAws.bind(this);
+        
+        this.TEST = this.TEST.bind(this);
+    }
+    
+    async TEST(){
+        this.setState = ({
+            title: 'Dr',
+            firstName: 'Markus',
+            lastName: 'Best',
+            gender: 'happy',
+            company: 'something',
+            functionality: 'somewhat',
+            industry: 'aaa',
+            interest: 'aab',
+            city: 'abcs',
+            country: 'asdfa',
+            type: 'asdf',
+            email: 'asf',
+            username: 'asdfas',
+            password: 'asfdaf'
+        })
+        var api = new APICallsToLambda();
+        await api.registerNewUser(this.state);
     }
     
     componentDidMount() {
@@ -43,46 +66,27 @@ class Register extends Component {
           [event.target.id]: event.target.value
         });
     }
-    
-    
-    checkPrerequesites(){
-        if(this.state.firstName === '') return false;
-        if(this.state.lastName === '') return false;
-        if(this.state.functionality === '') return false;
-        if(this.state.industry === '') return false;
-        if(this.state.type === '') return false;
-        if(this.state.email === '') return false;
-        if(this.state.username === '') return false;
-        if(this.state.password === '') return false;  
-        return true;
-    }
-    
+
     async callToAws() {
         if(this.verbose > 1) {
             console.log('Call to aws');
             console.log(this.state);
         }
-        
-        if(!this.checkPrerequesites()) {
-            // we can then show something like "name already in use etc later on"
-            return false
-        }
         var api = new APICallsToLambda();
         await api.registerNewUser(this.state);
-        this.registrationProcedure();
     }
     
     async callToChatkit() {
         if(this.verbose > 1) {
             console.log('Call to chatkit');
         }
-        
         var api = new APICallsToChatkit();
         await api.initializeRoot(); 
         api.addUser(this.state.username, this.state.firstName,this.state.lastName,this.state.email)        
     }
           
     async registrationProcedure(){
+        window.alert(this.state)
         if(this.verbose > 1) {
             console.log('Registration')
         }
@@ -248,8 +252,6 @@ class Register extends Component {
                           <Form.Label>Password*</Form.Label>
                           <Form.Control type="password"  id='password' onChange={this.handleChange} placeholder="Password" required/>
                         </Form.Group>
-            
-            
                     <p className="PasswordForgottenLink" onClick={this.backToLogin}> Back to Login </p>              
                     <Button variant="primary" type="submit">
                       Submit

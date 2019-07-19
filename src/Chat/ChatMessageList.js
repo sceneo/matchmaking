@@ -70,7 +70,7 @@ class ChatMessageList extends React.Component {
             }
         }
         else {
-            this.message.push({
+            this.messages.push({
                     id: 0,
                     user_id: 1,
                     parts: {

@@ -68,7 +68,14 @@ class RoomHandler {
             this.currentRoom = this.chatkitApi.getNewestRoomName();
             this.currentRoomId = this.chatkitApi.getNewestRoomId();
         }
-        this.messageHandler.seenMessageByRoomId(this.currentRoomId, this.chatkitApi.getLatestMessage()[0].id);
+        var local_messageId = 0;
+        if( this.chatkitApi.getLatestMessage()[0] === undefined ||  this.chatkitApi.getLatestMessage()[0] === null ) {
+            local_messageId = -1
+        }
+        else {
+            local_messageId = this.chatkitApi.getLatestMessage()[0].id;
+        }
+        this.messageHandler.seenMessageByRoomId(this.currentRoomId, local_messageId);
         
     }
 }
