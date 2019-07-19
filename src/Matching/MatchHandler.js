@@ -11,7 +11,9 @@ class MatchHandler {
         this.api = [];
         this.url = 'https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/Prod/MatchMakingAnalytics';
         
-    }
+
+        
+    }    
     
     setApi(api){
         this.api = api;
@@ -112,14 +114,12 @@ class MatchHandler {
         
         
         // I don t  want to have the blacklisted users
-        if (!this.api.getSecondaryUserDetails() == null){
+        if (this.api.getSecondaryUserDetails() !== null){          
             if(this.api.getPrimaryUserDetails().blacklist.includes(this.api.getSecondaryUserDetails().email)) {
                 this.currentProposalIndex++;
     //            console.log("I do not like this guy...")
                 return this.getRecommendation();
             }
-            
-            // I don t want to have the users I already have in my friend's list
             
             if(this.api.getPrimaryUserDetails().whitelist.includes(this.api.getSecondaryUserDetails().email)) {
                 this.currentProposalIndex++;
