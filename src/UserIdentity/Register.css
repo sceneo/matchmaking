@@ -2,29 +2,13 @@
   .Login {
     padding: 60px 0;
   }
-  
-  .label {
-      vertical-align: left;
-      color: red;
-  }
-
-  .inputData {
-      align: right;
-      color: red;
-  }
-
-  .Login form {
-	margin: 0 auto;
-	max-width: 320px;
-	background-color: grey;
-  }
 
   .backgroundRegister {
 	background-color: white;
 	background-image: url("../img/logo.png");
 	background-repeat: no-repeat;
-  	background-position: 95% 5%;
-	background-size: 10% 10%;
+  	background-position: 96% 5%;
+	background-size: 5% auto;
   	margin-top: 25px;
   }
   
@@ -35,7 +19,7 @@
 	text-align: left;
 	vertical-align: left;
 	margin-left: 25px;
-  	margin-top: 60px;
+  	margin-top: auto;
   	font-size: 25px;
   	font-weight: bold;
   }
@@ -62,7 +46,6 @@
 		font-size: 12px;
 		font-style: italic;  
   }
-  
   
  .form-label{
 	  color: #616161;

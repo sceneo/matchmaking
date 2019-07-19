@@ -84,7 +84,7 @@ class Login extends Component {
         })
         .then(response => response.json())
         .then(data => {
-            if(data.message == "Internal server error") {
+            if(data.message === "Internal server error") {
                 console.log('error with lambda!')
             }
             else {

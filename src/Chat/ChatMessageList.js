@@ -48,9 +48,6 @@ class ChatMessageList extends React.Component {
             refresh: true
         })
     }
-
-    async componentDidMount(){
-    }
     
     getKey(){
         return Math.random();

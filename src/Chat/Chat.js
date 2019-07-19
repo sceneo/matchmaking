@@ -34,7 +34,7 @@ class Chat extends Component {
   }
   
   async componentWillReceiveProps(nextProps) {
-      const { refresh } = this.props;
+//      const { refresh } = this.props;
       await this.apiCallsToLambda.getUserDetailsByEmail(this.apiCallsToLambda.getPrimaryUserDetails().email)
       this.refreshContacts();
       this.forceUpdate();

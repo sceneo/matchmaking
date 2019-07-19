@@ -17,7 +17,7 @@
       background-image: url("../img/background_login.png"), url("../img/logo.png");
       background-repeat: no-repeat, no-repeat;
       background-position: center center, top right;
-      background-size: 100% 60%, 10% 10%;
+      background-size: 100% 60%, 8% auto;
     }
 
     .WelcomeText {

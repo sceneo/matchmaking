@@ -59,10 +59,10 @@ class PasswordForgotton extends Component {
       
       var request = new XMLHttpRequest();
       request.onreadystatechange = function() {
-          if (request.readyState == 4 && request.status == 200) {
+          if (request.readyState === 4 && request.status === 200) {
               console.log('success');
           } else
-          if(request.readyState == 4) {
+          if(request.readyState === 4) {
               console.log('failed');
           }
       };

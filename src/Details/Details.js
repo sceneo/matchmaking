@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import APICallsToLambda from "./../UserIdentity/APICallsToLambda.js"
-import { Segment } from 'semantic-ui-react';
+//import APICallsToLambda from "./../UserIdentity/APICallsToLambda.js"
+//import { Segment } from 'semantic-ui-react';
 class Details extends Component {
     constructor(props) {
         super(props);
@@ -20,10 +20,10 @@ class Details extends Component {
           <div class="ui card">
           <h1> Your Details </h1>
           <div class="image">
-            <img src={require('../img/avatar/' + this.api.getPrimaryUserDetails().avatar + '.jpg')} />
+            <img alt='Avatar' src={require('../img/avatar/' + this.api.getPrimaryUserDetails().avatar + '.jpg')} />
           </div>
           <div class="content">
-            <a class="header">{this.api.getPrimaryUserDetails().username}</a>
+            <p class="header">{this.api.getPrimaryUserDetails().username} </p>
             <div class="meta">
               <span class="FullName"> {this.api.getPrimaryUserDetails().firstname} {this.api.getPrimaryUserDetails().lastname} ({this.api.getPrimaryUserDetails().gender})</span>
             </div>
@@ -35,10 +35,10 @@ class Details extends Component {
             </div>
           </div>
           <div class="extra content">
-            <a>
+            <p>
               <i class="user icon"></i>
               {this.api.getPrimaryUserDetails().whitelist.split("@").length-1} Friends
-            </a>
+            </p>
           </div>
          </div>
 

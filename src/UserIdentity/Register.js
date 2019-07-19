@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Button, Form, Row } from "react-bootstrap";
-import { form } from "semantic-ui-react"
 import APICallsToChatkit from "./../Chat/APICallsToChatkit.js"
 import APICallsToLambda from "./../UserIdentity/APICallsToLambda.js"
 import "./Register.css";
@@ -91,8 +90,8 @@ class Register extends Component {
               <p className="Headline3"> Fields indicated with * need to be filled out. </p>
  
           
-              <Segment.Group horizontal borderless class="ui borderless menu">
-              <Segment>
+              <Segment.Group horizontal  class="ui basic segment'" style={{lineWidth: 0, height: '40em', width: '80em', border: '0px' }}>
+              <Segment basic borderless className='Segmentssegment' style={{lineWidth: 0, maxHeight: '27em', width: '30em', border: '0px' }}>
                 <p className="Headline2"> Personal details </p>               
                 
                   <Form.Group as={Row} md="4" labelId="Field" controlId="Title" >
@@ -199,7 +198,7 @@ class Register extends Component {
                     </Form.Control>
                  </Form.Group> 
                  </Segment>
-                 <Segment>
+                 <Segment style={{lineWidth: 0, maxHeight: '27em', width: '30em', border: '0px' }}>
                     <Form.Group controlId="City">
                     <Form.Label>City*</Form.Label>
                     <Form.Control type="text" id='city' onChange={this.handleChange} placeholder="City" required/>
