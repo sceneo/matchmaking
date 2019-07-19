@@ -70,14 +70,18 @@ class ChatMessageList extends React.Component {
             }
         }
         else {
-            this.messages.push({
-                    id: 0,
-                    user_id: 1,
-                    parts: {
-                        0: "No content available",
-                }
-            })
-            
+            if(typeof this.messages.push === 'function') {
+                this.messages.push({
+                        id: 0,
+                        user_id: 1,
+                        parts: {
+                            0: "No content available",
+                    }
+                })
+            }
+            else {
+                this.messages = []
+            }
         }
     }
 // List of messages that is then shown in chat        

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Button, Form, Row } from "react-bootstrap";
+import { form } from "semantic-ui-react"
 import APICallsToChatkit from "./../Chat/APICallsToChatkit.js"
 import APICallsToLambda from "./../UserIdentity/APICallsToLambda.js"
 import "./Register.css";
@@ -26,32 +27,17 @@ class Register extends Component {
             username: '',
             password: ''
         })
-        this.registrationProcedure = this.registrationProcedure.bind(this);
-        this.callToAws = this.callToAws.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit = event => {
         
-        this.TEST = this.TEST.bind(this);
-    }
-    
-    async TEST(){
-        this.setState = ({
-            title: 'Dr',
-            firstName: 'Markus',
-            lastName: 'Best',
-            gender: 'happy',
-            company: 'something',
-            functionality: 'somewhat',
-            industry: 'aaa',
-            interest: 'aab',
-            city: 'abcs',
-            country: 'asdfa',
-            type: 'asdf',
-            email: 'asf',
-            username: 'asdfas',
-            password: 'asfdaf'
-        })
-        var api = new APICallsToLambda();
-        await api.registerNewUser(this.state);
-    }
+
+        // insert some checks here
+        
+         this.registrationProcedure();
+         this.backToLogin();
+    };
     
     componentDidMount() {
         document.body.classList.add("backgroundRegister");
@@ -86,7 +72,7 @@ class Register extends Component {
     }
           
     async registrationProcedure(){
-        window.alert(this.state)
+
         if(this.verbose > 1) {
             console.log('Registration')
         }
@@ -99,11 +85,11 @@ class Register extends Component {
     }
     
     render() {
-        return (
+        return (         
           <div className="Register">
               <p className="Headline1"> Registration </p>
               <p className="Headline3"> Fields indicated with * need to be filled out. </p>
-              <Form onSubmit={this.registrationProcedure}>
+ 
           
               <Segment.Group horizontal borderless class="ui borderless menu">
               <Segment>
@@ -253,16 +239,14 @@ class Register extends Component {
                           <Form.Control type="password"  id='password' onChange={this.handleChange} placeholder="Password" required/>
                         </Form.Group>
                     <p className="PasswordForgottenLink" onClick={this.backToLogin}> Back to Login </p>              
-                    <Button variant="primary" type="submit">
+                    <Button variant="primary" onClick= {this.handleSubmit}>
                       Submit
                     </Button>
                     </Segment>
                  </Segment.Group>
-               </Form>
+               
             
-      </div>
-      
-      
+      </div>      
     );
   }
 }
