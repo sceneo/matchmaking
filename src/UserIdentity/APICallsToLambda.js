@@ -262,6 +262,8 @@ class APICallsToLambda{
     }
     
     async registerNewUser(details) {
+        
+        // a check should be perfomed if any of the states is 'None'
         var userdata = {
             usecase: 'register',
             title: details.title,
@@ -276,7 +278,7 @@ class APICallsToLambda{
             type: details.type,
             email: details.email,
             username: details.username,
-            password: details.password  
+            password: details.password
         }
         
         await fetch(this.url_lambdaAuth,{

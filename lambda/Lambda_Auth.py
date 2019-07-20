@@ -51,6 +51,40 @@ def isOnline(email):
 def isOffline(email):
     updateStatusOnS3(email, False)
 
+def replaceBlanks(user):
+    header="title,firstname,lastname,gender,company,industry,functionality,city,country,type,email,username,password,whitelist,blacklist,avatar,secretId\n"
+    params = [x.strip() for x in header.split(',')]
+    for x in params:
+        if x == "firstname":
+            x = "firstName"
+        if x == "lastname":
+            x = "lastName"
+        if x == "whitelist":
+            continue
+        if x == "blacklist":
+            continue
+        if x == "avatar":
+            continue
+        if x == "secretId":
+            continue
+        user[x] = user[x].replace(" ", "_") 
+    return user
+    
+def replaceUnderscore(user):
+    header="title,firstname,lastname,gender,company,industry,functionality,city,country,type,email,username,password,whitelist,blacklist,avatar,secretId\n"
+    params = [x.strip() for x in header.split(',')]
+    for x in params:
+        if x == "whitelist":
+            continue
+        if x == "blacklist":
+            continue
+        if x == "avatar":
+            continue
+        if x == "secretId":
+            continue
+        user[x] = user[x].replace("_", " ") 
+    return user
+
 # adding a new user to the user list on S3  
 def updateUserListOnS3(newUser):
     bucket_name = "matchmaking.data"
@@ -63,12 +97,14 @@ def updateUserListOnS3(newUser):
     users = getUsersFromS3()
     for row in users:
         line = row['title'] + "," + row['firstname'] + "," + row['lastname'] + "," + row['gender'] + "," + row['company'] + "," + row['industry'] + "," + row['functionality'] + "," + row['city'] + "," + row['country'] + "," + row['type'] + "," + row['email'] + "," + row['username'] + "," + row['password'] + "," + row['whitelist'] + ',' + row['blacklist'] + "," + row['avatar'] + "," + row['secretId'] + '\n'
-        body = body + line
-     
+        body = body + line 
+    newUser = replaceBlanks(newUser)
     line = newUser['title'] + "," + newUser['firstName'] + "," + newUser['lastName'] + "," + newUser['gender'] + "," + newUser['company'] + "," + newUser['industry'] + "," + newUser['functionality'] + "," + newUser['city'] + "," + newUser['country'] + "," + newUser['type'] + "," + newUser['email'] + "," + newUser['username'] + "," + newUser['password'] + ','+ '' + ',' + '' + ',' + str(random.randint(0,15)) + ',' + createToken(64) + '\n'
+    
     body = body + line
     # add a new user
     s3.Bucket(bucket_name).put_object(Key=file_name, Body=body)
+    return(newUser)
     
 def getNumberOfUsersOnS3():
     users = getUsersFromS3()
@@ -196,27 +232,27 @@ def getUser(email):
     users = getUsersFromS3()
     for user in users:
         if email == user['email']:
-            return user
+            return replaceUnderscore(user)
         
 def getDetailsList():
     users = getUsersFromS3()
     list = []
     for user in users:
-        list.append(user)
+        list.append(replaceUnderscore(user))
     return list
  
 def getUserByUsername(username):
     users = getUsersFromS3()
     for user in users:
         if username == user['username']:
-            return user
+            return replaceUnderscore(user)
         
 def getUserBySecretId(secretId):
     secretId = str(secretId)
     users = getUsersFromS3()
     for user in users:
         if secretId == user['secretId']:
-            return user
+            return replaceUnderscore(user)
     print('SecretId not found!')
 
 # get a status report from S3      
@@ -379,7 +415,7 @@ def auth(event, context):
         if(exists(body['email'])):
             return response('already existing',201)
         updateUserListOnS3(body)
-        return response("created succesfully",200)
+        return response('adding user',200)
 
     if(body['usecase'] == 'alive'):
         email = body['email']
@@ -415,5 +451,17 @@ def auth(event, context):
 
 if __name__ == '__main__':
 #     updateMessageHistory('lea.reckhord@gmail.de','testchannel','20002')
-    print(getMessageHistory('lea.reckhord@gmail.de'))
-    autoRecovery()
+#     users = getUsersFromS3()
+#     for user in users:
+#         print(user)
+#     
+#     event = '{ "usecase": "register",  "title": "Dr", "firstName": "Tobias Tobias", "lastName": "Kunz", "gender": "Male", "company": "TNG", "industry": "Some Industry", "functionality": "IT Master", "city": "Munich", "country": "Germany",  "type": "Visitor", "email": "kunzi@gmail.de", "username": "testi", "password": "test"}'
+#     y = json.loads(event);
+#     updateUserListOnS3(y)
+#     users = getUsersFromS3()
+#     for user in users:
+#         print(user)     
+#     print(getUser('tobias.kunz@tngtech.com'))
+    print(getUserBySecretId(3))
+
+    
