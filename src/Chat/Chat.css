@@ -13,3 +13,9 @@
     margin-top: -50px;
   }
 
+
+  .grid-list-style {
+    overflow: auto;
+    list-style: none
+  }
+

@@ -149,7 +149,7 @@ class Chat extends Component {
                   
                   
                   <Segment basic borderless style={{ lineWidth: 0, overflow: 'auto', maxHeight: '35em', width: '25em', border: '0px' }}>
-                      <GridListTile style={{overflow: 'auto'}}>
+                      <GridListTile  className="grid-list-style">
                        <Contacts className="Contacts" chatState={this.state} refresh={this.refreshContacts} callbackChangeRoom={this.callbackChangeRoom} api={this.api} userMapping={this.chatUserMapping} messageHandler={this.messageHandler}/>
                       </GridListTile> 
                     </Segment>
@@ -169,7 +169,7 @@ class Chat extends Component {
                       </Toolbar>
                      </AppBar>
                        <span style= {{height: '8em'}}>
-                         <GridListTile name="messages" scrollheight style={{lineWidth: 0, overflow: 'auto', maxHeight: '18em' }}>
+                         <GridListTile name="messages" scrollheight className="grid-list-style">
                          <ChatMessageList className="ChatMessageList" chatState={this.state} refresh={this.refreshMessages} api={this.api} userMapping={this.chatUserMapping} roomId={this.roomHandler.getCurrentRoom()} />     
                            </GridListTile>
                       </span>

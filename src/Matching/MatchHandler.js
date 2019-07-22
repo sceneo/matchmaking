@@ -34,12 +34,10 @@ class MatchHandler {
         console.log(details);
         
         await fetch(this.url,{
+            method: 'get',
             headers: {
             "Content-type": "application/json; utf-8"
-            },
-            method: 'post',
-            mode: 'cors',
-            body: JSON.stringify(details)
+            }
           })
           .then(response => response.json())
           .then(data => {
