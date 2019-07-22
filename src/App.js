@@ -15,11 +15,8 @@ import MatchHandler from './Matching/MatchHandler.js';
 // import additional react components from official Semantic-UI-React integration.
 import { Button, Segment, Sidebar, Icon } from 'semantic-ui-react';
 
-<<<<<<< HEAD
-=======
 // Here we can’t use this in a constructor until after we’ve called the parent constructor.
 // Refer to parent class constructor via super(props)
->>>>>>> master
 
 class App extends React.Component {
     constructor(props) {
