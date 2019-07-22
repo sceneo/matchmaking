@@ -3,7 +3,6 @@ import { Form } from "react-bootstrap";
 import Button from 'react-bootstrap/Button'
 import "./Login.css";
 
-
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -25,7 +24,7 @@ class Login extends Component {
   }
   
   // load the background css part
-  componentDidMount() {
+  async componentDidMount() {
       document.body.classList.add("background-login");
   }
 
@@ -85,15 +84,21 @@ class Login extends Component {
         })
         .then(response => response.json())
         .then(data => {
-            if(data.includes("Authentication successful")) {
-                this.props.apiCallsToLambda.getUserDetailsByEmail(this.state.email);
-                this.auth(true, this.state.email); 
+            if(data.message === "Internal server error") {
+                console.log('error with lambda!')
             }
             else {
-                this.setState({
-                    statusMessage: "Login failed. Please check your details and try again.",
-                    isLoading: false
-                })
+                
+                if(data.includes("Authentication successful")) {
+                    this.props.apiCallsToLambda.getUserDetailsByEmail(this.state.email);
+                    this.auth(true, this.state.email); 
+                }
+                else {
+                    this.setState({
+                        statusMessage: "Login failed. Please check your details and try again.",
+                        isLoading: false
+                    })
+                }
             }
         })
         .catch(function (error) {

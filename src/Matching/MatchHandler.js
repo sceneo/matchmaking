@@ -11,7 +11,9 @@ class MatchHandler {
         this.api = [];
         this.url = 'https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/Prod/MatchMakingAnalytics';
         
-    }
+
+        
+    }    
     
     setApi(api){
         this.api = api;
@@ -61,12 +63,28 @@ class MatchHandler {
 
         if (swipeAction === 'left') {
             // update user and training data: user interested in recommendation
-            await this.api.addToWhitelist(this.recsList[addToList]['secretId']);
-            
+            if(this.recsList[addToList] === null) {
+                setTimeout( function(){
+                    console.log('waiting for a second')
+                },1000);
+            }
+            if(this.recsList[addToList] === null) {
+                console.log('regs is zero')
+            }
+                await this.api.addToWhitelist(this.recsList[addToList]['secretId']);
         } 
         else if (swipeAction === 'right') {
             // update user and training data: user not interested 
-            await this.api.addToBlacklistt(this.recsList[addToList]['secretId']);
+            if(this.recsList[addToList] === null) {
+                setTimeout( function(){
+                    console.log('waiting for a second')
+                },1000);
+            }
+            if(this.recsList[addToList] === null) {
+                console.log('regs is zero')
+            }
+            await this.api.addToBlacklist(this.recsList[addToList]['secretId']);
+            
         }
     }
 
@@ -99,29 +117,38 @@ class MatchHandler {
         
         
         // I don t  want to have the blacklisted users
-        if(this.api.getPrimaryUserDetails().blacklist.includes(this.api.getSecondaryUserDetails().email)) {
-            this.currentProposalIndex++;
-//            console.log("I do not like this guy...")
-            return this.getRecommendation();
-        }
-        
-        // I don t want to have the users I already have in my friend's list
-        if(this.api.getPrimaryUserDetails().whitelist.includes(this.api.getSecondaryUserDetails().email)) {
-            this.currentProposalIndex++;
-//            console.log("I already like this guy...")
-            return this.getRecommendation();
-        }
-        
-        
+        if (this.api.getSecondaryUserDetails() !== null){          
+            if(this.api.getPrimaryUserDetails().blacklist.includes(this.api.getSecondaryUserDetails().email)) {
+                this.currentProposalIndex++;
+    //            console.log("I do not like this guy...")
+                return this.getRecommendation();
+            }
             
-        this.recsList[this.currentProposalIndex].functionality = this.api.getSecondaryUserDetails(username).functionality;
-        this.recsList[this.currentProposalIndex].gender = this.api.getSecondaryUserDetails(username).gender;
-        this.recsList[this.currentProposalIndex].industry = this.api.getSecondaryUserDetails(username).industry;
-        this.recsList[this.currentProposalIndex].name = this.api.getSecondaryUserDetails(username).username;
-        this.recsList[this.currentProposalIndex].secretId = this.api.getSecondaryUserDetails(username).secretId;
-        this.recsList[this.currentProposalIndex].title = this.api.getSecondaryUserDetails(username).title;
-        this.recsList[this.currentProposalIndex].type = this.api.getSecondaryUserDetails(username).type;
+            if(this.api.getPrimaryUserDetails().whitelist.includes(this.api.getSecondaryUserDetails().email)) {
+                this.currentProposalIndex++;
+    //            console.log("I already like this guy...")
+                return this.getRecommendation();
+            }
+        }
         
+        if(this.api.getSecondaryUserDetails(username) === null || this.recsList[this.currentProposalIndex] === null) {
+            if(this.verbose > 0) {
+                console.log('could not fetch user');
+            }
+            setTimeout( function(){
+                console.log('waiting for a second')
+            },1000);
+        }
+        
+
+            this.recsList[this.currentProposalIndex].functionality = this.api.getSecondaryUserDetails(username).functionality;
+            this.recsList[this.currentProposalIndex].gender = this.api.getSecondaryUserDetails(username).gender;
+            this.recsList[this.currentProposalIndex].industry = this.api.getSecondaryUserDetails(username).industry;
+            this.recsList[this.currentProposalIndex].name = this.api.getSecondaryUserDetails(username).username;
+            this.recsList[this.currentProposalIndex].secretId = this.api.getSecondaryUserDetails(username).secretId;
+            this.recsList[this.currentProposalIndex].title = this.api.getSecondaryUserDetails(username).title;
+            this.recsList[this.currentProposalIndex].type = this.api.getSecondaryUserDetails(username).type;
+
         
         return this.recsList[this.currentProposalIndex];
     }

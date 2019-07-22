@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Form, Col, Row } from "react-bootstrap";
+import { Button, Form, Row } from "react-bootstrap";
 import APICallsToChatkit from "./../Chat/APICallsToChatkit.js"
 import APICallsToLambda from "./../UserIdentity/APICallsToLambda.js"
 import "./Register.css";
@@ -7,7 +7,7 @@ import { Segment } from 'semantic-ui-react';
 class Register extends Component {
     constructor(props) {
         super(props);
-
+        this.verbose = 1;
         this.url = 'https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/Prod/MatchMakingAuth';
         this.backToLogin = this.backToLogin.bind(this);
         this.state = ({
@@ -26,10 +26,17 @@ class Register extends Component {
             username: '',
             password: ''
         })
-        this.registrationProcedure = this.registrationProcedure.bind(this);
-        this.callToAws = this.callToAws.bind(this);
-        this.registrationState = '';
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
+
+    handleSubmit = event => {
+        
+
+        // insert some checks here
+        
+         this.registrationProcedure();
+         this.backToLogin();
+    };
     
     componentDidMount() {
         document.body.classList.add("backgroundRegister");
@@ -44,44 +51,32 @@ class Register extends Component {
           [event.target.id]: event.target.value
         });
     }
-    
-    
-    checkPrerequesites(){
-        if(this.state.firstName === '') return false;
-        if(this.state.lastName === '') return false;
-        if(this.state.functionality === '') return false;
-        if(this.state.industry === '') return false;
-        if(this.state.type === '') return false;
-        if(this.state.email === '') return false;
-        if(this.state.username === '') return false;
-        if(this.state.password === '') return false;  
-        return true;
-    }
-    
+
     async callToAws() {
-        if(!this.checkPrerequesites()) {
-            // we can then show something like "name already in use etc later on"
-            return false
+        if(this.verbose > 1) {
+            console.log('Call to aws');
+            console.log(this.state);
         }
         var api = new APICallsToLambda();
         await api.registerNewUser(this.state);
-        this.registrationState = api.getRegistrationState();
     }
     
     async callToChatkit() {
+        if(this.verbose > 1) {
+            console.log('Call to chatkit');
+        }
         var api = new APICallsToChatkit();
         await api.initializeRoot(); 
         api.addUser(this.state.username, this.state.firstName,this.state.lastName,this.state.email)        
     }
           
     async registrationProcedure(){
-//        if(this.registrationState === "created succesfully") {
-            await this.callToChatkit();
-//        }
-//        else {
-//            // The registration failed - should we print something?
-//        }
 
+        if(this.verbose > 1) {
+            console.log('Registration')
+        }
+        await this.callToAws();
+        await this.callToChatkit();
     }
     
     backToLogin(){
@@ -89,14 +84,14 @@ class Register extends Component {
     }
     
     render() {
-        return (
+        return (         
           <div className="Register">
               <p className="Headline1"> Registration </p>
               <p className="Headline3"> Fields indicated with * need to be filled out. </p>
-              <Form onSubmit={this.registrationProcedure}>
+ 
           
-              <Segment.Group horizontal borderless class="ui borderless menu">
-              <Segment>
+              <Segment.Group horizontal  class="ui basic segment'" style={{lineWidth: 0, height: '40em', width: '80em', border: '0px' }}>
+              <Segment basic borderless className='Segmentssegment' style={{lineWidth: 0, maxHeight: '27em', width: '30em', border: '0px' }}>
                 <p className="Headline2"> Personal details </p>               
                 
                   <Form.Group as={Row} md="4" labelId="Field" controlId="Title" >
@@ -203,7 +198,7 @@ class Register extends Component {
                     </Form.Control>
                  </Form.Group> 
                  </Segment>
-                 <Segment>
+                 <Segment style={{lineWidth: 0, maxHeight: '27em', width: '30em', border: '0px' }}>
                     <Form.Group controlId="City">
                     <Form.Label>City*</Form.Label>
                     <Form.Control type="text" id='city' onChange={this.handleChange} placeholder="City" required/>
@@ -242,19 +237,15 @@ class Register extends Component {
                           <Form.Label>Password*</Form.Label>
                           <Form.Control type="password"  id='password' onChange={this.handleChange} placeholder="Password" required/>
                         </Form.Group>
-            
-            
                     <p className="PasswordForgottenLink" onClick={this.backToLogin}> Back to Login </p>              
-                    <Button variant="primary" type="submit" onClick={this.callToAws}>
+                    <Button variant="primary" onClick= {this.handleSubmit}>
                       Submit
                     </Button>
                     </Segment>
                  </Segment.Group>
-               </Form>
+               
             
-      </div>
-      
-      
+      </div>      
     );
   }
 }

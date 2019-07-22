@@ -4,12 +4,20 @@ class APICallsToLambda{
         this.url_lambdaAuth = 'https://05vtryrhrg.execute-api.eu-west-1.amazonaws.com/Prod/MatchMakingAuth';
         this.primaryUserDetails = [];
         this.secondaryUserDetails = [];
+        this.fullUserList = [];
+        this.messageList = [];
         this.listOfOnlineUsers = '';
         this.registrationState = '';
     }
     
     // getting user details
+    getMessageList(){
+        return this.messageList;
+    }
     
+    getFullUserList(){
+        return this.fullUserList;
+    }
     
     getPrimaryUserDetails(){
         return this.primaryUserDetails;
@@ -87,7 +95,7 @@ class APICallsToLambda{
 // cleanup?
     }
     
-    async getUserDetailsByEmail(emailidentifier = ''){     
+    async getUserDetailsByEmail(emailidentifier = ''){ 
         var details = {
                 usecase: 'detailsByEmail',
                 email: emailidentifier
@@ -160,6 +168,85 @@ class APICallsToLambda{
           });
     }
     
+    async requestFullUserList() {
+        var details = {
+                usecase: 'detailsList',
+        }
+        
+        await fetch(this.url_lambdaAuth,{
+            headers: {
+            "Content-type": "application/json; utf-8"
+            },
+            method: 'post',
+            mode: 'cors',
+            body: JSON.stringify(details)
+          })
+          .then(response => response.json())
+          .then(data => {
+              this.fullUserList = data;
+          })
+          
+          .catch(function (error) {
+            console.log('Request failed', error);
+          });
+    }
+    
+    async requestMessageList() {
+        var details = {
+                usecase: 'getMessageHistory',
+                email: this.primaryUserDetails.email
+        }
+        
+        await fetch(this.url_lambdaAuth,{
+            headers: {
+            "Content-type": "application/json; utf-8"
+            },
+            method: 'post',
+            mode: 'cors',
+            body: JSON.stringify(details)
+          })
+          .then(response => response.json())
+          .then(data => {
+              this.messageList = data;
+          })
+          
+          .catch(function (error) {
+            console.log('Request failed', error);
+          });
+    }
+    
+    updateMessageList(roomId,messageId,email='') {
+        if(email === '') {
+            email = this.primaryUserDetails.email
+        }
+        var details = {
+                usecase: 'updateMessageHistory',
+                email: email,
+                roomId: roomId.toString(),
+                messageId: messageId.toString()
+        }
+        fetch(this.url_lambdaAuth,{
+            headers: {
+            "Content-type": "application/json; utf-8"
+            },
+            method: 'post',
+            mode: 'cors',
+            body: JSON.stringify(details)
+          })
+          .then(response => { 
+              response.json();
+//              console.log(response)
+          })
+          .then(data => {
+              this.messageList = data;
+//              console.log(this.messageList)
+          })
+          
+          .catch(function (error) {
+            console.log('Request failed', error);
+          });
+    }
+    
     alive(){
         var details = {
                 usecase: 'alive',
@@ -177,6 +264,8 @@ class APICallsToLambda{
     }
     
     async registerNewUser(details) {
+        
+        // a check should be perfomed if any of the states is 'None'
         var userdata = {
             usecase: 'register',
             title: details.title,
@@ -191,7 +280,7 @@ class APICallsToLambda{
             type: details.type,
             email: details.email,
             username: details.username,
-            password: details.password  
+            password: details.password
         }
         
         await fetch(this.url_lambdaAuth,{
@@ -204,13 +293,11 @@ class APICallsToLambda{
           })
           .then(response => response.json())
           .then(data => {
-              console.log(data);
+              console.log('Response: ' +  data);
               this.registrationState = data;
           })
-          
           .catch(function (error) {
             console.log('Request failed', error);
-            this.registrationState = error;
           });
     }
     

@@ -8,6 +8,7 @@ class APICallsToChatkit {
  // https://us1.pusherplatform.io/services/chatkit_token_provider/v1/8a1e4d4b-5933-473f-bd5d-d4893859ffcd/token
    
    constructor() {
+       this.verbose = 0;
        this.chatInstance = '8a1e4d4b-5933-473f-bd5d-d4893859ffcd';
        this.secretKey = '6fbd13f5-4d17-4a14-b8bb-95d56416bfc2:BehYgWeMTwQ3kzNUUwgfca3lVTfK9/uG4syEM62U3Jc=';
        this.api = 'https://us1.pusherplatform.io/services/chatkit/v4/' + this.chatInstance;
@@ -21,9 +22,19 @@ class APICallsToChatkit {
        this.newestRoomId = '';
        this.newestRoomName = '';
        this.chatManager = [];
+       this.latestMessage = [];
        this.rootToken = '';
    }
 // request current status and details 
+   getLatestMessage(){
+       if(this.latestMessage === [] || this.latestMessage === null ) {
+           return ({
+               id: 0
+           })
+       }
+           return this.latestMessage;
+   }
+   
    getRootToken(){
        return this.rootToken;
    }
@@ -81,7 +92,8 @@ class APICallsToChatkit {
 // receiving the token with the user ID and valid credentials
    
    async getToken(userId, su = true){       
-       var obj = new Object();
+//       var obj = new Object();
+       var obj = {};
        obj.grant_type = 'client_credentials';
        obj.user_id = userId;
        obj.su = su;
@@ -104,6 +116,9 @@ class APICallsToChatkit {
            var data = JSON.stringify(obj);
            xhr.send(data);  
        })
+       if(this.verbose > 0) {
+           console.log(response)
+       }
        this.authorization = json;
    }
 
@@ -208,6 +223,28 @@ class APICallsToChatkit {
        console.log('Request failed', error);
      });
      this.roomMessages = json;   
+   }
+   
+   async requestLatestMessagesFromRoom(roomId=this.currentChannel) {
+       this.latestMessage = [];
+       var json;
+       await fetch(this.api + '/rooms/' + roomId + '/messages?limit=1' ,{
+       method: 'get',
+       headers: {
+         "Content-type": "application/json; charset=UTF-8",
+         "Authorization": "Bearer " + this.authorization.access_token
+       }
+     })
+     .then(response => response.json())
+     .then(data => {
+        json = data;
+        this.latestMessage = json;
+     })
+     .catch(function (error) {
+       console.log('Request failed', error);
+     });
+     this.latestMessage = json;   
+
    }
    
 // private room refers to 1:1 chat functionality

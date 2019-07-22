@@ -11,49 +11,79 @@ import Avatar from '@material-ui/core/Avatar';
 class ChatMessageList extends React.Component {
     constructor(props){
         super(props);
+        this.state = {
+                rerender: false
+        }
         this.api = this.props.api;
         this.messages = this.api.getRoomMessages();
         this.userMapping = this.props.userMapping;
         this.state = this.props.chatState;
         this.roomId = this.props.roomId;
     }
+  
     
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
+        const { refresh } = this.props;
+        if (nextProps.refresh !== refresh) {
+            this.refreshMessages()
+        }
+//        console.log('refresh messages tried to be called here')
         this.messages = this.api.getRoomMessages();
         this.forceUpdate();
         this.setState(nextProps.chatState);
+//        this.setState({
+//            rerender: !this.state.rerender
+//        })
+        
+        
+        
+      }
+    
+    componentDidMount(){
+        this.timer = setInterval(()=> this.update(), 10000);
     }
-
-    async componentDidMount(){
+    
+    update(){
+        this.setState({
+            refresh: true
+        })
     }
     
     getKey(){
         return Math.random();
     }
- // refresh for messages, get avatar and sort messages by date by calling functions via 'this'
-    async refresh(){
-        await this.api.requestMessagesFromRoom();
-        this.render();
-    }
+    
     
     getAvatar(username){
         return this.userMapping.getUserByUsername(username).matchMakingDetails.avatar;
     }
     
     sortMessages(){
-        if(this.messages !== null && this.messages !== '') {
-            this.messages.sort(function(a, b) {
-                return a.id > b.id;
-            });
+        if(typeof this.messages.sort === 'function') {
+            if(this.messages !== null && this.messages !== '' && this.messages !== undefined) {
+                this.messages.sort(function(a, b) {
+                    return a.id > b.id;
+                });
+            }
+        }
+        else {
+            if(typeof this.messages.push === 'function') {
+                this.messages.push({
+                        id: 0,
+                        user_id: 1,
+                        parts: {
+                            0: "No content available",
+                    }
+                })
+            }
+            else {
+                this.messages = []
+            }
         }
     }
 // List of messages that is then shown in chat        
-    render() {       
-        
-        
-        
+    render() {        
         this.sortMessages();
-        
         return (
           <List dense className='MessageList'>
             {this.messages.map(value => {                              

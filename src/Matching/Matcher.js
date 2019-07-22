@@ -1,14 +1,5 @@
-/*  call backend service
-    get list of possible matches
-    for each match get user info
-    show match
-    swipe left or right
-    submit selection to backend
-    if click in middle, open chat 
-*/
-
 import React from 'react';
-import { Button, ButtonToolbar,Icon } from 'semantic-ui-react'
+import { Button, Icon } from 'semantic-ui-react'
 
 import './../CSSAnimation.js';
 
@@ -65,7 +56,7 @@ class MatchMe extends React.Component {
     }
 
     startChatting(){
-        this.props.openChatWithNewFriendCallBack(this.props.recommendation['name'])
+        this.props.openChatWithNewFriendCallback(this.props.recommendation['name'],this.props.recommendation['secretId'])
         this.props.closeCallback();
     }
     
@@ -140,14 +131,14 @@ class MatchMe extends React.Component {
                         <tr>
                             <td colSpan='2'>
                                 <div className="industry-label">
-                                    {recData['industry']}
+                                    Industry: {recData['industry']}
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td colSpan='2'>
                                 <div className="functionality-label">
-                                    {recData['functionality']}
+                                    Functionality: {recData['functionality']}
                                 </div>
                             </td>
                         </tr>

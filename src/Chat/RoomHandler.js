@@ -1,9 +1,11 @@
 class RoomHandler {
-    constructor(chatkitApi) {
+    constructor(chatkitApi, messageHandler) {
         this.rooms = [];
         this.chatkitApi = chatkitApi;
         this.currentRoom = 'Lobby';
         this.currentRoomId = '19865469';
+        this.currentChatPartner = 'community chat';
+        this.messageHandler = messageHandler;
     }   
   // creaating the virtual 'room'/lobby for the chat for the two users 
     getCurrentRoom(){
@@ -12,6 +14,10 @@ class RoomHandler {
     
     getCurrentRoomId(){
         return this.currentRoomId;
+    }
+    
+    getChatPartner(){
+        return this.currentChatPartner;
     }
     
     print(){
@@ -27,6 +33,8 @@ class RoomHandler {
  // if 1:1 room already exists, chat will be continued there - if not, new room is requested
     
     async switchRoom(username) {
+        this.currentChatPartner = username
+        await this.chatkitApi.requestLatestMessagesFromRoom(this.currentRoomId);
         await this.getRoomsForUser();
         var foundUser = false;
         for(var i = 0; i < this.rooms.length; i++) {
@@ -37,6 +45,7 @@ class RoomHandler {
                 if(this.rooms[i].member_user_ids[name] === username) {
                     this.currentRoom = this.rooms[i].name;
                     this.currentRoomId = this.rooms[i].id;
+                    await this.chatkitApi.requestLatestMessagesFromRoom(this.currentRoomId);
                     foundUser = true;
                     break;
                 }
@@ -48,7 +57,10 @@ class RoomHandler {
         
         if(username === 'Lobby') {
             this.currentRoom = 'Lobby';
+            this.currentChatPartner = 'community chat'
             this.currentRoomId = '19865469';
+            await this.chatkitApi.requestLatestMessagesFromRoom(this.currentRoomId);
+            foundUser = true;
         }
         
         if(!foundUser) {
@@ -56,6 +68,14 @@ class RoomHandler {
             this.currentRoom = this.chatkitApi.getNewestRoomName();
             this.currentRoomId = this.chatkitApi.getNewestRoomId();
         }
+        var local_messageId = 0;
+        if( this.chatkitApi.getLatestMessage()[0] === undefined ||  this.chatkitApi.getLatestMessage()[0] === null ) {
+            local_messageId = -1
+        }
+        else {
+            local_messageId = this.chatkitApi.getLatestMessage()[0].id;
+        }
+        this.messageHandler.seenMessageByRoomId(this.currentRoomId, local_messageId);
         
     }
 }
