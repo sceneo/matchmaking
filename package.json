@@ -27,6 +27,7 @@
     "react-spinners": "^0.5.4",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.87.1",
+    "serverless": "^1.47.0",
     "tar-to-zip": "^2.0.0",
     "url": "^0.11.0"
   },

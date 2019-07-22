@@ -5,13 +5,12 @@ import string
 import os
 import ast
 import boto3
-import requests
-import httplib2 as http
+from botocore.vendored import requests
 import numpy as np
-import tensorflow as tf
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.models import load_model
+
 #from wheel.util import utf8
 
 
@@ -35,12 +34,12 @@ def getUsersFromAnalytics():
 
 
 def getMatchingList(secretId):
-
+        
     # get user list with attributes as numbers
     userDataList = getUsersFromAnalytics()
 
     # load the NN
-    # TODO: load file from S3
+    # load file from S3
     s3 = boto3.resource(u's3')
     bucket = s3.Bucket(u'matchmaking.data')
     obj = bucket.Object(key=u'2019-05-23_model.h5')
@@ -85,14 +84,10 @@ def getMatchingList(secretId):
 # This is the basic handling function which is called first
 
 
-def matchme(event, context):
-    body = json.loads(event['body'])
-    if(body['usecase'] == 'matchme'):
-        secretId = int(body['secretId'])
-        recommendation_list = getMatchingList(secretId)
-        return(recommendation_list, 200)
+def matchme(event, context):  
 
-    return response('Lambda available, no usecase selected', 200)
+    recommendation_list = getMatchingList(1)
+    return(recommendation_list, 200)
 
 
 if __name__ == '__main__':
