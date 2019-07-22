@@ -84,10 +84,15 @@ def getMatchingList(secretId):
 # This is the basic handling function which is called first
 
 
-def matchme(event, context):  
+def matchme(event, context): 
 
-    recommendation_list = getMatchingList(1)
-    return(recommendation_list, 200)
+    if(body['usecase'] == 'matchme'):
+        id = body['secretId']
+        recommendation_list = getMatchingList(id)
+        return(recommendation_list, 200)
+          
+    return response('Lambda available, no usecase selected',200)
+
 
 
 if __name__ == '__main__':
