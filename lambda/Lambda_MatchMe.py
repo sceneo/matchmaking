@@ -40,11 +40,11 @@ def getMatchingList(secretId):
 
     # load the NN
     # load file from S3
-    s3 = boto3.resource(u's3')
-    bucket = s3.Bucket(u'matchmaking.data')
-    obj = bucket.Object(key=u'2019-05-23_model.h5')
-    response = obj.download_file('/tmp/2019-05-23_model.h5')
-    model = load_model("/tmp/2019-05-23_model.h5")
+    # s3 = boto3.resource(u's3')
+    # bucket = s3.Bucket(u'matchmaking.data')
+    # obj = bucket.Object(key=u'2019-05-23_model.h5')
+    # response = obj.download_file('/tmp/2019-05-23_model.h5')
+    model = load_model("../neuralnetwork/data/model/2019-05-23_model.h5")
 
     # store input data for the user who wants to get recommendations
     buffer = [u for u in userDataList if u['secretId'] == secretId]
@@ -85,6 +85,8 @@ def getMatchingList(secretId):
 
 
 def matchme(event, context): 
+
+    body = json.loads(event['body'])  
 
     if(body['usecase'] == 'matchme'):
         id = body['secretId']
