@@ -139,7 +139,7 @@ class APICallsToChatkit {
                }
            })
          })
-         .then(response => response.json())
+         .then(response => console.log(response))
          .catch(function (error) {
            console.log('Request failed', error);
          });
@@ -265,6 +265,22 @@ class APICallsToChatkit {
          .then(response => response.json())
          .then(data => {
             console.log(data)
+         })
+         .catch(function (error) {
+           console.log('Request failed', error);
+         });
+   }
+   
+   async addUserToLobby(username) {
+       await fetch(this.api + '/rooms/19865469/users/add' ,{
+           method: 'put',
+           headers: {
+             "Content-type": "application/json; charset=UTF-8",
+             "Authorization": "Bearer " + this.authorization.access_token
+           },
+           body: JSON.stringify({
+               "user_ids": ['MatchMaking',username],
+           })
          })
          .catch(function (error) {
            console.log('Request failed', error);
