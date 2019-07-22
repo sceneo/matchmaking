@@ -122,6 +122,7 @@ class Chat extends Component {
       if(this.props.state.chatUserName !== "Lobby" && this.chatUserName !== this.props.state.chatUserName) {
           this.roomHandler.switchRoom(this.props.state.chatUserName);
           this.api.setCurrentChannel(this.roomHandler.getCurrentRoomId());
+          this.props.callbackSetChatUserName(this.chatUserName)
       }
       
       
