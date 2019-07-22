@@ -30,6 +30,8 @@ class MatchHandler {
                 usecase: 'matchme',
                 secretId: this.userId
         }
+
+        console.log(details);
         
         await fetch(this.url,{
             headers: {
@@ -48,6 +50,7 @@ class MatchHandler {
             console.log('Request failed', error);
           });
         this.currentProposalIndex = 0;
+        console.log(this.recsList);
     }
 
     // using the matchmaking data to update the training model

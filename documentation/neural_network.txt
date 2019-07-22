@@ -1,0 +1,52 @@
+Neural Network with Keras to calculate matchings
+
+Idea
+The whole point of a neural network (NN) is to approximate a generally unknown function f using some known training data, i.e. using some known
+pairs (x, f(x)). The network, the training data and the training procedure should be chosen in such a way that
+    a) the trained network fits the given training data quite well and
+    b) the trained network generalises, i.e. it is not 'overfit' to the test data.
+
+For the fair matching project, a given user has several properties as e.g. gender, industry, functionality and so on.
+Given these properties, we can represent these using numbers, where for example gender = 0 represents a male user.
+Hence, for any given user we can create an array [a_1, ..., a_n], where each number a_i represents one of the users 1,...n properties.
+Given two users u1, represented by [a_1, ..., a_n] and u2, represented by [b_1, ..., b_n] we want to calculate the probability of "u1 is interested in u2."
+Hence, we want to find a function f: R^n x R^n -> [0, 1] such that p(u1, u2) = f([a_1, ..., a_n, b_1, ..., b_n]) is this probability. We don't know this
+function but this is exactly the situation where we want to find such a function using a NN.
+
+The NN is a simple network using dense layers transforming the R^(2n) via several layers to a real number between 0 and 1.
+We use ReLU activations throughout the network.
+
+
+Training data
+In order to find the unknown function f, as stated above, we need some known values (x, f(x)), i.e. in our case we need some user data and probability pairs
+([a_1, ..., a_n, b_1, ..., b_n], f([a_1, ..., a_n, b_1, ..., b_n])).
+As we have no real world training data, we created some simple training data on our own (createInitialTrainingData.py).
+We create some random users (createTestData.py) and define probabilities for all pairs of users. Here, we decided to increase the probability, starting at 0,
+whenever the users have the same occupation or if they work in the same industry.
+Of course, this will not lead to very good predictions; it is just to simple. Moreover, the function only takes a few values on the training data. This could
+be improved by adding some random noise.
+However, this is just a basic prototype and if we would have been able to deploy the NN on AWS Lambda, probably we might have tuned the whole thing to
+provide better recommendations.
+The trained network (i.e. the structure and the weights) are stored in a .h5 file, which can be loaded in order to restore the (trained) NN.
+
+
+Recommendations
+The idea of Lambda_MatchMe.py is the following: 
+the user logged in (identified by his secretId) wants to get recommendations. Therefore, the script calculates the values of the trained NN 
+(which is loaded using Keras from the .h5 file that we put in a S3 bucket) for this users
+represenational vector combined with each representational vector of all the other users. Afterwards, the script returns a sorted list of secretIds,
+the one with the highest probability to be the first one in the list.
+
+
+Deployment issues on AWS Lambda
+Similar as the other backend services, we wanted to deploy the recomenndation functionality as Lambda. However, using numpy, tensorflow and Keras 
+(and other packages that are needed for those), we have a huge potion of Python dependencies - to much to use AWS Lambda, which has very strict 
+limitations in terms of memory.
+We tried to overcome these limitations by including tensorflow and Keras in an AWS Lambda layer (something that can be added to a Lambda in order to
+provide dependency packages) and put other dependencies (as scipy) into a zip file, store it on S3, download it during runtime of the Lambda, unzip it and 
+use the dependencies from this very file. Unfortunately that didn't work out and we were not able to find out, what the problem was.
+So in the end, we were not able to deploy the Lambda_MatchMe.py in AWS Lambda and we decided to skip this part for now as fixing bugs etc. was more important.
+
+A possible solution could be to put the Lambda_MatchMe.py script into a Python server and deploy the whole thing on an EC2 instance. However, this would
+have been quite a large effort. Also, as AWS is not for free, it would not have been a good idea to keep an EC2 instance running all the time for only
+a few requests sent every day.

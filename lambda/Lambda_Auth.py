@@ -40,7 +40,7 @@ def csvToString(data):
 def getUsersFromS3():
     s3 = boto3.resource(u's3')
     bucket = s3.Bucket(u'matchmaking.data')
-    obj = bucket.Object(key=u'users.csv')
+    obj = bucket.Object(key=u'users_fake_secrets.csv')
     response = obj.get()
     users = csv.DictReader(response[u'Body'].read().decode('utf-8').split())
     return users
@@ -272,7 +272,7 @@ def updateStatusOnS3(email, isOnline):
     #recreate old file 
     header="email,timestamp\n"
     body = header
-    status = getStatusFromS3();
+    status = getStatusFromS3()
     for row in status:
         if(time.time() - float(row['timestamp']) < 300):
             if(isOnline == False):

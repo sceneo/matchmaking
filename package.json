@@ -17,7 +17,7 @@
     "jsonwebtoken": "^8.5.1",
     "local-ssl-proxy": "^1.3.0",
     "material-ui": "^0.20.2",
-    "native-base": "^2.12.1",
+    "native-base": "^2.12.2",
     "node-lambda": "^0.14.0",
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.8",
@@ -27,6 +27,7 @@
     "react-spinners": "^0.5.4",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.87.1",
+    "serverless": "^1.47.0",
     "tar-to-zip": "^2.0.0",
     "url": "^0.11.0"
   },

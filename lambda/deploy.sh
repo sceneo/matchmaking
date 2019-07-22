@@ -42,9 +42,9 @@ function deploy {
 	popd
 
 	echo "deploying to AWS: ${lambda}"
-	aws lambda update-function-code --function-name $lambda --region eu-west-1 --zip-file fileb://lambda.zip
+	#aws lambda update-function-code --function-name $lambda --region eu-west-1 --zip-file fileb://lambda.zip
 	echo "cleaning up"
-	rm -f lambda.zip
+	#rm -f lambda.zip
 	rm -rf src/Lambda*
 }
 
