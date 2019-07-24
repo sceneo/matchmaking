@@ -67,7 +67,12 @@ class Register extends Component {
         }
         var api = new APICallsToChatkit();
         await api.initializeRoot(); 
-        api.addUser(this.state.username, this.state.firstName,this.state.lastName,this.state.email)        
+        await api.addUser(this.state.username, this.state.firstName,this.state.lastName,this.state.email)
+        console.log(this.state.username)
+        
+        var apiNext = new APICallsToChatkit();
+        await apiNext.initialize();
+        apiNext.addUserToLobby(this.state.username);
     }
           
     async registrationProcedure(){

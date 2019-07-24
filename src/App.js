@@ -63,6 +63,8 @@ class App extends React.Component {
         this.buttonHowTo = this.buttonHowTo.bind(this);
         this.buttonDetails = this.buttonDetails.bind(this);
         this.buttonChat = this.buttonChat.bind(this);
+        
+        this.callbackSetChatUserName = this.callbackSetChatUserName.bind(this);
     }
     
     buttonHowTo(){
@@ -107,6 +109,12 @@ class App extends React.Component {
         this.setState({
             register: status,
             auth: false
+        })
+    }
+    
+    callbackSetChatUserName(username){
+        this.setState({
+            chatUserName: username
         })
     }
 
@@ -286,7 +294,7 @@ class App extends React.Component {
                                 {!this.state.howTo && !this.state.details ? (
                                     <Segment basic>
                                         <div className='container-div'>
-                                            <Chat appState={this.state} apiCallsToLambda={this.apiCallsToLambda} state={this.state}/>
+                                            <Chat callbackSetChatUserName={this.callbackSetChatUserName} appState={this.state} apiCallsToLambda={this.apiCallsToLambda} state={this.state}/>
                                         </div>
                                     </Segment>
                                         ) : ""
