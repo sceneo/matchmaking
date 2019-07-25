@@ -101,14 +101,20 @@ class Chat extends Component {
   async callbackChangeRoom(username) {
       await this.roomHandler.switchRoom(username);
       await this.api.setCurrentChannel(this.roomHandler.getCurrentRoomId());
+      
       await this.callbackRefresh();
+      this.callbackRefresh();
       this.apiCallsToLambda.alive();
+      this.refreshContacts();
       
       if(this.messageHandler.hasUnreadMessages(username)) {
 
           await this.api.requestLatestMessagesFromRoom(this.roomHandler.getCurrentRoomId())
           this.refreshContacts();
       }
+
+      
+      
   } 
   
 // scrolling functionality - ElementID refers to date of message  

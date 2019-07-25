@@ -42,7 +42,7 @@ class RoomHandler {
                 continue;
             }
             for(var name in this.rooms[i].member_user_ids ) {
-                if(this.rooms[i].member_user_ids[name] === username) {
+                if(this.rooms[i].member_user_ids[name] === username.replace(' ','_')) {
                     this.currentRoom = this.rooms[i].name;
                     this.currentRoomId = this.rooms[i].id;
                     await this.chatkitApi.requestLatestMessagesFromRoom(this.currentRoomId);

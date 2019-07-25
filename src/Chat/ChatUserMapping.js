@@ -124,7 +124,7 @@ class ChatUserMapping {
    
 
    getUserByUsername(username){  
-       console.log(username)
+//       console.log(username)
        username = username.replace('_', ' ')
        if(this.verbose > 0) {
            console.log('found: ' + this.userInventory.find(details => details.matchMakingDetails.username === username).matchMakingDetails.username +' (' + username +')')
