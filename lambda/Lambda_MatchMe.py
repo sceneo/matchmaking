@@ -98,4 +98,4 @@ def matchme(event, context):
 
 
 if __name__ == '__main__':
-    print(getMatchingList(1))
+    print(getMatchingList('hdasripmfhlyribiwehpoggyczqjhchmuczaekklfriomhtmatjhrstrunnognew'))
