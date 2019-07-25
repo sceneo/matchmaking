@@ -79,14 +79,18 @@ class ChatUserMapping {
            console.log("initialize");
        }
        
+       console.log(this.allUsersChatkit)
        for(var user in this.allUsersChatkit){
 //           await this.apiLambda.requestUserDetailsByUsername(this.allUsersChatkit[user].id);
 //           var matchMakingDetails = this.apiLambda.getSecondaryUserDetails();
+           if(this.getUserLambdaByUsername(this.allUsersChatkit[user].id.includes('deleted'))){
+               continue;
+           }
            
-           var matchMakingDetails = this.getUserLambdaByUsername(this.allUsersChatkit[user].id);
+           var matchMakingDetails = this.getUserLambdaByUsername(this.allUsersChatkit[user].id.replace('_', ' '));
            if(this.verbose > 0) {
                console.log(matchMakingDetails);
-           }
+           }   
            
 //create object containing the information from Chatkit and the Lambda and fill to userInventory
            var chatkitDetails = this.allUsersChatkit[user];
@@ -96,7 +100,7 @@ class ChatUserMapping {
 
            if(matchMakingDetails === null || matchMakingDetails === undefined) {
                if(this.verbose > 0) {
-                   console.log('could not find' + this.allUsersChatkit[user].id)
+                   console.log('could not find ' + this.allUsersChatkit[user].id)
                }
                continue;
            }
@@ -119,9 +123,11 @@ class ChatUserMapping {
    }
    
 
-   getUserByUsername(username){
+   getUserByUsername(username){  
+       console.log(username)
+       username = username.replace('_', ' ')
        if(this.verbose > 0) {
-           console.log('Get user ' + username);
+           console.log('found: ' + this.userInventory.find(details => details.matchMakingDetails.username === username).matchMakingDetails.username +' (' + username +')')
        }
        return this.userInventory.find(details => details.matchMakingDetails.username === username)
    }

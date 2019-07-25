@@ -69,6 +69,9 @@ class MatchHandler {
             if(this.recsList[addToList] === null) {
                 console.log('regs is zero')
             }
+            
+            
+//            console.log('adding user: ' + this.recsList[addToList]['secretId'])
                 await this.api.addToWhitelist(this.recsList[addToList]['secretId']);
         } 
         else if (swipeAction === 'right') {

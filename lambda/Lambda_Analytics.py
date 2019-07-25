@@ -18,7 +18,7 @@ def response(message, status_code):
 def getUsersFromS3():
     s3 = boto3.resource(u's3')
     bucket = s3.Bucket(u'matchmaking.data')
-    obj = bucket.Object(key=u'users_fake_secrets.csv')
+    obj = bucket.Object(key=u'secrets.csv')
     response = obj.get()
     users = csv.DictReader(response[u'Body'].read().decode('utf-8').split())
     return users

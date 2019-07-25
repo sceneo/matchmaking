@@ -57,10 +57,16 @@ class APICallsToChatkit {
    }
    
    getRoomMessages(){
+       if(this.verbose > 0) {
+           console.log(this.roomMessages)
+       }
        return this.roomMessages;
    }
    
    getUsers(){
+       if(this.verbose > 0) {
+           console.log(this.users)
+       }
        return this.users;
    }
    
@@ -85,8 +91,8 @@ class APICallsToChatkit {
    }
    
    async loginAs(username='') {
-       this.currentUser = username;
-       await this.getToken(username,false);
+       this.currentUser = username.replace(/ /g, '_');
+       await this.getToken(username.replace(/ /g, '_'));
    }
 
 // receiving the token with the user ID and valid credentials
@@ -148,7 +154,7 @@ class APICallsToChatkit {
    
    async requestUsers() {
        var json;
-       await fetch(this.api + '/users' ,{
+       await fetch(this.api + '/users?limit=100' ,{
            method: 'get',
            headers: {
              "Content-type": "application/json; charset=UTF-8",
@@ -206,6 +212,9 @@ class APICallsToChatkit {
 // message is requested from room -auth. via token in header
    
    async requestMessagesFromRoom(roomId=this.currentChannel) {
+       if(this.verbose > 0) {
+//           console.log('user: ' + this.currentUser)
+       }
        this.messages = [];
        var json;
        await fetch(this.api + '/rooms/' + roomId + '/messages' ,{
@@ -257,9 +266,9 @@ class APICallsToChatkit {
              "Authorization": "Bearer " + this.authorization.access_token
            },
            body: JSON.stringify({
-               "name": "1-1_"+this.currentUser+"_"+username,
+               "name": "1-1_"+this.currentUser+"_"+username.replace(/ /g, '_'),
                "private": true,
-               "user_ids": [this.currentUser,username]
+               "user_ids": [this.currentUser,username.replace(/ /g, '_')]
            })
          })
          .then(response => response.json())
@@ -279,7 +288,7 @@ class APICallsToChatkit {
              "Authorization": "Bearer " + this.authorization.access_token
            },
            body: JSON.stringify({
-               "user_ids": ['MatchMaking',username],
+               "user_ids": ['MatchMaking',username.replace(/ /g, '_')],
            })
          })
          .catch(function (error) {

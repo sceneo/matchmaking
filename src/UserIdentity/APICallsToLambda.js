@@ -56,11 +56,13 @@ class APICallsToLambda{
     }
     
     async addToWhitelist(candidate){
+        console.log(this.primaryUserDetails.username)
         var details = {
                 usecase: 'addToWhitelist',
                 email: this.primaryUserDetails.email,
                 whitelistCandidate: candidate,
         }
+        console.log(details)
         await fetch(this.url_lambdaAuth,{
             headers: {
             "Content-type": "application/json; utf-8"
@@ -71,7 +73,7 @@ class APICallsToLambda{
           })
           .then(response => response.json())          
           .catch(function (error) {
-            console.log('Request failed', error);
+            console.log('Request failed: ', error);
           });
     }
     

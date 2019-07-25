@@ -55,7 +55,12 @@ class ChatMessageList extends React.Component {
     
     
     getAvatar(username){
-        return this.userMapping.getUserByUsername(username).matchMakingDetails.avatar;
+        if(this.userMapping.getUserByUsername(username) !== undefined) {
+            return this.userMapping.getUserByUsername(username).matchMakingDetails.avatar;
+        }
+        else {
+            return 0
+        }      
     }
     
     sortMessages(){

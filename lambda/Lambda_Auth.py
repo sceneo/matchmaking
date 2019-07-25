@@ -40,7 +40,7 @@ def csvToString(data):
 def getUsersFromS3():
     s3 = boto3.resource(u's3')
     bucket = s3.Bucket(u'matchmaking.data')
-    obj = bucket.Object(key=u'users_fake_secrets.csv')
+    obj = bucket.Object(key=u'users.csv')
     response = obj.get()
     users = csv.DictReader(response[u'Body'].read().decode('utf-8').split())
     return users
@@ -462,6 +462,5 @@ if __name__ == '__main__':
 #     for user in users:
 #         print(user)     
 #     print(getUser('tobias.kunz@tngtech.com'))
-#     print(getUserBySecretId(3))
-
-    
+    print(getUserBySecretId(18))
+    print(getUserBySecretId(37))
